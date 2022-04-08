@@ -1,0 +1,81 @@
+.tabheader h1 {
+    margin-left: 60px;
+    font-size: 25px;
+    font-weight: bold;
+    border: 0.3px;
+    color: #34364A;
+}
+
+.tabheader h4 {
+    margin-left: 60px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 0.3px;
+    color: #34364A;
+    opacity: 60%;
+}
+
+.tabcategory {
+    background-color: white;
+    margin: 20px 60px 0px 60px;
+    box-sizing: border-box;
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.line {
+    margin: 10px 0px 10px 0px;
+    background-color: black;
+    border: 2px solid black;
+}
+.tabsearch {
+    float: right;
+}
+
+.tabsearch p {
+    color: #34364A;
+    font-weight: 600;
+}
+
+.tabtable button {
+    border: none;
+    width: 35px;
+    height: 35px;
+    background-color: #18A0FB;
+    border-radius: 4px;
+}
+
+.tabtable img {
+    width: 20px;
+    height: 20px;
+}
+
+.tabsearch input {
+    width: 304px;
+    height: 34px;
+    background-color: #E5E9F2;
+    border-radius: 30px;
+    border: none;
+    text-align: center  ;
+}
+
+.tabaddnew button {
+    float: right;
+    width: 304px;
+    height: 34px;
+    margin-right: 70px;
+    border-radius: 30px;
+    background-color: #5FE449;
+    color: white;
+    border: none;
+}
+
+.tabaddnew button:hover {
+    background-color: #34a81f;
+    transition: 0.3s;
+}
+
+.tabtable button:hover {
+    background-color: #074772;
+    transition: 0.3s;
+}
