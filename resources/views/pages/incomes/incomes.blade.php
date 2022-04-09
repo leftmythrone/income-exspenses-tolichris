@@ -61,6 +61,11 @@
                             </tr>
                     
                                 {{-- EACH FOR --}}
+                            @foreach ($incomes as $income)
+                            {{ $incomes->id }}
+                                
+                            @endforeach
+
                                 @for ( $x = 0; $x < 2 ; $x++) 
                             <tr>
                                 {{-- TABLE MAIN SECTION --}}

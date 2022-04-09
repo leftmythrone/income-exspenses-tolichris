@@ -17,7 +17,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="Home">Home / Menu</a href="">
+        <a href="/">Home / Menu</a href="">
       </div>
     </li>
 
@@ -28,7 +28,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="/">Income / Pemasukan</a href="">
+        <a href="/">Incomes / Pemasukan</a href="">
       </div>
     </li>
 
@@ -39,7 +39,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="outcome">Outcome / Pengeluaran</a href="">
+        <a href="expense">Expense / Pengeluaran</a href="">
       </div>
     </li>
 
@@ -50,25 +50,25 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="debt">Debt / Utang</a href="">
+        <a href="debt">Debts / Utang</a href="">
       </div>
     </li>
 
     <li>
       {{-- ICON --}}
       <div class="sideicon">
-        <img src="/img/debt.png" alt="">
+        <img src="/img/pie_chart.png" alt="">
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="">Kas Besar / Kas Kecil</a href="">
+        <a href="">Cash Type / Tipe Kas</a href="">
       </div>
     </li>
 
     <li>
       {{-- ICON --}}
       <div class="sideicon">
-        <img src="/img/debt.png" alt="">
+        <img src="/img/graph.png" alt="">
       </div>
       {{-- FONT --}}
       <div class="sidefont">

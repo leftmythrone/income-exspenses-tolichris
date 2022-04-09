@@ -9,7 +9,7 @@
 <div class="tabheader">
 
     {{-- HEADING --}}
-    <h1>My Outcome Category</h1>
+    <h1>My Expense Category</h1>
 
     {{-- SUMMARY --}}
     <h4>Pada page ini berisi seluruh category pengeluaran <br> pada PT. Tolichris</h4>
@@ -17,7 +17,7 @@
 
     {{--  
     |--------------------------------------------------------------------------
-    | My Outcome Category
+    | My Expense Category
     |--------------------------------------------------------------------------
     |
     | Pada page ini berisi seluruh category pengeluaran 
@@ -97,7 +97,7 @@
 
     {{--  
     |--------------------------------------------------------------------------
-    | My Outcome Overview
+    | My Expense Overview
     |--------------------------------------------------------------------------
     |
     | Pada page ini berisi seluruh transaksi catatan pengeluaran pada PT Tolichris
@@ -107,7 +107,7 @@
     <div class="tabheader">
 
         {{-- HEADING --}}
-        <h1>My Outcome Overview</h1>
+        <h1>My Expense Overview</h1>
 
         {{-- SUMMARY --}}
         <h4>Pada page ini berisi seluruh transaksi catatan pengeluaran pada PT Tolichris</h4>
