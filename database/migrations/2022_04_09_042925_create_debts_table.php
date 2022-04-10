@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
-            $table->string('debt_detail');
+            $table->string('debt_description');
             $table->foreignId('debt_category_id');
             $table->foreignId('debt_type_id');
             $table->string('nominal');

@@ -6,16 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-
-class Income extends Model
+class Expense extends Model
 {
     use HasFactory;
 
-    public function incat()
-    {
-        return $this->belongsTo(\App\Models\IncomeCategory::class);
-    }
-
     // GUARDING IMPORTANT
     protected $guarded = ['id'];
+
+    public function expense_categories()
+    {
+        return $this->belongsTo(Kategori::class);
+    }
 }

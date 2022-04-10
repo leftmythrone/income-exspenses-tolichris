@@ -61,11 +61,6 @@
                             </tr>
                     
                                 {{-- EACH FOR --}}
-                            @foreach ($incomes as $income)
-                            {{ $incomes->id }}
-                                
-                            @endforeach
-
                                 @for ( $x = 0; $x < 2 ; $x++) 
                             <tr>
                                 {{-- TABLE MAIN SECTION --}}
@@ -154,12 +149,12 @@
                             </tr>
                         
                                 {{-- EACH FOR --}}
-                                @for ( $x = 0; $x < 10 ; $x++) 
+                                @foreach ($incomes as $income) 
                             <tr>
                                 {{-- TABLE MAIN SECTION --}}
-                                <td> <center> {{ $x + 1 }}. </center></td>
+                                <td> <center> {{ $income->id }}. </center></td>
                                     <td> <center> {{ "24592" }} </center></td>
-                                    <td>{{ "Pembelian server pada niagahoster" }}</td>
+                                    <td>{{ $income->income_description }}</td>
                                     <td><center>{{ 'Cargo B' }}</center></td>
                                     <td><center>{{ "Kas Kecil" }}</center></td>
                                     <td><center>{{ "Rp. 5000,00" }}</center></td>
@@ -177,14 +172,14 @@
                                 {{-- SPACER --}}
                                 <td><div class="space"></div></td>
                             </tr>
-                                @endfor
+                            @endforeach
                         
                         </table>
                     </div> 
         <br>
 
         {{-- ENTRIES --}}
-        <p>Showing 1 to {{ $x }} of {{ $x }} entries</p>
+        <p>Showing 1 to {{ 1 }} of {{ 1 }} entries</p>
     </div>
         
 @endsection

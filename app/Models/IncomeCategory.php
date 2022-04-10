@@ -4,16 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
-
-class Income extends Model
+class IncomeCategory extends Model
 {
     use HasFactory;
 
-    public function incat()
+    public function income()
     {
-        return $this->belongsTo(\App\Models\IncomeCategory::class);
+        return $this->HasMany(Income::class);
     }
 
     // GUARDING IMPORTANT
