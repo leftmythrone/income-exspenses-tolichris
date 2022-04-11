@@ -16,7 +16,10 @@ class IncomeController extends Controller
         return view('/pages/incomes/incomes', [
             "title" => "Income",
             "sidebars" => "partials.sidebar",
-            "incomes" => Income::all()
+            "incomes" => Income::all(),
+            // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
+            "categories" => \App\Models\IncomeCategory::all(),
+            "subtotal" => 0,
         ]);
     }
 }

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        Income::factory(10)->create();
+        Income::factory(4)->create();
 
         Income::create([
             'income_description' => 'Cargo Evergreen dari',

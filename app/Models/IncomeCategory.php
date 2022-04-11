@@ -9,9 +9,9 @@ class IncomeCategory extends Model
 {
     use HasFactory;
 
-    public function income()
+    public function incomes()
     {
-        return $this->HasMany(Income::class);
+        return $this->HasMany(Income::class, 'income_category_id');
     }
 
     // GUARDING IMPORTANT

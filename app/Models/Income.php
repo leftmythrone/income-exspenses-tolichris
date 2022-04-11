@@ -11,9 +11,9 @@ class Income extends Model
 {
     use HasFactory;
 
-    public function incat()
+    public function income_category()
     {
-        return $this->belongsTo(\App\Models\IncomeCategory::class);
+        return $this->belongsTo(\App\Models\IncomeCategory::class, 'income_category_id');
     }
 
     // GUARDING IMPORTANT

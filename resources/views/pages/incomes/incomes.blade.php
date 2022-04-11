@@ -61,36 +61,49 @@
                             </tr>
                     
                                 {{-- EACH FOR --}}
-                                @for ( $x = 0; $x < 2 ; $x++) 
-                            <tr>
-                                {{-- TABLE MAIN SECTION --}}
-                                <td> <center> {{ $x + 1 }}. </center></td>
-                                <td> <center> {{ "24592" }} </center></td>
-                                <td>{{ "Pembelian server pada niagahoster" }}</td>
-                                <td><center>{{ "Kas Kecil" }}</center></td>
-                                <td><center>{{ "Rp. 5000,00" }}</center></td>
-                                <td><center>{{ "Jumat, 12 September 2022" }}</center></td>
-                                <td>
-                                    <center>
-                                        <button><img src="/img/eye_white.png" alt=""></button> 
-                                        <button><img src="/img/pencil_white.png" alt=""></button> 
-                                        <button><img src="/img/trash_white.png" alt=""></button>
-                                    </center>
-                                </td>
-                            </tr>
 
-                            <tr>
-                                {{-- SPACER --}}
-                                <td><div class="space"></div></td>
-                            </tr>
-                                @endfor
+                                @foreach ($categories as $category) 
+
+                                    {{-- AUTOMATIC VARIABLE --}}
+                                    @php
+
+                                    for($x = 0 ; $x < 3 ; $x++)
+                                    {
+
+                                    }
+
+                                    @endphp
+
+                                    <tr>
+                                        {{-- TABLE MAIN SECTION --}}
+                                        <td> <center> {{ $category->id }}. </center></td>
+                                        <td> <center> {{ "24592" }} </center></td>
+                                        <td>{{ $category->name }}</td>
+                                        <td><center>{{ "Kas Kecil" }}</center></td>
+                                        <td><center>Rp. {{ $category->incomes }},00</center></td>
+                                        <td><center>{{ $category->created_at }}</center></td>
+                                        <td>
+                                            <center>
+                                                <button><img src="/img/eye_white.png" alt=""></button> 
+                                                <button><img src="/img/pencil_white.png" alt=""></button> 
+                                                <button><img src="/img/trash_white.png" alt=""></button>
+                                            </center>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        {{-- SPACER --}}
+                                        <td><div class="space"></div></td>
+                                    </tr>
+
+                                @endforeach
 
                         </table>
                     </div> 
                 <br>
 
                 {{-- ENTRIES --}}
-                <p>Showing 1 to {{ $x }} of {{ $x }} entries</p>
+                <p>Showing 1 to {{ 1 }} of {{ 1 }} entries</p>
             </div>
 
     <br><br>
@@ -145,7 +158,7 @@
                             </tr>
                             <tr>
                                 {{-- LINE CUTTER --}}
-                                <td colspan="7"><div class="line"></div></td>
+                                <td colspan="99"><div class="line"></div></td>
                             </tr>
                         
                                 {{-- EACH FOR --}}
@@ -155,10 +168,10 @@
                                 <td> <center> {{ $income->id }}. </center></td>
                                     <td> <center> {{ "24592" }} </center></td>
                                     <td>{{ $income->income_description }}</td>
-                                    <td><center>{{ 'Cargo B' }}</center></td>
+                                    <td><center>{{ $income->income_category->name }}</center></td>
                                     <td><center>{{ "Kas Kecil" }}</center></td>
-                                    <td><center>{{ "Rp. 5000,00" }}</center></td>
-                                    <td><center>{{ "Jumat, 12 September 2022" }}</center></td>
+                                    <td><center>Rp. {{ $income->nominal }},00</center></td>
+                                    <td><center>{{ $income->created_at }}</center></td>
                                     <td>
                                         <center>
                                             <button><img src="/img/eye_white.png" alt=""></button> 
@@ -172,6 +185,28 @@
                                 {{-- SPACER --}}
                                 <td><div class="space"></div></td>
                             </tr>
+
+                                {{-- PERHITUNGAN / CALCULATE CATEGORY --}}
+                                @foreach ($categories as $calculate)
+
+                                    @if ( $income->income_category->name === $calculate->name )
+                                        @php
+                                            $subtotal = $subtotal + $income->nominal
+                                        @endphp
+                                        <tr>
+                                            <td>
+                                                {{ $subtotal }}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    
+                                @endforeach
+
+
+                                
+
+
+
                             @endforeach
                         
                         </table>
