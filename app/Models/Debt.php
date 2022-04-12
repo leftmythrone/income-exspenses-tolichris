@@ -10,11 +10,11 @@ class Debt extends Model
 {
     use HasFactory;
 
-        // GUARDING IMPORTANT
-        protected $guarded = ['id'];
+    public function debt_category()
+    {
+        return $this->belongsTo(\App\Models\DebtCategory::class, 'debt_category_id');
+    }
 
-        public function debt_categories()
-        {
-            return $this->belongsTo(Kategori::class);
-        }
+    // GUARDING IMPORTANT
+    protected $guarded = ['id'];
 }

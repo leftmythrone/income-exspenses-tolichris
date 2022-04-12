@@ -113,19 +113,21 @@
                                     </tr>
 
                                 @endforeach
-                                
-                                @php
-                                
-                                $number = 1;
-
-                                @endphp
 
                         </table>
                     </div> 
                 <br>
 
                 {{-- ENTRIES --}}
-                <p>Showing 1 to {{ 1 }} of {{ 1 }} entries</p>
+                <p>Showing 1 to {{ 1 }} of {{ $number - 1 }} entries</p>
+
+                @php
+                                
+                $number = 1;
+
+                @endphp
+
+                
             </div>
 
     <br><br>
@@ -215,7 +217,7 @@
         <br>
 
         {{-- ENTRIES --}}
-        <p>Showing 1 to {{ 1 }} of {{ 1 }} entries</p>
+        <p>Showing 1 to {{ 1 }} of {{ $number - 1 }} entries</p>
     </div>
 
         

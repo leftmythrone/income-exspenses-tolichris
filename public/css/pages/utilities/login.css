@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Poppins:wght@400;500;600&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #34364A;
+  height: 100vh;
+  padding: 0;
+  overflow: hidden;
+  background-repeat: no-repeat;
+}
+
+.left {
+    background-color: rgb(255, 255, 255);
+    min-height: 100%;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+/* CENTER */
+
+.container {
+	position: fixed;
+	top: 60%;
+	left: 25%;
+	transform: translate(-50%, -50%);
+	width: 500px;
+	/* background: rgb(129, 115, 115); */
+	border-radius: 10px;
+	/* box-shadow: 10px 10px 15px rgba(0,0,0,0.05); */
+	opacity: 90%;
+}
+.image img{
+    position: fixed;
+    width: 275px;
+    height: 275px;
+    bottom: 400px;
+    left: 110px;
+}
+
+.container h1 {
+	font-size: 30px;
+	font-weight: 600;
+	padding: 20px 0px;
+	text-align: center;
+	color: rgb(0, 0, 0);
+    z-index: 1px    ;
+}
+
+.container form {
+	padding: 40px;
+	box-sizing: border-box;
+}
+
+.field i {
+	color: #646464;
+	position: absolute;
+	width: 40px;
+	height: 40px;
+    left: 420px;
+    opacity: 40%;
+}
+
+.field {
+	margin-bottom: 40px;
+}
+
+.field input {
+	width: 320px;
+	font-size: 20px;
+	text-align: left;
+	color: #646464;
+	background: none;
+	outline: none;
+	border: none;
+    font-weight: 600;
+    opacity: 40%;
+}
+
+.rememberme {
+    float: left;
+}
+
+.rememberme a {
+    text-decoration: none;
+    color: #646464;
+    font-weight: 600;
+    opacity: 40%;
+}
+
+.lupaPass a {
+	position: relative;
+    float: right;
+	top: 5px;
+	font-size: 14px;
+	color: #7E7201;
+    font-weight: bold;
+}
+
+.container .btn a button {
+	padding: 9px 25px;
+	border: none;
+	background: none;
+	border-radius: 50px;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+	font-weight: bold;
+
+}
+
+.container button {
+    background-color: #34364A;
+    border: none;
+    text-align: center;
+    width: 100%;
+    height: 45px;
+    color: white;
+    font-weight: bold;
+    margin-top: 10px    ;
+}
+
+
+  .line {
+    margin: 10px 0px 10px 0px;
+    background-color: #646464;
+    border: 2px solid #646464;
+    opacity: 40%;
+}

@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
-class Income extends Model
+class DebtCategory extends Model
 {
     use HasFactory;
 
-    public function income_category()
+    public function debts()
     {
-        return $this->belongsTo(\App\Models\IncomeCategory::class, 'income_category_id');
+        return $this->HasMany(Debt::class, 'debt_category_id');
     }
 
     // GUARDING IMPORTANT

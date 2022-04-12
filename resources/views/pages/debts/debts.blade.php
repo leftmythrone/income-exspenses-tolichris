@@ -9,15 +9,15 @@
 <div class="tabheader">
 
     {{-- HEADING --}}
-    <h1>My Debt Category</h1>
+    <h1>My Income Category</h1>
 
     {{-- SUMMARY --}}
-    <h4>Pada page ini berisi seluruh category utang / piutang <br> pada PT. Tolichris</h4>
+    <h4>Pada page ini berisi seluruh category pencatatan <br> keuangan pada PT. Tolichris</h4>
 </div>
 
     {{--  
     |--------------------------------------------------------------------------
-    | My Debt Category
+    | My Income Category
     |--------------------------------------------------------------------------
     |
     | Pada page ini berisi seluruh category pencatatan
@@ -26,7 +26,7 @@
     --}}
     
         <div class="tabaddnew">
-            <button>Add new debt +</button>
+            <button>Add new income +</button>
         </div>
 
         <div class="clear"></div>
@@ -40,7 +40,6 @@
 
                 {{-- SHOWING ENTRIES --}}
                 <p>Show {{ 1 }} entries </p> 
-                
 
                 {{-- TABLE --}}
                     <div class="tabtable">    
@@ -55,42 +54,80 @@
                                 <th><center>Date</center></th>
                                 <th><center>Action</center></th>
                             </tr>
+
                             <tr>
                                 {{-- LINE CUTTER --}}
                                 <td colspan="7"><div class="line"></div></td>
                             </tr>
                     
-                                {{-- EACH FOR --}}
-                                @for ( $x = 0; $x < 1 ; $x++) 
-                            <tr>
-                                {{-- TABLE MAIN SECTION --}}
-                                <td> <center> {{ $x + 1 }}. </center></td>
-                                <td> <center> {{ "24592" }} </center></td>
-                                <td>{{ "Pembelian server pada niagahoster" }}</td>
-                                <td><center>{{ "Kas Kecil" }}</center></td>
-                                <td><center>{{ "Rp. 5000,00" }}</center></td>
-                                <td><center>{{ "Jumat, 12 September 2022" }}</center></td>
-                                <td>
-                                    <center>
-                                        <button><img src="/img/eye_white.png" alt=""></button> 
-                                        <button><img src="/img/pencil_white.png" alt=""></button> 
-                                        <button><img src="/img/trash_white.png" alt=""></button>
-                                    </center>
-                                </td>
-                            </tr>
+                                {{-- FOR EACH --}}
+                                @foreach ($categories as $category) 
+                                    <tr>
+                                        {{-- TABLE MAIN SECTION --}}
+                                        <td> <center> {{ $number++ }}. </center></td>
+                                        <td> <center> {{ "24592" }} </center></td>
+                                        <td>{{ $category->name }}</td>
+                                        <td><center>{{ "Kas Kecil" }}</center></td>
+                                        <td>
+                                            <center>
 
-                            <tr>
-                                {{-- SPACER --}}
-                                <td><div class="space"></div></td>
-                            </tr>
-                                @endfor
+                                                {{-- PERHITUNGAN  --}}
+                                                    
+                                                @foreach ( $debts as $calculate )
+
+                                                    @if ($category->name === $calculate->debt_category->name)
+                                                        
+                                                        @php
+                                                            $subtotal = $subtotal + $calculate->nominal
+                                                        @endphp
+
+                                                    @endif
+
+                                                @endforeach
+
+
+                                                
+                                                Rp. {{ $subtotal }},00
+
+                                                @php
+
+                                                $subtotal = 0;
+
+                                                @endphp
+
+                                            </center>
+                                        </td>
+                                        <td><center>{{ $category->created_at }}</center></td>
+                                        <td>
+                                            <center>
+                                                <button><img src="/img/eye_white.png" alt=""></button> 
+                                                <button><img src="/img/pencil_white.png" alt=""></button> 
+                                                <button><img src="/img/trash_white.png" alt=""></button>
+                                            </center>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        {{-- SPACER --}}
+                                        <td><div class="space"></div></td>
+                                    </tr>
+
+                                @endforeach
 
                         </table>
                     </div> 
                 <br>
 
                 {{-- ENTRIES --}}
-                <p>Showing 1 to {{ $x }} of {{ $x }} entries</p>
+                <p>Showing 1 to {{ 1 }} of {{ $number - 1 }} entries</p>
+
+                @php
+                                
+                $number = 1;
+
+                @endphp
+
+                
             </div>
 
     <br><br>
@@ -107,14 +144,14 @@
     <div class="tabheader">
 
         {{-- HEADING --}}
-        <h1>My Debt Overview</h1>
+        <h1>My Income Overview</h1>
 
         {{-- SUMMARY --}}
-        <h4>Pada page ini berisi seluruh transaksi catatan utang / piutang PT Tolichris</h4>
+        <h4>Pada page ini berisi seluruh transaksi catatan pendapatan yang telah masuk pada PT Tolichris</h4>
     </div>
 
         <div class="tabaddnew">
-            <button>Add new debt +</button>
+            <button>Add new income +</button>
         </div>
 
         <div class="clear"></div>
@@ -149,16 +186,16 @@
                             </tr>
                         
                                 {{-- EACH FOR --}}
-                                @for ( $x = 0; $x < 2 ; $x++) 
+                                @foreach ($debts as $debt) 
                             <tr>
                                 {{-- TABLE MAIN SECTION --}}
-                                <td> <center> {{ $x + 1 }}. </center></td>
+                                <td> <center> {{ $number++ }}. </center></td>
                                     <td> <center> {{ "24592" }} </center></td>
-                                    <td>{{ "Pembelian server pada niagahoster" }}</td>
-                                    <td><center>{{ 'Cargo B' }}</center></td>
+                                    <td>{{ $debt->debt_description }}</td>
+                                    <td><center>{{ $debt->debt_category->name }}</center></td>
                                     <td><center>{{ "Kas Kecil" }}</center></td>
-                                    <td><center>{{ "Rp. 5000,00" }}</center></td>
-                                    <td><center>{{ "Jumat, 12 September 2022" }}</center></td>
+                                    <td><center>Rp. {{ $debt->nominal }},00</center></td>
+                                    <td><center>{{ $debt->created_at }}</center></td>
                                     <td>
                                         <center>
                                             <button><img src="/img/eye_white.png" alt=""></button> 
@@ -172,14 +209,19 @@
                                 {{-- SPACER --}}
                                 <td><div class="space"></div></td>
                             </tr>
-                                @endfor
+
+                            @endforeach
                         
                         </table>
                     </div> 
         <br>
 
         {{-- ENTRIES --}}
-        <p>Showing 1 to {{ $x }} of {{ $x }} entries</p>
+        <p>Showing 1 to {{ 1 }} of {{ $number - 1 }} entries</p>
     </div>
 
+        
 @endsection
+
+
+

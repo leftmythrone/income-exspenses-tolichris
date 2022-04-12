@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 // MODEL
 use App\Models\Income;
+use App\Models\IncomeCategory;
+
 
 
 class IncomeController extends Controller

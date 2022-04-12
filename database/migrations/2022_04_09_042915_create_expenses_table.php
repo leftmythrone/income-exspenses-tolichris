@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->string('expenses_description');
-            $table->foreignId('expenses_category_id');
-            $table->foreignId('expenses_type_id');
-            $table->string('nominal');
+            $table->string('expense_description');
+            $table->foreignId('expense_category_id');
+            $table->foreignId('expense_type_id');
+            $table->integer('nominal');
             $table->timestamps();
         });
     }

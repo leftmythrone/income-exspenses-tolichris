@@ -15,6 +15,7 @@ class IncomeFactory extends Factory
      *
      * @var string
      */
+    
     protected $model = Income::class;
 
     /**
@@ -26,7 +27,7 @@ class IncomeFactory extends Factory
     {
         return [
             'income_description' => $this->faker->sentence(mt_rand(1,3)),
-            'income_category_id' => $this->faker->numberBetween($min = 1, $max = 2),
+            'income_category_id' => $this->faker->numberBetween($min = 1, $max = 3),
             'income_type_id' => $this->faker->numberBetween($min = 1, $max = 2),
             'nominal' => $this->faker->numberBetween($min = 50000, $max = 3000000), 
         ];

@@ -4,9 +4,12 @@ use Illuminate\Support\Facades\Route;
 
 // MODELS
 use App\Models\Income;
+use App\Models\Expense;
+use App\Models\Debt;
 use App\Models\Login;
 
 // CONTROLLLER
+use App\Http\Controllers\UtilitiesController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\DebtController;
@@ -26,7 +29,7 @@ Route::get('/laravel', function () {
 |
 */
 
-Route::get('/login', [OtherController::class, 'login']);
+Route::get('/login', [UtilitiesController::class, 'login']);
 
 Route::get('/forget', [OtherController::class, 'forget']);
 
@@ -57,11 +60,13 @@ Route::get('/', [IncomeController::class, 'start']);
 |
 */
 
-Route::get('/expense', function () {
-    return view('/pages/expenses/expenses', [
-        "title" => "Outcomes"
-    ]);
-});
+// Route::get('/expense', function () {
+//     return view('/pages/expenses/expenses', [
+//         "title" => "Outcomes"
+//     ]);
+// });
+
+Route::get('/expense', [ExpenseController::class, 'start']);
 
 /*
 |--------------------------------------------------------------------------
@@ -74,8 +79,10 @@ Route::get('/expense', function () {
 |
 */
 
-Route::get('/debt', function () {
-    return view('/pages/debts/debts', [
-        "title" => "Debts"
-    ]);
-});
+// Route::get('/debt', function () {
+//     return view('/pages/debts/debts', [
+//         "title" => "Debts"
+//     ]);
+// });
+
+Route::get('/debt', [DebtController::class, 'start']);

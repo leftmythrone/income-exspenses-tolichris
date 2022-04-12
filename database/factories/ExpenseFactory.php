@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Expense;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,8 +15,8 @@ class ExpenseFactory extends Factory
     *
     * @var string
     */
-   protected $model = Expense::class;
 
+   protected $model = Expense::class;
 
     /**
      * Define the model's default state.
@@ -26,7 +27,10 @@ class ExpenseFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'expense_description' => $this->faker->sentence(mt_rand(1,3)),
+            'expense_category_id' => $this->faker->numberBetween($min = 1, $max = 2),
+            'expense_type_id' => $this->faker->numberBetween($min = 1, $max = 2),
+            'nominal' => $this->faker->numberBetween($min = 50000, $max = 3000000), 
         ];
     }
 }

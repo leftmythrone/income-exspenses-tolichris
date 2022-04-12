@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('debt_description');
             $table->foreignId('debt_category_id');
             $table->foreignId('debt_type_id');
-            $table->string('nominal');
+            $table->integer('nominal');
             $table->timestamps();
         });
     }
