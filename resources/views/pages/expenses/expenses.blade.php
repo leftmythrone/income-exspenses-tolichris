@@ -9,7 +9,7 @@
 <div class="tabheader">
 
     {{-- HEADING --}}
-    <h1>My Income Category</h1>
+    <h1>My Expense Category</h1>
 
     {{-- SUMMARY --}}
     <h4>Pada page ini berisi seluruh category pencatatan <br> keuangan pada PT. Tolichris</h4>
@@ -17,7 +17,7 @@
 
     {{--  
     |--------------------------------------------------------------------------
-    | My Income Category
+    | My Expense Category
     |--------------------------------------------------------------------------
     |
     | Pada page ini berisi seluruh category pencatatan
@@ -50,8 +50,8 @@
                                 <th><center>ID</center></th>
                                 <th><center>Category Name / Nama Kategori</center></th>
                                 <th><center>Jenis Kas</center></th>
-                                <th><center>Total</center></th>
                                 <th><center>Date</center></th>
+                                <th><center>Total</center></th>
                                 <th><center>Action</center></th>
                             </tr>
 
@@ -68,6 +68,7 @@
                                         <td> <center> {{ "24592" }} </center></td>
                                         <td>{{ $category->name }}</td>
                                         <td><center>{{ "Kas Kecil" }}</center></td>
+                                        <td><center>{{ $category->created_at }}</center></td>
                                         <td>
                                             <center>
 
@@ -97,7 +98,6 @@
 
                                             </center>
                                         </td>
-                                        <td><center>{{ $category->created_at }}</center></td>
                                         <td>
                                             <center>
                                                 <button><img src="/img/eye_white.png" alt=""></button> 
@@ -113,6 +113,26 @@
                                     </tr>
 
                                 @endforeach
+                                <tr>
+                                    <td colspan="99"><hr></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"></td>
+                                    <td><center><b>Total : </b></center></td>
+                                    <td>
+                                        @foreach ( $expenses as $expense )
+                                        
+                                        @php 
+                                            $total = $total + $expense->nominal
+                                        @endphp
+
+                                        @endforeach
+                                        <center>
+                                            Rp.{{ $total }},00
+                                        </center>
+                                        
+                                    </td>
+                                </tr>
 
                         </table>
                     </div> 
@@ -134,7 +154,7 @@
 
     {{--  
     |--------------------------------------------------------------------------
-    | My Income Overview
+    | My Expense Overview
     |--------------------------------------------------------------------------
     |
     | Pada page ini berisi seluruh transaksi catatan pendapatan yang telah masuk pada PT Tolichris
@@ -144,7 +164,7 @@
     <div class="tabheader">
 
         {{-- HEADING --}}
-        <h1>My Income Overview</h1>
+        <h1>My Expense Overview</h1>
 
         {{-- SUMMARY --}}
         <h4>Pada page ini berisi seluruh transaksi catatan pendapatan yang telah masuk pada PT Tolichris</h4>
@@ -173,7 +193,7 @@
                                 {{-- TABLE HEADER --}}
                                 <th><center>No</center></th> 
                                 <th><center>ID</center></th>
-                                <th><center>Income Detail / Detail Pemasukan</center></th>
+                                <th><center>Expense Detail / Detail Pemasukan</center></th>
                                 <th><center>Category / Kategori</center></th>
                                 <th><center>Kas besar / Kas kecil</center></th>
                                 <th><center>Nominal</center></th>

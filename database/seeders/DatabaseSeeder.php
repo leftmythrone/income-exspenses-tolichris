@@ -24,21 +24,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+        /*
+        |--------------------------------------------------------------------------
+        | SOURCE OF FACTORY
+        |--------------------------------------------------------------------------
+        |
+        | Here is where you can register web routes for your application. These
+        | routes are loaded by the RouteServiceProvider within a group which
+        | contains the "web" middleware group. Now create something great!
+        | 
+        */
+
         // \App\Models\User::factory(10)->create();
+        
         Income::factory(10)->create();
 
-        Expense::factory(5)->create();
+        Expense::factory(10)->create();
 
-
-        Debt::factory(2)->create();
-
-
-        Income::create([
-            'income_description' => 'Cargo Evergreen dari',
-            'income_category_id' => 1,
-            'income_type_id' => 2,
-            'nominal' => 50000
-        ]);
+        Debt::factory(10)->create();
 
         /*
         |--------------------------------------------------------------------------

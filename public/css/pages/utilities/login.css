@@ -26,7 +26,7 @@ body {
 
 .container {
 	position: fixed;
-	top: 60%;
+	top: 64%;
 	left: 25%;
 	transform: translate(-50%, -50%);
 	width: 500px;
@@ -39,7 +39,7 @@ body {
     position: fixed;
     width: 275px;
     height: 275px;
-    bottom: 400px;
+    bottom: 360px;
     left: 110px;
 }
 
@@ -48,8 +48,8 @@ body {
 	font-weight: 600;
 	padding: 20px 0px;
 	text-align: center;
-	color: rgb(0, 0, 0);
-    z-index: 1px    ;
+	color: #34364A;
+    z-index: 1px;
 }
 
 .container form {
@@ -82,8 +82,11 @@ body {
     opacity: 40%;
 }
 
-.rememberme {
+.rememberme input {
     float: left;
+    position: relative;
+    right: 150px;
+    top: 18px;
 }
 
 .rememberme a {
@@ -91,15 +94,19 @@ body {
     color: #646464;
     font-weight: 600;
     opacity: 40%;
+    float:left;
+    left: 25px;
+    position: relative;
 }
 
 .lupaPass a {
 	position: relative;
     float: right;
-	top: 5px;
-	font-size: 14px;
+	top: 0px;
+	font-size: 16px;
 	color: #7E7201;
     font-weight: bold;
+    opacity: 40%;
 }
 
 .container .btn a button {
@@ -124,8 +131,29 @@ body {
     margin-top: 10px    ;
 }
 
+.register {
+    margin-top: 10px;
+}
 
-  .line {
+.register p {
+    font-size: 18px;
+    font-weight: 600;
+    color: #646464;
+    opacity: 40%;
+    text-align: center;
+}
+
+.register a {
+    color: #7E7201;
+}
+
+
+.container button:hover {
+    border: 3px solid greenyellow;
+    transition: 0.3s;
+}
+
+.line {
     margin: 10px 0px 10px 0px;
     background-color: #646464;
     border: 2px solid #646464;

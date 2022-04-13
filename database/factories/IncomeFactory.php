@@ -15,7 +15,7 @@ class IncomeFactory extends Factory
      *
      * @var string
      */
-    
+
     protected $model = Income::class;
 
     /**

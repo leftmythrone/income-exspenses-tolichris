@@ -9,7 +9,7 @@
 <div class="tabheader">
 
     {{-- HEADING --}}
-    <h1>My Income Category</h1>
+    <h1>My Debt Category</h1>
 
     {{-- SUMMARY --}}
     <h4>Pada page ini berisi seluruh category pencatatan <br> keuangan pada PT. Tolichris</h4>
@@ -17,7 +17,7 @@
 
     {{--  
     |--------------------------------------------------------------------------
-    | My Income Category
+    | My Debt Category
     |--------------------------------------------------------------------------
     |
     | Pada page ini berisi seluruh category pencatatan
@@ -68,6 +68,7 @@
                                         <td> <center> {{ "24592" }} </center></td>
                                         <td>{{ $category->name }}</td>
                                         <td><center>{{ "Kas Kecil" }}</center></td>
+                                        <td><center>{{ $category->created_at }}</center></td>
                                         <td>
                                             <center>
 
@@ -97,7 +98,6 @@
 
                                             </center>
                                         </td>
-                                        <td><center>{{ $category->created_at }}</center></td>
                                         <td>
                                             <center>
                                                 <button><img src="/img/eye_white.png" alt=""></button> 
@@ -111,8 +111,28 @@
                                         {{-- SPACER --}}
                                         <td><div class="space"></div></td>
                                     </tr>
-
                                 @endforeach
+
+                                <tr>
+                                    <td colspan="99"><hr></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"></td>
+                                    <td><center><b>Total : </b></center></td>
+                                    <td>
+                                        @foreach ( $debts as $debt )
+                                        
+                                        @php 
+                                            $total = $total + $debt->nominal
+                                        @endphp
+
+                                        @endforeach
+                                        <center>
+                                            Rp.{{ $total }},00
+                                        </center>
+                                        
+                                    </td>
+                                </tr>
 
                         </table>
                     </div> 
@@ -134,7 +154,7 @@
 
     {{--  
     |--------------------------------------------------------------------------
-    | My Income Overview
+    | My Debt Overview
     |--------------------------------------------------------------------------
     |
     | Pada page ini berisi seluruh transaksi catatan pendapatan yang telah masuk pada PT Tolichris
@@ -144,7 +164,7 @@
     <div class="tabheader">
 
         {{-- HEADING --}}
-        <h1>My Income Overview</h1>
+        <h1>My Debt Overview</h1>
 
         {{-- SUMMARY --}}
         <h4>Pada page ini berisi seluruh transaksi catatan pendapatan yang telah masuk pada PT Tolichris</h4>
@@ -173,7 +193,7 @@
                                 {{-- TABLE HEADER --}}
                                 <th><center>No</center></th> 
                                 <th><center>ID</center></th>
-                                <th><center>Income Detail / Detail Pemasukan</center></th>
+                                <th><center> Detail / Detail Pemasukan</center></th>
                                 <th><center>Category / Kategori</center></th>
                                 <th><center>Kas besar / Kas kecil</center></th>
                                 <th><center>Nominal</center></th>

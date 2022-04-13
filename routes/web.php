@@ -31,10 +31,7 @@ Route::get('/laravel', function () {
 
 Route::get('/login', [UtilitiesController::class, 'login']);
 
-Route::get('/forget', [OtherController::class, 'forget']);
-
-Route::get('/home', [OtherController::class, 'home']);
-
+Route::get('/mychart', [UtilitiesController::class, 'chart']);
 
 /*
 |--------------------------------------------------------------------------

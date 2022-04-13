@@ -72,7 +72,18 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="">Chart / Grafik</a href="">
+        <a href="mychart">Chart / Grafik</a href="">
+      </div>
+    </li>
+
+    <li>
+      {{-- ICON --}}
+      <div class="sideicon">
+        <img src="/img/logout.png" alt="">
+      </div>
+      {{-- FONT --}}
+      <div class="sidefont">
+        <a href="/login">Logout / Keluar</a href="">
       </div>
     </li>
     

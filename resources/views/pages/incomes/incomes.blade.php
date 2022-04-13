@@ -50,14 +50,14 @@
                                 <th><center>ID</center></th>
                                 <th><center>Category Name / Nama Kategori</center></th>
                                 <th><center>Jenis Kas</center></th>
-                                <th><center>Total</center></th>
                                 <th><center>Date</center></th>
+                                <th><center>Total</center></th>
                                 <th><center>Action</center></th>
                             </tr>
 
                             <tr>
                                 {{-- LINE CUTTER --}}
-                                <td colspan="7"><div class="line"></div></td>
+                                <td colspan="99"><div class="line"></div></td>
                             </tr>
                     
                                 {{-- FOR EACH --}}
@@ -68,10 +68,11 @@
                                         <td> <center> {{ "24592" }} </center></td>
                                         <td>{{ $category->name }}</td>
                                         <td><center>{{ "Kas Kecil" }}</center></td>
+                                        <td><center>{{ $category->created_at }}</center></td>
                                         <td>
                                             <center>
 
-                                                {{-- PERHITUNGAN  --}}
+                                                {{-- PERHITUNGAN PER CATEGORY  --}}
                                                     
                                                 @foreach ( $incomes as $calculate )
 
@@ -97,7 +98,6 @@
 
                                             </center>
                                         </td>
-                                        <td><center>{{ $category->created_at }}</center></td>
                                         <td>
                                             <center>
                                                 <button><img src="/img/eye_white.png" alt=""></button> 
@@ -111,9 +111,28 @@
                                         {{-- SPACER --}}
                                         <td><div class="space"></div></td>
                                     </tr>
+                                    @endforeach
 
-                                @endforeach
+                                    <tr>
+                                        <td colspan="99"><hr></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4"></td>
+                                        <td><center><b>Total : </b></center></td>
+                                        <td>
+                                            @foreach ( $incomes as $income )
+                                            
+                                            @php 
+                                                $total = $total + $income->nominal
+                                            @endphp
 
+                                            @endforeach
+                                            <center>
+                                                Rp.{{ $total }},00
+                                            </center>
+                                            
+                                        </td>
+                                    </tr>
                         </table>
                     </div> 
                 <br>

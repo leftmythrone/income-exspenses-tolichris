@@ -7,9 +7,8 @@
 <div class="left">
     <div class="container">
         <div class="image">
-            <img src="/img/No-BG.png" alt="">
+            <img src="/img/With-Name.png" alt="">
         </div>
-        <h1>L O G I N</h1>
         <form action="home" method="post">
     
         <!-- USERNAME -->
@@ -28,6 +27,7 @@
 
         <!-- FORGOT YOUR PASSWORD -->
             <div class="rememberme">
+                <input type="checkbox">
                 <a href="">Remember Me</a>
             </div>
     
@@ -37,9 +37,12 @@
             </div>
     
             <button>Login</button>  
+
+            <div class="register">
+                <p>Don't have an account? <a href="">Sign Up</a></p>
+            </div>
         </form>
     </div>
 </div>
-
 
 @endsection
