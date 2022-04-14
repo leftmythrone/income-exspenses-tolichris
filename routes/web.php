@@ -46,6 +46,13 @@ Route::get('/mychart', [UtilitiesController::class, 'chart']);
 
 Route::get('/', [IncomeController::class, 'start']);
 
+Route::get('/income/addnew',[IncomeController::class, 'addnew']);
+Route::get('/income/edit/{id}',[IncomeController::class, 'edit']);
+Route::post('/income/update',[IncomeController::class, 'update']);
+//Untuk Aksi Hapus Data
+Route::get('/income/hapus/{id}',[IncomeController::class, 'hapus']);
+
+
 /*
 |--------------------------------------------------------------------------
 | SOURCE OF EXPENSES

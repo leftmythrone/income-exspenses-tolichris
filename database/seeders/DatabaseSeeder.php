@@ -40,9 +40,9 @@ class DatabaseSeeder extends Seeder
         
         Income::factory(10)->create();
 
-        Expense::factory(10)->create();
+        Expense::factory(3)->create();
 
-        Debt::factory(10)->create();
+        Debt::factory(2)->create();
 
         /*
         |--------------------------------------------------------------------------

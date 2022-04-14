@@ -38,6 +38,10 @@ class UtilitiesController extends Controller
             "number" => 0,
             "subtotal" => 0,
             "total" => 0,
+            "intotal" => 0,
+            "extotal" => 0,
+            "debtotal" => 0,
+            "cashflow" => 0
         ]);
     }
 }

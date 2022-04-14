@@ -239,6 +239,13 @@
         <p>Showing 1 to {{ 1 }} of {{ $number - 1 }} entries</p>
     </div>
 
+    <div>
+        
+    </div>
+
+
+
+
         
 @endsection
 

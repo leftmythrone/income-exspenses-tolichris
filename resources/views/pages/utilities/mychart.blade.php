@@ -82,9 +82,17 @@
                     <td><center>{{ "Maret" }}</center>
                     </td>                            
                 </tr>
-                    @php
-                        $subtotal = 0;
-                    @endphp
+
+                @php
+
+                    $subtotal = 0;
+
+                @endphp
+
+                {{-- SPACER TABLE ROW --}}
+                <tr>
+                    <td><div class="space"></div></td>
+                </tr>
 
                 {{-- TABLE ROW EACH CATEGORY --}}
 
@@ -112,13 +120,13 @@
 
                             @php
                                     
-                            $total = $total + $subtotal
+                                $total = $total + $subtotal
                                                     
                             @endphp
                             
                             @php
 
-                            $subtotal = 0;
+                                $subtotal = 0;
 
                             @endphp
                             </center>                            
@@ -147,6 +155,12 @@
                         <center>
                             {{-- PADA BULAN --}}
                             Rp. {{ $total }},00
+
+                            @php 
+                                $intotal = $total;
+
+                                $total = 0;
+                            @endphp
                         </center>   
                     </td>
                     <td><center>Dikurangi Pengeluaran</center></td>
@@ -154,11 +168,11 @@
                 <tr>
                     <td colspan="99"><hr></td>
                 </tr>
-                
+
                 <tr>
                     {{-- 
                     |--------------------------------------------------------------------------
-                    | EXPENSE MY CHART
+                    | INCOME MY CHART
                     |--------------------------------------------------------------------------
                     |
                     | Here is where you can register web routes source of utilities for your application. These
@@ -168,15 +182,15 @@
                      --}}                            
                      <td><center> 2. </center></td>
                      <td><center><b>Expense / Pengeluaran</b></center></td>
-                     <td><center>{{ $incats[0]->name }}</center></td>
+                     <td><center>{{ $excats[0]->name }}</center></td>
                      <td><center>
-                          @foreach ( $incomes as $income ) 
+                          @foreach ( $expenses as $expense ) 
                           
-                          @if ( $income->income_category->name === $incats[0]->name )
+                          @if ( $expense->expense_category->name === $excats[0]->name )
                             
                             @php
                                                                                                             
-                                $subtotal = $subtotal + $income->nominal                                    
+                                $subtotal = $subtotal + $expense->nominal                                    
                             
                             @endphp
 
@@ -196,25 +210,33 @@
                     <td><center>{{ "Maret" }}</center>
                     </td>                            
                 </tr>
-                    @php
-                        $subtotal = 0;
-                    @endphp
+
+                @php
+
+                    $subtotal = 0;
+                    
+                @endphp
+
+                {{-- SPACER TABLE ROW --}}
+                <tr>
+                    <td><div class="space"></div></td>
+                </tr>
 
                 {{-- TABLE ROW EACH CATEGORY --}}
 
-                @foreach ($incats->skip(1) as $incat )
+                @foreach ($excats->skip(1) as $excat )
 
                     <tr>
                         <td colspan="2"></td>
-                        <td><center>{{ $incat->name }}</center></td>
+                        <td><center>{{ $excat->name }}</center></td>
                         <td><center>
-                            @foreach ( $incomes as $income ) 
+                            @foreach ( $expenses as $expense ) 
                             
-                                @if ( $income->income_category->name === $incat->name )
+                                @if ( $expense->expense_category->name === $excat->name )
 
                                     @php
 
-                                        $subtotal = $subtotal + $income->nominal                                    
+                                        $subtotal = $subtotal + $expense->nominal                                    
 
                                     @endphp
 
@@ -226,13 +248,13 @@
 
                             @php
                                     
-                            $total = $total + $subtotal
+                                $total = $total + $subtotal
                                                     
                             @endphp
                             
                             @php
 
-                            $subtotal = 0;
+                                $subtotal = 0;
 
                             @endphp
                             </center>                            
@@ -261,6 +283,12 @@
                         <center>
                             {{-- PADA BULAN --}}
                             Rp. {{ $total }},00
+
+                            @php 
+                                $extotal = $total;
+
+                                $total = 0;
+                            @endphp
                         </center>   
                     </td>
                     <td><center>Dikurangi Pengeluaran</center></td>
@@ -268,7 +296,6 @@
                 <tr>
                     <td colspan="99"><hr></td>
                 </tr>
-
 
                 <tr>
                     {{-- 
@@ -283,15 +310,15 @@
                      --}}                            
                      <td><center> 3. </center></td>
                      <td><center><b>Debt / Utang</b></center></td>
-                     <td><center>{{ $incats[0]->name }}</center></td>
+                     <td><center>{{ $debcats[0]->name }}</center></td>
                      <td><center>
-                          @foreach ( $incomes as $income ) 
+                          @foreach ( $debts as $debt ) 
                           
-                          @if ( $income->income_category->name === $incats[0]->name )
+                          @if ( $debt->debt_category->name === $debcats[0]->name )
                             
                             @php
                                                                                                             
-                                $subtotal = $subtotal + $income->nominal                                    
+                                $subtotal = $subtotal + $debt->nominal                                    
                             
                             @endphp
 
@@ -311,25 +338,33 @@
                     <td><center>{{ "Maret" }}</center>
                     </td>                            
                 </tr>
-                    @php
-                        $subtotal = 0;
-                    @endphp
+
+                @php
+
+                    $subtotal = 0;
+                    
+                @endphp
+
+                {{-- SPACER TABLE ROW --}}
+                <tr>
+                    <td><div class="space"></div></td>
+                </tr>
 
                 {{-- TABLE ROW EACH CATEGORY --}}
 
-                @foreach ($incats->skip(1) as $incat )
+                @foreach ($debcats->skip(1) as $debcat )
 
                     <tr>
                         <td colspan="2"></td>
-                        <td><center>{{ $incat->name }}</center></td>
+                        <td><center>{{ $debcat->name }}</center></td>
                         <td><center>
-                            @foreach ( $incomes as $income ) 
+                            @foreach ( $debts as $debt ) 
                             
-                                @if ( $income->income_category->name === $incat->name )
+                                @if ( $debt->debt_category->name === $debcat->name )
 
                                     @php
 
-                                        $subtotal = $subtotal + $income->nominal                                    
+                                        $subtotal = $subtotal + $debt->nominal                                    
 
                                     @endphp
 
@@ -341,13 +376,13 @@
 
                             @php
                                     
-                            $total = $total + $subtotal
+                                $total = $total + $subtotal
                                                     
                             @endphp
                             
                             @php
 
-                            $subtotal = 0;
+                                $subtotal = 0;
 
                             @endphp
                             </center>                            
@@ -376,6 +411,12 @@
                         <center>
                             {{-- PADA BULAN --}}
                             Rp. {{ $total }},00
+
+                            @php 
+                                $debtotal = $total;
+
+                                $total = 0;
+                            @endphp
                         </center>   
                     </td>
                     <td><center>Dikurangi Pengeluaran</center></td>
@@ -383,18 +424,29 @@
                 <tr>
                     <td colspan="99"><hr></td>
                 </tr>
+                <tr>
+                    <td colspan="2"></td>
+                    <td><b><center>Nilai Akhir : </center></b></td>
+                    <td>
+                        <center>
+
+                            @php
+    
+                                $cashflow = $intotal - $extotal - $debtotal;                         
+                            
+                            @endphp
+    
+                            Rp.{{ $cashflow }},00
+
+                        </center>
+                    </td>
+                </tr>
             </table>
         </div> 
     <br>
 
     {{-- ENTRIES --}}
-    <p>Showing 1 to {{ 1 }} of {{ $number - 1 }} entries</p>
-
-    @php
-                    
-    $number = 1;
-
-    @endphp
+    <p>Nilai akhir dari cashflow bulanan pada PT Tolichris</p>
 
     
 </div>
