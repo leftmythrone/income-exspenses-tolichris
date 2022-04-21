@@ -25,8 +25,25 @@
     |
     --}}
     
+    {{-- button add new --}}
         <div class="tabaddnew">
-            <button>Add new income +</button>
+            <div id="overlaycategory" onclick="offCategory()"></div>
+            <button onclick="onCategory()">Add new category +</button>
+            <div id="addcategorybox" class="container">
+                <form method="post" action="/income/addcategory">
+                    <h1><center>Add Income Category </center></h1>
+                    <h2><center>Tambah/catat category income / pendapatan 
+                    supaya memantau keuangan menjadi lebih mudah</center></h2>
+                    {{ csrf_field() }}
+                        <label for="">Category Name : <input type="text" name="incat_name" required></label><br>
+                        <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y"); }}">
+                    {{-- <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y") }}"> --}}
+                    {{-- <br> --}}
+                    <button type="submit" >Add new Income + </button>
+                    <br>
+                    <br>
+                </form>
+            </div>
         </div>
 
         <div class="clear"></div>
@@ -47,7 +64,6 @@
                             <tr>
                                 {{-- TABLE HEADER --}}
                                 <th><center>No</center></th> 
-                                <th><center>ID</center></th>
                                 <th><center>Category Name / Nama Kategori</center></th>
                                 <th><center>Jenis Kas</center></th>
                                 <th><center>Date</center></th>
@@ -65,10 +81,9 @@
                                     <tr>
                                         {{-- TABLE MAIN SECTION --}}
                                         <td> <center> {{ $number++ }}. </center></td>
-                                        <td> <center> {{ "24592" }} </center></td>
-                                        <td>{{ $category->name }}</td>
+                                        <td><center>{{ $category->name }}</center></td>
                                         <td><center>{{ "Kas Kecil" }}</center></td>
-                                        <td><center>{{ $category->created_at }}</center></td>
+                                        <td><center>{{ $category->incat_entry_date }}</center></td>
                                         <td>
                                             <center>
 
@@ -102,7 +117,7 @@
                                             <center>
                                                 <button><img src="/img/eye_white.png" alt=""></button> 
                                                 <button><img src="/img/pencil_white.png" alt=""></button> 
-                                                <button><img src="/img/trash_white.png" alt=""></button>
+                                                <a href="/income/deletecategory/{{ $category->id }}"><button><img src="/img/trash_white.png" alt=""></button></a>
                                             </center>
                                         </td>
                                     </tr>
@@ -151,6 +166,36 @@
 
     <br><br>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     {{--  
     |--------------------------------------------------------------------------
     | My Income Overview
@@ -170,8 +215,64 @@
     </div>
 
         <div class="tabaddnew">
-            <button>Add new income +</button>
+                    <div class="container w-50 bg-warning">
+                        <h1>Add Income Overvie</h1>
+                        <h2>Tambah/catat setiap pemasukan pada hari ini
+                            agar pemasukan menjadi lebih banyak</h2>
+                        <form method="post" action="/income/addnew">
+                            <table>
+                                <tr>
+                                    <td><center> <label for="">Income Description</label> </center></td>
+                                    <td><center> : </center></td>
+                                    <td><center> <input type="text" name="input_decs" required> </center></td>
+                                </tr>
+                                <tr>
+                                    <td><center> <label for="">Income Category</label> </center></td>
+                                    <td><center> : </center></td>
+                                    <td>
+                                        <center>
+                                            <input type="text" name="input_cats" required>
+                                            <datalist id="incomeList">
+                                                @foreach ( $categories as $category )
+                                                    <option value="{{ $category->name }}">  
+                                                @endforeach
+                                            </datalist> 
+                                        </center>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><center> <label for="">Kas besar / Kas kecil</label> </center></td>
+                                    <td><center> : </center></td>
+                                    <td><center> <input type="text" name="input_type" required> </center></td>
+                                </tr>
+                                <tr>
+                                    <td><center> <label for="">nominal</label> </center></td>
+                                    <td><center> : </center></td>
+                                    <td>
+                                        <center> 
+                                            <input type="text" name="input_nominal" required>                
+                                            <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
+                                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                        </center>
+                                    </td>
+                                </tr>
+                                <tr> 
+                                    <td colspan="2"> </td>
+                                    <td>
+                                        <center>
+                                            <input type="submit" value="Simpan Data">
+                                        </center>
+                                    </td>
+                                </tr>
+                            </table>    
+                        </form>
+                    </div>
+                    <button type="submit" >Add new Income + </button>
+                    <br>
+                    <br>
+                </form>
         </div>
+
 
         <div class="clear"></div>
 
@@ -191,7 +292,6 @@
                             <tr>
                                 {{-- TABLE HEADER --}}
                                 <th><center>No</center></th> 
-                                <th><center>ID</center></th>
                                 <th><center>Income Detail / Detail Pemasukan</center></th>
                                 <th><center>Category / Kategori</center></th>
                                 <th><center>Kas besar / Kas kecil</center></th>
@@ -208,18 +308,17 @@
                                 @foreach ($incomes as $income) 
                             <tr>
                                 {{-- TABLE MAIN SECTION --}}
-                                <td> <center> {{ $number++ }}. </center></td>
-                                    <td> <center> {{ "24592" }} </center></td>
-                                    <td>{{ $income->income_description }}</td>
+                                    <td><center> {{ $number++ }}. </center></td>
+                                    <td><center>{{ $income->income_description }}</center></td>
                                     <td><center>{{ $income->income_category->name }}</center></td>
                                     <td><center>{{ "Kas Kecil" }}</center></td>
                                     <td><center>Rp. {{ $income->nominal }},00</center></td>
-                                    <td><center>{{ $income->created_at }}</center></td>
+                                    <td><center>{{ $income->income_entry_date }}</center></td>
                                     <td>
                                         <center>
                                             <button><img src="/img/eye_white.png" alt=""></button> 
                                             <button><img src="/img/pencil_white.png" alt=""></button> 
-                                            <button><img src="/img/trash_white.png" alt=""></button>
+                                            <a href="/income/hapus/{{ $income->id }}"><button><img src="/img/trash_white.png" alt=""></button></a>
                                         </center>
                                 </td>
                             </tr>
@@ -237,15 +336,11 @@
 
         {{-- ENTRIES --}}
         <p>Showing 1 to {{ 1 }} of {{ $number - 1 }} entries</p>
+    
+        {{-- INI YA BAGIAN --}}
+
+
     </div>
-
-    <div>
-        
-    </div>
-
-
-
-
         
 @endsection
 

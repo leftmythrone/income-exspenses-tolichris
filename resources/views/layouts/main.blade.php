@@ -33,9 +33,14 @@
 
     <link rel="stylesheet" href="boxicons.min.css">
 
+    {{-- JAVA SCRIPT JS --}}
+    <link rel="javascript" href="/js/partials/sidebar.js">
+
     <title>Tolichris | {{ $title }}</title>
+
   </head>
   <body>
+    <div id="overlaycategory" onclick="offCategory()"></div>
 
     <header>
       @include('partials.sidebar')
@@ -45,7 +50,7 @@
       @yield('gate')
     </div>
       
-       
-      
+       @include('pages.utilities.javascript')
+
   </body>
 </html>

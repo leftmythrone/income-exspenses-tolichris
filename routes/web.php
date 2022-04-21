@@ -29,7 +29,7 @@ Route::get('/laravel', function () {
 |
 */
 
-Route::get('/login', [UtilitiesController::class, 'login']);
+Route::get('/', [UtilitiesController::class, 'login']);
 
 Route::get('/mychart', [UtilitiesController::class, 'chart']);
 
@@ -44,13 +44,19 @@ Route::get('/mychart', [UtilitiesController::class, 'chart']);
 |
 */
 
-Route::get('/', [IncomeController::class, 'start']);
+Route::get('/income', [IncomeController::class, 'start']);
 
-Route::get('/income/addnew',[IncomeController::class, 'addnew']);
+Route::post('/income/addnew',[IncomeController::class, 'addnew']);
+Route::post('/income/addcategory',[IncomeController::class, 'addcategory']);
+
 Route::get('/income/edit/{id}',[IncomeController::class, 'edit']);
 Route::post('/income/update',[IncomeController::class, 'update']);
+
+Route::get('/income/deleteincome/{id}',[IncomeController::class, 'deleteincome']);
+Route::get('/income/deletecategory/{id}',[IncomeController::class, 'deletecategory']);
+
 //Untuk Aksi Hapus Data
-Route::get('/income/hapus/{id}',[IncomeController::class, 'hapus']);
+
 
 
 /*

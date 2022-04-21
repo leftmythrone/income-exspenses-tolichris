@@ -24,11 +24,11 @@
     <li>
       {{-- ICON --}}
       <div class="sideicon">
-        <img src="/img/chart_up.png" alt="">
+        <img src="/img/chart_up.png" alt="" id="test"> 
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="/">Incomes / Pemasukan</a href="">
+        <a href="/income" id="incomeJs">Incomes / Pemasukan</a href="">
       </div>
     </li>
 
@@ -39,7 +39,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="expense">Expense / Pengeluaran</a href="">
+        <a href="/expense">Expense / Pengeluaran</a href="">
       </div>
     </li>
 
@@ -50,7 +50,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="debt">Debts / Utang</a href="">
+        <a href="/debt">Debts / Utang</a href="">
       </div>
     </li>
 
@@ -72,7 +72,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="mychart">Chart / Grafik</a href="">
+        <a href="/mychart">Chart / Grafik</a href="">
       </div>
     </li>
 
