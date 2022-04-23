@@ -53,7 +53,7 @@ Route::get('/income/edit/{id}',[IncomeController::class, 'edit']);
 Route::post('/income/update',[IncomeController::class, 'update']);
 
 Route::get('/income/deleteincome/{id}',[IncomeController::class, 'deleteincome']);
-Route::get('/income/deletecategory/{id}',[IncomeController::class, 'deletecategory']);
+Route::get('/income/deletecategory/{incat_entry_token}',[IncomeController::class, 'deletecategory']);
 
 //Untuk Aksi Hapus Data
 

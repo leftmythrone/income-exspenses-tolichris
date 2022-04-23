@@ -29,7 +29,7 @@
         <div class="tabaddnew">
             <div id="overlaycategory" onclick="offCategory()"></div>
             <button onclick="onCategory()">Add new category +</button>
-            <div id="addcategorybox" class="container">
+            <div id="addcategorybox" class="addcategorybox">
                 <form method="post" action="/income/addcategory">
                     <h1><center>Add Income Category </center></h1>
                     <h2><center>Tambah/catat category income / pendapatan 
@@ -37,6 +37,17 @@
                     {{ csrf_field() }}
                         <label for="">Category Name : <input type="text" name="incat_name" required></label><br>
                         <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y"); }}">
+                        <input type="hidden" name="token" 
+                        value=
+                        "                        
+                            @php
+        
+                            $myuid = uniqid('gfg', true);
+                            echo $myuid;
+                            
+                            @endphp
+                       ">
+                        
                     {{-- <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y") }}"> --}}
                     {{-- <br> --}}
                     <button type="submit" >Add new Income + </button>
@@ -117,7 +128,7 @@
                                             <center>
                                                 <button><img src="/img/eye_white.png" alt=""></button> 
                                                 <button><img src="/img/pencil_white.png" alt=""></button> 
-                                                <a href="/income/deletecategory/{{ $category->id }}"><button><img src="/img/trash_white.png" alt=""></button></a>
+                                                <a href="/income/deletecategory/{{ $category->incat_entry_token }}"><button><img src="/img/trash_white.png" alt=""></button></a>
                                             </center>
                                         </td>
                                     </tr>

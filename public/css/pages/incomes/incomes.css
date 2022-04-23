@@ -26,8 +26,8 @@
     cursor: pointer;
   }
 
-  .container {
-      display: block;
+  .addcategorybox {
+      display: none;
       position: fixed;
       box-sizing: border-box;
       width: 600px; 
@@ -39,19 +39,19 @@
       z-index: 4;
   }
 
-  .container h1 {
+  .addcategorybox h1 {
       color: #34364A;
       font-size: 20px;
       font-weight: bold;
   }
 
-  .container h2 {
+  .addcategorybox h2 {
       color: #34364A;
       opacity: 60%;
       font-size: 15px;
   }
 
-  .container button {
+  .addcategorybox button {
     border: none;
     width: 70%;
     border-radius: 20px;
@@ -61,7 +61,7 @@
     /* right: 90px; */
   }
 
-  .container label {
+  .addcategorybox label {
       color: #34364A;
       font-size: 16px;
       font-weight: bold;
@@ -69,7 +69,7 @@
       opacity: 80%;
   }
 
-  .container input {
+  .addcategorybox input {
       background-color: #E5E9F2;
       border-radius: 30px;
       width: 330px;

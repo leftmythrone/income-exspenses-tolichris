@@ -75,7 +75,8 @@ class IncomeController extends Controller
 
         DB::table('income_categories')->insert([
             'name'=>$request->incat_name,
-            'incat_entry_date'=>$request->incat_date
+            'incat_entry_date'=>$request->incat_date,
+            'incat_entry_token'=>$request->token
         ]);
         return view('/pages/incomes/incomes', [
             "title" => "Income",
@@ -148,9 +149,9 @@ class IncomeController extends Controller
         ]);
     }
 
-    public function deletecategory($id)
+    public function deletecategory($incat_entry_token)
     {
-        DB::table('income_categories')->where('id',$id)->delete();
+        DB::table('income_categories')->where('incat_entry_token',$incat_entry_token)->delete();
 		// alihkan halaman ke halaman pegawai
 
         return view('/pages/incomes/incomes', [

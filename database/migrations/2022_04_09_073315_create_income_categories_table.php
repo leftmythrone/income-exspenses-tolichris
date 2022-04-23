@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('income_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('incat_entry_token')->nullable();
             $table->string('name')->unique();
             $table->string('incat_entry_date')->nullable();
             $table->timestamps();
