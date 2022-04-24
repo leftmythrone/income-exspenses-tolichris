@@ -48,7 +48,7 @@ class IncomeController extends Controller
     |
     */
 
-    public function addnew(Request $request)
+    public function addnew(Request $request, )
     {
 
         DB::table('incomes')->insert([
@@ -56,9 +56,10 @@ class IncomeController extends Controller
             'income_category_id' => $request->input_cats,
             'income_type_id' =>  $request-> input_type,
             'income_entry_date' => $request-> input_date,
-            'income_token' => $request-> _token,
+            'income_token' => $request-> token,
             'nominal' => $request-> input_nominal
         ]);
+        
         return view('/pages/incomes/incomes', [
             "title" => "Income",
             "categories" => \App\Models\IncomeCategory::latest()->get(),
@@ -67,6 +68,38 @@ class IncomeController extends Controller
             "subtotal" => 0,
             "total" => 0
 
+        ]);
+    }
+
+    public function sewahitung(Request $xx, $id)
+    {
+        $price=$xx->input('price');
+        $durasi=$xx->input('durasi');
+    	$quantity=$xx->input('quantity');
+        $charge=$xx->input('charge');
+        $diskon=$xx->input('diskon');
+        
+        $datatotal = new Katalog();
+        $printtotal = $datatotal->sewasubtotal($price, $quantity, $durasi, $charge, $diskon);
+        
+        $datatotal2 = new Katalog();
+        $bfore_charge = $datatotal2->nomcharge($price, $quantity, $durasi, $charge, $diskon);
+
+        DB::table('histories')->insert([
+            'durasi' => $xx->his_durasi,
+            'harga_normal' => $xx->harga_normal,
+            'nominal_charge' => $xx->bef_charge,
+            'setelah_charge' => $xx->aft_charge,
+		]);
+
+        return view('page/sewa', [
+            "title" => "Detail",
+            "katalog" => Katalog::find($id),
+            "bf_durasi" => $durasi,
+            "bf_total" => $bfore_charge,
+            // "diskons" => Diskon::all(),
+            "subtotal" => 0,
+            "total" => $printtotal
         ]);
     }
 
@@ -132,9 +165,9 @@ class IncomeController extends Controller
     |
     */
 
-    public function deleteincome($id)
+    public function deleteincome($income_token)
     {
-        DB::table('incomes')->where('id',$id)->delete();
+        DB::table('incomes')->where('income_token',$income_token)->delete();
 		// alihkan halaman ke halaman pegawai
 
         return view('/pages/incomes/incomes', [

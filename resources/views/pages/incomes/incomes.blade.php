@@ -35,15 +35,15 @@
                     <h2><center>Tambah/catat category income / pendapatan 
                     supaya memantau keuangan menjadi lebih mudah</center></h2>
                     {{ csrf_field() }}
-                        <label for="">Category Name : <input type="text" name="incat_name" required></label><br>
+                        <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" required></label><br>
                         <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y"); }}">
                         <input type="hidden" name="token" 
                         value=
                         "                        
                             @php
         
-                            $myuid = uniqid('gfg', true);
-                            echo $myuid;
+                            $catuid = uniqid('gfg', true);
+                            echo $catuid;
                             
                             @endphp
                        ">
@@ -113,8 +113,8 @@
                                                 @endforeach
 
 
-                                                
-                                                Rp. {{ $subtotal }},00
+                                                Rp. {{ number_format($subtotal, 0, " ,","."); }},00
+                                                {{-- Rp. {{ $subtotal }},00 --}}
 
                                                 @php
 
@@ -154,7 +154,9 @@
 
                                             @endforeach
                                             <center>
-                                                Rp.{{ $total }},00
+
+                                                Rp. {{ number_format($total, 0, ",", "."); }},00
+                                                {{-- Rp.{{ $total }},00 --}}
                                             </center>
                                             
                                         </td>
@@ -217,53 +219,65 @@
     --}}
 
     <div class="tabheader">
-
         {{-- HEADING --}}
         <h1>My Income Overview</h1>
 
         {{-- SUMMARY --}}
         <h4>Pada page ini berisi seluruh transaksi catatan pendapatan yang telah masuk pada PT Tolichris</h4>
     </div>
-
         <div class="tabaddnew">
-                    <div class="container w-50 bg-warning">
-                        <h1>Add Income Overvie</h1>
+            <div id="overlaytable" onclick="offTable()"></div>
+                    <div id="addtablebox" class="addtablebox">
+                        <h1>Add New Income</h1>
                         <h2>Tambah/catat setiap pemasukan pada hari ini
                             agar pemasukan menjadi lebih banyak</h2>
-                        <form method="post" action="/income/addnew">
+                        <div class="tableincomebox">
+                            <form method="post" action="/income/addnew">
+                            {{ csrf_field() }}
                             <table>
                                 <tr>
                                     <td><center> <label for="">Income Description</label> </center></td>
                                     <td><center> : </center></td>
-                                    <td><center> <input type="text" name="input_decs" required> </center></td>
+                                    {{-- INPUT_DECS --}}
+                                    <td><center> <input type="text" name="input_decs" autocomplete="off" required> </center></td>
                                 </tr>
                                 <tr>
                                     <td><center> <label for="">Income Category</label> </center></td>
                                     <td><center> : </center></td>
                                     <td>
                                         <center>
-                                            <input type="text" name="input_cats" required>
+                                            {{-- INPUT CATS --}}
+
+                                            <select name="example">
+                                                @foreach ( $categories as $category )
+                                                <option name="input_cats">{{ $category->name }}</option>
+                                                @endforeach
+                                            {{-- <input type="list" name="input_cats" value="@php  @endphp" required>
                                             <datalist id="incomeList">
                                                 @foreach ( $categories as $category )
                                                     <option value="{{ $category->name }}">  
                                                 @endforeach
-                                            </datalist> 
+                                            </datalist>  --}}
                                         </center>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><center> <label for="">Kas besar / Kas kecil</label> </center></td>
                                     <td><center> : </center></td>
-                                    <td><center> <input type="text" name="input_type" required> </center></td>
+                                    {{-- INPUT TYPE --}}
+                                    <td><center> <input type="text" name="input_type" autocomplete="off" required> </center></td>
                                 </tr>
                                 <tr>
                                     <td><center> <label for="">nominal</label> </center></td>
                                     <td><center> : </center></td>
                                     <td>
                                         <center> 
-                                            <input type="text" name="input_nominal" required>                
+                                            {{-- INPUT_NOMINAL --}}
+                                            <input type="text" name="input_nominal" autocomplete="off" required>                
+                                            {{-- INPUT DATE --}}
                                             <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
-                                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                            {{-- INPUT TOKEN --}}
+                                            <input type="hidden" name="token" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
                                         </center>
                                     </td>
                                 </tr>
@@ -271,18 +285,19 @@
                                     <td colspan="2"> </td>
                                     <td>
                                         <center>
-                                            <input type="submit" value="Simpan Data">
+                                            <button onclick="offTable()" type="submit" >Add new Income + </button>
                                         </center>
                                     </td>
                                 </tr>
-                            </table>    
+                            </table>
+                                
                         </form>
+                        </div>
                     </div>
-                    <button type="submit" >Add new Income + </button>
                     <br>
                     <br>
-                </form>
-        </div>
+                    <button onclick="onTable()" type="submit" >Add new Income + </button>
+                </div>
 
 
         <div class="clear"></div>
@@ -323,13 +338,13 @@
                                     <td><center>{{ $income->income_description }}</center></td>
                                     <td><center>{{ $income->income_category->name }}</center></td>
                                     <td><center>{{ "Kas Kecil" }}</center></td>
-                                    <td><center>Rp. {{ $income->nominal }},00</center></td>
+                                    <td><center>Rp. {{ number_format($income->nominal, 0, " ,","."); }},00</center></td>
                                     <td><center>{{ $income->income_entry_date }}</center></td>
                                     <td>
                                         <center>
                                             <button><img src="/img/eye_white.png" alt=""></button> 
                                             <button><img src="/img/pencil_white.png" alt=""></button> 
-                                            <a href="/income/hapus/{{ $income->id }}"><button><img src="/img/trash_white.png" alt=""></button></a>
+                                            <a href="/income/deleteincome/{{ $income->income_token }}"><button><img src="/img/trash_white.png" alt=""></button></a>
                                         </center>
                                 </td>
                             </tr>

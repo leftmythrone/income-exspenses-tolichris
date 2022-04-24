@@ -10,16 +10,16 @@
 
   <br><br>
   <ul>
-    <li>
-      {{-- ICON --}}
+    {{-- <li>
+      ICON
       <div class="sideicon">
         <img src="/img/home_logo.png" alt="">
       </div>
-      {{-- FONT --}}
+      FONT
       <div class="sidefont">
         <a href="/">Home / Menu</a href="">
       </div>
-    </li>
+    </li> --}}
 
     <li>
       {{-- ICON --}}
