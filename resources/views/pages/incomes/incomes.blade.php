@@ -4,40 +4,53 @@
 
 <!-- ISI -->
 
+@php
+
+$number = 1;
+$subtotal = 0;
+$total = 0;
+$entry = 0;
+$entries = 0;
+
+@endphp
+
+
 <br><br>
 
-<div class="tabheader">
+{{--  
+|--------------------------------------------------------------------------
+| My Income Category
+|--------------------------------------------------------------------------
+|
+| Pada page ini berisi seluruh category pencatatan
+| keuangan pada PT. Tolichris
+|
+--}}
 
-    {{-- HEADING --}}
-    <h1>My Income Category</h1>
 
-    {{-- SUMMARY --}}
-    <h4>Pada page ini berisi seluruh category pencatatan <br> keuangan pada PT. Tolichris</h4>
-</div>
-
-    {{--  
-    |--------------------------------------------------------------------------
-    | My Income Category
-    |--------------------------------------------------------------------------
-    |
-    | Pada page ini berisi seluruh category pencatatan
-    | keuangan pada PT. Tolichris
-    |
-    --}}
+    <div class="tabheader">
     
-    {{-- button add new --}}
+        {{-- HEADING --}}
+        <h1>My Income Category</h1>
+    
+        {{-- SUMMARY --}}
+        <h4>Pada page ini berisi seluruh category pencatatan <br> keuangan pada PT. Tolichris</h4>
+    </div>
+    
+    {{-- Button add new --}}
         <div class="tabaddnew">
-            <div id="overlaycategory" onclick="offCategory()"></div>
-            <button onclick="onCategory()">Add new category +</button>
+            <div id="overlaycategory" onclick="offAddCategory()"></div>
+            {{-- Button pop up--}}
+            <button onclick="onAddCategory()">Add new category +</button>
             <div id="addcategorybox" class="addcategorybox">
                 <form method="post" action="/income/addcategory">
                     <h1><center>Add Income Category </center></h1>
                     <h2><center>Tambah/catat category income / pendapatan 
                     supaya memantau keuangan menjadi lebih mudah</center></h2>
                     {{ csrf_field() }}
-                        <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" required></label><br>
-                        <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y"); }}">
-                        <input type="hidden" name="token" 
+                    <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" required></label><br>
+                    <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y"); }}">
+                    <input type="hidden" name="token" 
                         value=
                         "                        
                             @php
@@ -48,26 +61,66 @@
                             @endphp
                        ">
                         
-                    {{-- <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y") }}"> --}}
-                    {{-- <br> --}}
-                    <button type="submit" >Add new Income + </button>
+                    <button type="submit" onclick="offAddCategory()">Add new Income + </button>
                     <br>
+                </form>
+            </div>
+
+
+            <div id="overlaycategory" onclick="offEditCategory()"></div>
+
+            <div id="addcategorybox" class="addcategorybox">
+                <form method="post" action="/income/addcategory">
+                    <h1><center>Add Income Category </center></h1>
+                    <h2><center>Tambah/catat category income / pendapatan 
+                    supaya memantau keuangan menjadi lebih mudah</center></h2>
+                    {{ csrf_field() }}
+                    <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" required></label><br>
+                    <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y"); }}">
+                    <input type="hidden" name="token" 
+                        value=
+                        "                        
+                            @php
+        
+                            $catuid = uniqid('gfg', true);
+                            echo $catuid;
+                            
+                            @endphp
+                       ">
+                        
+                    <button type="submit" onclick="offEditCategory()">Add new Income + </button>
                     <br>
                 </form>
             </div>
         </div>
 
+        {{-- Clear --}}
         <div class="clear"></div>
     
 
             <div class="tabcategory">
-                {{-- SEARCH FEATURE --}}
+                {{-- Search Feature --}}
                 <div class="tabsearch">
                     <p>Search: <input type="text" placeholder="search . ."></p>
                 </div>
 
-                {{-- SHOWING ENTRIES --}}
-                <p>Show {{ 1 }} entries </p> 
+                {{-- Showing entries --}}
+                @foreach ( $categories as $category )
+                    @php
+                        if ( $category->id = 1 )
+                        {
+                            $entry = 1;
+                        }
+
+                        else {
+                            
+                        }
+
+                        $entries++;
+                    @endphp
+                @endforeach
+
+                <p>Show {{ $entries }} entries </p> 
 
                 {{-- TABLE --}}
                     <div class="tabtable">    
@@ -127,7 +180,7 @@
                                         <td>
                                             <center>
                                                 <button><img src="/img/eye_white.png" alt=""></button> 
-                                                <button><img src="/img/pencil_white.png" alt=""></button> 
+                                                <button onclick="onEditCategory()"><img src="/img/pencil_white.png" alt=""></button> 
                                                 <a href="/income/deletecategory/{{ $category->incat_entry_token }}"><button><img src="/img/trash_white.png" alt=""></button></a>
                                             </center>
                                         </td>
@@ -166,34 +219,20 @@
                 <br>
 
                 {{-- ENTRIES --}}
-                <p>Showing 1 to {{ 1 }} of {{ $number - 1 }} entries</p>
+                <p>Showing {{ $entry }} to {{ $entry }} of {{ $entries }} entries</p>
 
                 @php
                                 
                 $number = 1;
+                $entry = 0;
+                $entries = 0;
 
                 @endphp
 
                 
             </div>
 
-    <br><br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <br>
 
 
 
@@ -247,17 +286,14 @@
                                     <td>
                                         <center>
                                             {{-- INPUT CATS --}}
-
-                                            <select name="example">
-                                                @foreach ( $categories as $category )
-                                                <option name="input_cats">{{ $category->name }}</option>
+                                            <select name="input_cats">
+                                                @foreach ($dataopt as $opt)
+                                                    <option value="{{ $opt->id }}">{{ $opt->name   }}</option> 
                                                 @endforeach
-                                            {{-- <input type="list" name="input_cats" value="@php  @endphp" required>
-                                            <datalist id="incomeList">
-                                                @foreach ( $categories as $category )
-                                                    <option value="{{ $category->name }}">  
-                                                @endforeach
-                                            </datalist>  --}}
+                                                {{-- @for ( $k = 1 ; $k <= 2 ; $k++)
+                                                <option value="">{{ $k }}</option> 
+                                                @endfor --}}
+                                            </select>
                                         </center>
                                     </td>
                                 </tr>
@@ -309,7 +345,22 @@
                 </div>
             
                 {{-- SHOWING ENTRIES --}}
-                <p>Show {{ 1 }} entries </p> 
+                @foreach ( $categories as $category )
+                @php
+                    if ( $category->id = 1 )
+                    {
+                        $entry = 1;
+                    }
+
+                    else {
+                        
+                    }
+
+                    $entries++;
+                @endphp
+            @endforeach
+
+            <p>Show {{ $entries }} entries </p> 
 
             
                     {{-- TABLE --}}

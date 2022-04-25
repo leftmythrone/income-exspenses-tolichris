@@ -11,9 +11,9 @@ class IncomeCategory extends Model
 
     public function incomes()
     {
-        return $this->HasMany(Income::class, 'income_category_id');
+        return $this->HasMany(Income::class, 'income_category_id', 'id');
     }
 
     // GUARDING IMPORTANT
     protected $guarded = ['id'];
-}
+    }

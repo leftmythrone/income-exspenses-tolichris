@@ -31,9 +31,7 @@ class IncomeController extends Controller
             "incomes" => Income::latest()->get(),
             // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
-            "number" => 1,
-            "subtotal" => 0,
-            "total" => 0
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
         ]);
     }
 
@@ -48,8 +46,13 @@ class IncomeController extends Controller
     |
     */
 
-    public function addnew(Request $request, )
+    public function addnew(Request $request)
     {
+
+        // $inctoken=$xx->input('token');
+
+        // $incat_token = new Katalog();
+        // $printtoken = $incat_token->sewasubtotal($token);
 
         DB::table('incomes')->insert([
             'income_description'=>$request->input_decs,
@@ -64,42 +67,7 @@ class IncomeController extends Controller
             "title" => "Income",
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "incomes" => Income::latest()->get(),
-            "number" => 0,
-            "subtotal" => 0,
-            "total" => 0
-
-        ]);
-    }
-
-    public function sewahitung(Request $xx, $id)
-    {
-        $price=$xx->input('price');
-        $durasi=$xx->input('durasi');
-    	$quantity=$xx->input('quantity');
-        $charge=$xx->input('charge');
-        $diskon=$xx->input('diskon');
-        
-        $datatotal = new Katalog();
-        $printtotal = $datatotal->sewasubtotal($price, $quantity, $durasi, $charge, $diskon);
-        
-        $datatotal2 = new Katalog();
-        $bfore_charge = $datatotal2->nomcharge($price, $quantity, $durasi, $charge, $diskon);
-
-        DB::table('histories')->insert([
-            'durasi' => $xx->his_durasi,
-            'harga_normal' => $xx->harga_normal,
-            'nominal_charge' => $xx->bef_charge,
-            'setelah_charge' => $xx->aft_charge,
-		]);
-
-        return view('page/sewa', [
-            "title" => "Detail",
-            "katalog" => Katalog::find($id),
-            "bf_durasi" => $durasi,
-            "bf_total" => $bfore_charge,
-            // "diskons" => Diskon::all(),
-            "subtotal" => 0,
-            "total" => $printtotal
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
         ]);
     }
 
@@ -115,10 +83,7 @@ class IncomeController extends Controller
             "title" => "Income",
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "incomes" => Income::latest()->get(),
-            "number" => 1,
-            "subtotal" => 0,
-            "total" => 0
-
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
         ]);
     }
 
@@ -148,9 +113,7 @@ class IncomeController extends Controller
             "incomes" => Income::latest()->get(),
             // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
-            "number" => 1,
-            "subtotal" => 0,
-            "total" => 0
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
         ]);
     }
 
@@ -176,9 +139,7 @@ class IncomeController extends Controller
             "incomes" => Income::latest()->get(),
             // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
-            "number" => 1,
-            "subtotal" => 0,
-            "total" => 0
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
         ]);
     }
 
@@ -193,9 +154,7 @@ class IncomeController extends Controller
             "incomes" => Income::latest()->get(),
             // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
-            "number" => 1,
-            "subtotal" => 0,
-            "total" => 0
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
         ]);
     }
 }

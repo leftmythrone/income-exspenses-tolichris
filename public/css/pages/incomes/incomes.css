@@ -56,18 +56,37 @@
   }
 
   .addcategorybox input {
-      background-color: #E5E9F2;
-      border-radius: 30px;
-      width: 330px;
-      height: 30px;
-      border: none;
-      margin-left: 20px;
+    background-color: #E5E9F2;
+    text-align: center;
+    color: #34364A;
+    opacity: 80%;
+    border-radius: 30px;
+    width: 330px;
+    height: 30px;
+    border: none;
+    margin-left: 20px;
   }
 
+/* EDIT */
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Table */
 
   #overlaytable {
     position: fixed;
@@ -118,6 +137,11 @@
   /* right: 90px; */
 }
 
+.tableincomebox table 
+{
+    height: 250px;
+}
+
 .addtablebox label {
     color: #34364A;
     font-size: 16px;
@@ -127,6 +151,18 @@
 }
 
 .addtablebox input {
+    background-color: #E5E9F2;
+    text-align: center;
+    color: #34364A;
+    opacity: 80%;
+    border-radius: 30px;
+    width: 330px;
+    height: 30px;
+    border: none;
+    margin-left: 20px;
+}
+
+.addtablebox select {
     background-color: #E5E9F2;
     text-align: center;
     color: #34364A;

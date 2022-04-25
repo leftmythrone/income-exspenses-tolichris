@@ -1,15 +1,31 @@
 <script>
-    function onCategory() {
+  // ADD NEW CATEGORY
+    function onAddCategory() {
       document.getElementById("overlaycategory").style.display = "block";
       document.getElementById("addcategorybox").style.display = "block";
       document.getElementById("addcategorybox").style.transition = '0.3s';
     }
     
-    function offCategory() {
+    function offAddCategory() {
       document.getElementById("overlaycategory").style.display = "none";
       document.getElementById("addcategorybox").style.display = "none";
       document.getElementById("addcategorybox").style.transition = '0.3s';
     }
+
+  // EDIT CATEGORY
+  function onEditCategory() {
+      document.getElementById("overlaycategory").style.display = "block";
+      document.getElementById("addcategorybox").style.display = "block";
+      document.getElementById("addcategorybox").style.transition = '0.3s';
+    }
+    
+    function offEditCategory() {
+      document.getElementById("overlaycategory").style.display = "none";
+      document.getElementById("addcategorybox").style.display = "none";
+      document.getElementById("addcategorybox").style.transition = '0.3s';
+    }
+    // VIEW CATEGORY
+    
 
     function onTable() {
       document.getElementById("overlaytable").style.display = "block";
