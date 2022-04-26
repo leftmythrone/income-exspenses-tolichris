@@ -14,7 +14,6 @@ $entries = 0;
 
 @endphp
 
-
 <br><br>
 
 {{--  
@@ -31,7 +30,7 @@ $entries = 0;
     <div class="tabheader">
     
         {{-- HEADING --}}
-        <h1>My Income Category</h1>
+        <h1>My {{ $title }} Category</h1>
     
         {{-- SUMMARY --}}
         <h4>Pada page ini berisi seluruh category pencatatan <br> keuangan pada PT. Tolichris</h4>
@@ -39,12 +38,12 @@ $entries = 0;
     
     {{-- Button add new --}}
         <div class="tabaddnew">
-            <div id="overlaycategory" onclick="offAddCategory()"></div>
+            <div id="overlaycategory" onclick="offCategory()"></div>
             {{-- Button pop up--}}
-            <button onclick="onAddCategory()">Add new category +</button>
+            <button onclick="onCategory()">Add new category +</button>
             <div id="addcategorybox" class="addcategorybox">
                 <form method="post" action="/income/addcategory">
-                    <h1><center>Add Income Category </center></h1>
+                    <h1><center>Add {{ $title }} Category </center></h1>
                     <h2><center>Tambah/catat category income / pendapatan 
                     supaya memantau keuangan menjadi lebih mudah</center></h2>
                     {{ csrf_field() }}
@@ -61,37 +60,12 @@ $entries = 0;
                             @endphp
                        ">
                         
-                    <button type="submit" onclick="offAddCategory()">Add new Income + </button>
+                    <button type="submit">Add new Income + </button>
                     <br>
                 </form>
             </div>
 
-
-            <div id="overlaycategory" onclick="offEditCategory()"></div>
-
-            <div id="addcategorybox" class="addcategorybox">
-                <form method="post" action="/income/addcategory">
-                    <h1><center>Add Income Category </center></h1>
-                    <h2><center>Tambah/catat category income / pendapatan 
-                    supaya memantau keuangan menjadi lebih mudah</center></h2>
-                    {{ csrf_field() }}
-                    <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" required></label><br>
-                    <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y"); }}">
-                    <input type="hidden" name="token" 
-                        value=
-                        "                        
-                            @php
-        
-                            $catuid = uniqid('gfg', true);
-                            echo $catuid;
-                            
-                            @endphp
-                       ">
-                        
-                    <button type="submit" onclick="offEditCategory()">Add new Income + </button>
-                    <br>
-                </form>
-            </div>
+            <div id="overlayeditcategory" onclick="offEditCategory()"></div>
         </div>
 
         {{-- Clear --}}
@@ -180,7 +154,7 @@ $entries = 0;
                                         <td>
                                             <center>
                                                 <button><img src="/img/eye_white.png" alt=""></button> 
-                                                <button onclick="onEditCategory()"><img src="/img/pencil_white.png" alt=""></button> 
+                                                <a href="/income/editlanding/{{ $category->incat_entry_token }}"><button><img src="/img/pencil_white.png" alt=""></button></a> 
                                                 <a href="/income/deletecategory/{{ $category->incat_entry_token }}"><button><img src="/img/trash_white.png" alt=""></button></a>
                                             </center>
                                         </td>
@@ -215,6 +189,32 @@ $entries = 0;
                                         </td>
                                     </tr>
                         </table>
+                        
+                        <div class="tabaddnew">
+                            <div id="editcategorybox" class="editcategorybox">
+                                <form method="post" action="/income/editcategory/">
+                                    <h1><center>Edit {{ $title }} Category </center></h1>
+                                    <h2><center>Tambah/catat category income / pendapatan 
+                                    supaya memantau keuangan menjadi lebih mudah</center></h2>
+                                    {{ csrf_field() }}
+                                    <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" value="" required></label><br>
+                                    <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y"); }}">
+                                    <input type="hidden" name="token" 
+                                        value=
+                                        "                        
+                                            @php
+                        
+                                            $catuid = uniqid('gfg', true);
+                                            echo $catuid;
+                                            
+                                            @endphp
+                                       ">
+                                        
+                                    <button type="submit">Add new Income + </button>
+                                    <br>
+                                </form>
+                            </div>
+                        </div>
                     </div> 
                 <br>
 
@@ -259,7 +259,7 @@ $entries = 0;
 
     <div class="tabheader">
         {{-- HEADING --}}
-        <h1>My Income Overview</h1>
+        <h1>My {{ $title }} Overview</h1>
 
         {{-- SUMMARY --}}
         <h4>Pada page ini berisi seluruh transaksi catatan pendapatan yang telah masuk pada PT Tolichris</h4>
@@ -415,7 +415,16 @@ $entries = 0;
         <p>Showing 1 to {{ 1 }} of {{ $number - 1 }} entries</p>
     
         {{-- INI YA BAGIAN --}}
-
+        @if ( $editcategoryjs == 1 )
+        <script>    
+            const categoryPop = document.getElementById('editcategorybox');
+            const categoryOverlay = document.getElementById('overlayeditcategory');
+        
+            categoryPop.style.display = "block";
+            categoryPop.display = "none";
+            categoryOverlay.style.display = "block"
+        </script>
+        @endif
 
     </div>
         

@@ -1,30 +1,33 @@
 <script>
   // ADD NEW CATEGORY
-    function onAddCategory() {
+    function onCategory() {
       document.getElementById("overlaycategory").style.display = "block";
       document.getElementById("addcategorybox").style.display = "block";
       document.getElementById("addcategorybox").style.transition = '0.3s';
     }
     
-    function offAddCategory() {
+    function offCategory() {
       document.getElementById("overlaycategory").style.display = "none";
       document.getElementById("addcategorybox").style.display = "none";
       document.getElementById("addcategorybox").style.transition = '0.3s';
     }
 
   // EDIT CATEGORY
+
   function onEditCategory() {
-      document.getElementById("overlaycategory").style.display = "block";
-      document.getElementById("addcategorybox").style.display = "block";
-      document.getElementById("addcategorybox").style.transition = '0.3s';
+      document.getElementById("overlayeditcategory").style.display = "block";
+      document.getElementById("editcategorybox").style.display = "block";
+      document.getElementById("editcategorybox").style.transition = '0.3s';
+      document.getElementById("editcategorybox").style.display = "block";
     }
     
     function offEditCategory() {
-      document.getElementById("overlaycategory").style.display = "none";
-      document.getElementById("addcategorybox").style.display = "none";
-      document.getElementById("addcategorybox").style.transition = '0.3s';
+      document.getElementById("overlayeditcategory").style.display = "none";
+      document.getElementById("editcategorybox").style.display = "none";
+      document.getElementById("editcategorybox").style.transition = '0.3s';
     }
-    // VIEW CATEGORY
+
+  // VIEW CATEGORY
     
 
     function onTable() {
@@ -38,4 +41,5 @@
       document.getElementById("addtablebox").style.display = "none";
       document.getElementById("addtablebox").style.transition = '0.3s';
     }
+
     </script>

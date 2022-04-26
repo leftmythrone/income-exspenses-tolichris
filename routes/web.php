@@ -49,7 +49,12 @@ Route::get('/income', [IncomeController::class, 'start']);
 Route::post('/income/addnew',[IncomeController::class, 'addnew']);
 Route::post('/income/addcategory',[IncomeController::class, 'addcategory']);
 
-Route::get('/income/edit/{id}',[IncomeController::class, 'edit']);
+Route::get('/income/editvalue/{income_token}',[IncomeController::class, 'editincome']);
+Route::get('/income/editlanding/{incat_entry_token}',[IncomeController::class, 'editcatlanding']);
+Route::get('/income/editcategory/{incat_entry_token}',[IncomeController::class, 'editcatlanding']);
+
+
+
 Route::post('/income/update',[IncomeController::class, 'update']);
 
 Route::get('/income/deleteincome/{income_token}',[IncomeController::class, 'deleteincome']);

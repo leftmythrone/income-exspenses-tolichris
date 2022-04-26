@@ -32,6 +32,7 @@ class IncomeController extends Controller
             // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 0
         ]);
     }
 
@@ -97,6 +98,36 @@ class IncomeController extends Controller
     | contains the "web" middleware group. Now create something great!
     |
     */
+    public function editcatlanding(Request $request)
+    {
+        return view('/pages/incomes/incomes', [
+            "title" => "Income",
+            "sidebars" => "partials.sidebar",
+            "incomes" => Income::latest()->get(),
+            "categories" => \App\Models\IncomeCategory::latest()->get(),
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 1
+        ]);
+    }
+
+    public function editcategory(Request $request)
+    {
+        DB::table('income_categories')->where('incat_entry_token',$request->incat_entry_token)->update([
+            'name'=>$request->incat_name,
+            'incat_entry_date'=>$request->incat_date,
+            'incat_entry_token'=>$request->token
+		]);
+        return view('/pages/incomes/incomes', [
+            "title" => "Income",
+            "sidebars" => "partials.sidebar",
+            "incomes" => Income::latest()->get(),
+            // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
+            "categories" => \App\Models\IncomeCategory::latest()->get(),
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 1
+        ]);
+    }
+    
 
     public function update(Request $request)
     {
