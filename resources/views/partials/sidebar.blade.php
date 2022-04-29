@@ -54,16 +54,16 @@
       </div>
     </li>
 
-    <li>
-      {{-- ICON --}}
+    {{-- <li>
+      ICON
       <div class="sideicon">
         <img src="/img/pie_chart.png" alt="">
       </div>
-      {{-- FONT --}}
+      FONT
       <div class="sidefont">
         <a href="">Cash Type / Tipe Kas</a href="">
       </div>
-    </li>
+    </li> --}}
 
     <li>
       {{-- ICON --}}

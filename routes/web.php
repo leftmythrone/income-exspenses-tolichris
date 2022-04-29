@@ -39,26 +39,30 @@ Route::get('/mychart', [UtilitiesController::class, 'chart']);
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
+| routes are loaded ebby the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
 */
 
 Route::get('/income', [IncomeController::class, 'start']);
 
+Route::get('/income/viewcategory/{incat_slug}',[IncomeController::class, 'viewcategory']);
+
+
 Route::post('/income/addnew',[IncomeController::class, 'addnew']);
 Route::post('/income/addcategory',[IncomeController::class, 'addcategory']);
 
-Route::get('/income/editvalue/{income_token}',[IncomeController::class, 'editincome']);
-Route::get('/income/editlanding/{incat_entry_token}',[IncomeController::class, 'editcatlanding']);
-Route::get('/income/editcategory/{incat_entry_token}',[IncomeController::class, 'editcatlanding']);
+Route::get('/income/editvalue/{income_slug}',[IncomeController::class, 'editincome']);
+Route::get('/income/editlanding/{incat_slug}',[IncomeController::class, 'editcatlanding']);
+// Route::get('/income/editlanding/{incat_slug}',[\App\Models\IncomeController::class, 'editcatlanding']);
+// Route::get('/income/editlanding/{incat_slug}','IncomeController@editcatlanding');
 
+Route::get('/income/editcategory',[IncomeController::class, 'editcategory']);
 
+Route::put('/income/update',[IncomeController::class, 'update']);
 
-Route::post('/income/update',[IncomeController::class, 'update']);
-
-Route::get('/income/deleteincome/{income_token}',[IncomeController::class, 'deleteincome']);
-Route::get('/income/deletecategory/{incat_entry_token}',[IncomeController::class, 'deletecategory']);
+Route::get('/income/deleteincome/{income_slug}',[IncomeController::class, 'deleteincome']);
+Route::get('/income/deletecategory/{incat_slug}',[IncomeController::class, 'deletecategory']);
 
 //Untuk Aksi Hapus Data
 

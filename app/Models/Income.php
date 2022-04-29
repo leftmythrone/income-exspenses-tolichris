@@ -10,13 +10,6 @@ class Income extends Model
 {
     use HasFactory;
 
-    // public static function inc_token($token)
-    // {
-
-    //     $setoken = IncomeCategory::where('nominal', 'LIKE', '%1817910%');
-    //     return ;
-    // }
-
     public function income_category()
     {
         return $this->belongsTo(\App\Models\IncomeCategory::class, 'income_category_id');

@@ -28,12 +28,7 @@ class DatabaseSeeder extends Seeder
         /*
         |--------------------------------------------------------------------------
         | SOURCE OF FACTORY
-        |--------------------------------------------------------------------------
-        |
-        | Here is where you can register web routes for your application. These
-        | routes are loaded by the RouteServiceProvider within a group which
-        | contains the "web" middleware group. Now create something great!
-        | 
+        |-------------------------------------------------------------------------- 
         */
 
         // \App\Models\User::factory(10)->create();
@@ -48,38 +43,35 @@ class DatabaseSeeder extends Seeder
         |--------------------------------------------------------------------------
         | SOURCE OF INCOME SEEDER
         |--------------------------------------------------------------------------
-        |
-        | Here is where you can register web routes for your application. These
-        | routes are loaded by the RouteServiceProvider within a group which
-        | contains the "web" middleware group. Now create something great!
-        |
         */
 
         \App\Models\IncomeCategory::create([
             'name' => 'Pendapapatan Bunga',
+            'incat_slug' => '23uhuhddshfdank',
+            'incat_entry_date' => 'Thursday, 28-Apr-2022'
         ]);
 
         \App\Models\IncomeCategory::create([
             'name' => 'Laba Penjualan Aktiva Tetap ',
+            'incat_slug' => 'gdjnnasl@24w2asdd',
+            'incat_entry_date' => 'Thursday, 28-Apr-2022'
         ]);
 
         \App\Models\IncomeCategory::create([
             'name' => 'Pendapapatan Royalti',
+            'incat_slug' => 'asdaszasdsa',
+            'incat_entry_date' => 'Thursday, 28-Apr-2022'
         ]);
 
         /*
         |--------------------------------------------------------------------------
         | SOURCE OF EXPENSE SEEDER
         |--------------------------------------------------------------------------
-        |
-        | Here is where you can register web routes for your application. These
-        | routes are loaded by the RouteServiceProvider within a group which
-        | contains the "web" middleware group. Now create something great!
-        |
         */
 
         \App\Models\ExpenseCategory::create([
             'name' => 'Pengeluaran Tetap',
+            
         ]);
 
         \App\Models\ExpenseCategory::create([
@@ -90,11 +82,6 @@ class DatabaseSeeder extends Seeder
         |--------------------------------------------------------------------------
         | SOURCE OF DEBT SEEDER
         |--------------------------------------------------------------------------
-        |
-        | Here is where you can register web routes for your application. These
-        | routes are loaded by the RouteServiceProvider within a group which
-        | contains the "web" middleware group. Now create something great!
-        |
         */
 
         \App\Models\DebtCategory::create([

@@ -14,13 +14,8 @@ class IncomeController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | SOURCE OF INCOMES
+    | INCOME MAIN PAGE
     |--------------------------------------------------------------------------
-    |
-    | Here is where you can register web routes for your application. These
-    | routes are loaded by the RouteServiceProvider within a group which
-    | contains the "web" middleware group. Now create something great!
-    |
     */
 
     public function start()
@@ -32,35 +27,65 @@ class IncomeController extends Controller
             // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
-            "editcategoryjs" => 0
+            "editcategoryjs" => 0,
+            "incats"=> Income::latest()->get(),
         ]);
     }
 
+        /*
+    |--------------------------------------------------------------------------
+    | INCOME TO VIEW CATEGORY / LIST
+    |--------------------------------------------------------------------------
+    */
+
+    public function viewcategory($incat_slug)
+    {
+        $category = DB::table('income_categories')->where('incat_slug',$incat_slug)->get();
+
+        return view('/pages/incomes/incomes', [
+            "title" => "Income",
+            "sidebars" => "partials.sidebar",
+            "incomes" => Income::latest()->get(),
+            "categories" => \App\Models\IncomeCategory::latest()->get(),
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 2,
+            "incats" => $category,
+        ]);
+    }
+
+
     /*
     |--------------------------------------------------------------------------
-    | SOURCE OF INCOMES
+    | INCOME TO CREATE NEW CATEGORY / LIST
     |--------------------------------------------------------------------------
-    |
-    | Here is where you can register web routes for your application. These
-    | routes are loaded by the RouteServiceProvider within a group which
-    | contains the "web" middleware group. Now create something great!
-    |
     */
+
+    public function addcategory(Request $request)
+    {
+        DB::table('income_categories')->insert([
+            'name'=>$request->incat_name,
+            'incat_entry_date'=>$request->incat_date,
+            'incat_slug'=>$request->incat_slug
+        ]);
+        return view('/pages/incomes/incomes', [
+            "title" => "Income",
+            "categories" => \App\Models\IncomeCategory::latest()->get(),
+            "incomes" => Income::latest()->get(),
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 0,
+            "incats"=> Income::latest()->get(),
+
+        ]);
+    }
+
 
     public function addnew(Request $request)
     {
-
-        // $inctoken=$xx->input('token');
-
-        // $incat_token = new Katalog();
-        // $printtoken = $incat_token->sewasubtotal($token);
-
         DB::table('incomes')->insert([
             'income_description'=>$request->input_decs,
             'income_category_id' => $request->input_cats,
-            'income_type_id' =>  $request-> input_type,
             'income_entry_date' => $request-> input_date,
-            'income_token' => $request-> token,
+            'income_slug' => $request-> income_slug,
             'nominal' => $request-> input_nominal
         ]);
         
@@ -69,54 +94,45 @@ class IncomeController extends Controller
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "incomes" => Income::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
-        ]);
-    }
-
-    public function addcategory(Request $request)
-    {
-
-        DB::table('income_categories')->insert([
-            'name'=>$request->incat_name,
-            'incat_entry_date'=>$request->incat_date,
-            'incat_entry_token'=>$request->token
-        ]);
-        return view('/pages/incomes/incomes', [
-            "title" => "Income",
-            "categories" => \App\Models\IncomeCategory::latest()->get(),
-            "incomes" => Income::latest()->get(),
-            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            // TO MAKE JS POP UP
+            "editcategoryjs" => 0,
+            "incats"=> Income::latest()->get(),
         ]);
     }
 
     /*
     |--------------------------------------------------------------------------
-    | SOURCE OF INCOMES
+    | INCOME UPDATE LANDING PAGE CATEGORY / LIST
     |--------------------------------------------------------------------------
-    |
-    | Here is where you can register web routes for your application. These
-    | routes are loaded by the RouteServiceProvider within a group which
-    | contains the "web" middleware group. Now create something great!
-    |
     */
-    public function editcatlanding(Request $request)
+    public function editcatlanding($incat_slug)
     {
+        $category = DB::table('income_categories')->where('incat_slug',$incat_slug)->get();
+
         return view('/pages/incomes/incomes', [
             "title" => "Income",
             "sidebars" => "partials.sidebar",
             "incomes" => Income::latest()->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
-            "editcategoryjs" => 1
+            "editcategoryjs" => 1,
+            "incats" => $category,
+            "update" => null
         ]);
     }
 
-    public function editcategory(Request $request)
+    /*
+    |--------------------------------------------------------------------------
+    | INCOME TO UPDATE CATEGORY / LIST
+    |--------------------------------------------------------------------------
+    */
+
+    public function editcategory(Request $request, $incat_slug)
     {
-        DB::table('income_categories')->where('incat_entry_token',$request->incat_entry_token)->update([
-            'name'=>$request->incat_name,
-            'incat_entry_date'=>$request->incat_date,
-            'incat_entry_token'=>$request->token
+        DB::table('income_categories')->where('incat_slug',$request->incat_slug)->update([
+            'name'=>$request->incat_name
 		]);
+        
         return view('/pages/incomes/incomes', [
             "title" => "Income",
             "sidebars" => "partials.sidebar",
@@ -124,45 +140,56 @@ class IncomeController extends Controller
             // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
-            "editcategoryjs" => 1
+            "editcategoryjs" => 0,
+            "incats"=> Income::latest()->get(),
         ]);
     }
-    
 
     public function update(Request $request)
-    {
-
-        DB::table('pegawai')->where('id_pegawai',$request->id)->update([
+	{
+		// update data pegawai
+		DB::table('pegawai')->where('id_pegawai',$request->id)->update([
 			'nama_pegawai' => $request->nama,
 			'jabatan_pegawai' => $request->jabatan,
 			'umur_pegawai' => $request->umur,
 			'alamat_pegawai' => $request->alamat
 		]);
-        return view('/pages/incomes/incomes', [
-            "title" => "Income",
-            "sidebars" => "partials.sidebar",
-            "incomes" => Income::latest()->get(),
-            // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
-            "categories" => \App\Models\IncomeCategory::latest()->get(),
-            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
-        ]);
-    }
+		// alihkan halaman ke halaman pegawai
+		return redirect('/pegawai');
+	}
+    
+
+    // public function update(Request $request)
+    // {
+
+    //     DB::table('pegawai')->where('id_pegawai',$request->id)->update([
+	// 		'nama_pegawai' => $request->nama,
+	// 		'jabatan_pegawai' => $request->jabatan,
+	// 		'umur_pegawai' => $request->umur,
+	// 		'alamat_pegawai' => $request->alamat
+	// 	]);
+    //     return view('/pages/incomes/incomes', [
+    //         "title" => "Income",
+    //         "sidebars" => "partials.sidebar",
+    //         "incomes" => Income::latest()->get(),
+    //         // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
+    //         "categories" => \App\Models\IncomeCategory::latest()->get(),
+    //         "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+    //         "incats"=> Income::latest()->get(),
+    //     ]);
+    // }
 
     /*
     |--------------------------------------------------------------------------
-    | SOURCE OF DELETE
+    | INCOME TO DELETE CATEGORY / LIST
     |--------------------------------------------------------------------------
-    |
-    | Here is where you can register web routes for your application. These
-    | routes are loaded by the RouteServiceProvider within a group which
-    | contains the "web" middleware group. Now create something great!
-    |
     */
 
-    public function deleteincome($income_token)
+    public function deleteincome($income_slug)
     {
-        DB::table('incomes')->where('income_token',$income_token)->delete();
+        DB::table('incomes')->where('income_slug',$income_slug)->delete();
 		// alihkan halaman ke halaman pegawai
+        
 
         return view('/pages/incomes/incomes', [
             "title" => "Income",
@@ -171,12 +198,17 @@ class IncomeController extends Controller
             // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 0,
+            "incats"=> Income::latest()->get(),
+
         ]);
     }
 
-    public function deletecategory($incat_entry_token)
+    public function deletecategory($incat_slug)
     {
-        DB::table('income_categories')->where('incat_entry_token',$incat_entry_token)->delete();
+        DB::table('income_categories')->where('incat_slug',$incat_slug)->delete();
+        
+        
 		// alihkan halaman ke halaman pegawai
 
         return view('/pages/incomes/incomes', [
@@ -186,6 +218,9 @@ class IncomeController extends Controller
             // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 0,
+            "incats"=> Income::latest()->get(),
+
         ]);
     }
 }

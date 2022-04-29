@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('incomes', function (Blueprint $table) {
             $table->id();
-            $table->string('income_token')->nullable();
+            $table->string('income_slug')->nullable();
             $table->string('income_description');
             $table->foreignId('income_category_id');
-            $table->foreignId('income_type_id');
+            // $table->foreignId('income_type_id');
             $table->string('income_entry_date')->nullable();
             $table->integer('nominal');
             $table->timestamps();

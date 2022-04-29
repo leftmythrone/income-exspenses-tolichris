@@ -27,8 +27,22 @@
       document.getElementById("editcategorybox").style.transition = '0.3s';
     }
 
-  // VIEW CATEGORY
+
+
+    function onViewCategory() {
+      document.getElementById("overlayviewcategory").style.display = "block";
+      document.getElementById("viewcategorybox").style.display = "block";
+      document.getElementById("viewcategorybox").style.transition = '0.3s';
+      document.getElementById("viewcategorybox").style.display = "block";
+    }
     
+    function offViewCategory() {
+      document.getElementById("overlayviewcategory").style.display = "none";
+      document.getElementById("viewcategorybox").style.display = "none";
+      document.getElementById("viewcategorybox").style.transition = '0.3s';
+    }
+
+  // VIEW CATEGORY
 
     function onTable() {
       document.getElementById("overlaytable").style.display = "block";
