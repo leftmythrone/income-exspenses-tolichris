@@ -50,6 +50,23 @@ class IncomeController extends Controller
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
             "editcategoryjs" => 2,
             "incats" => $category,
+            
+        ]);
+    }
+
+    public function viewlist($income_slug)
+    {
+        $inviews = DB::table('incomes')->where('income_slug',$income_slug)->get();
+
+        return view('/pages/incomes/incomes', [
+            "title" => "Income",
+            "sidebars" => "partials.sidebar",
+            "incomes" => Income::latest()->get(),
+            "categories" => \App\Models\IncomeCategory::latest()->get(),
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 4,
+            "incats" => \App\Models\IncomeCategory::latest()->get(),
+            "inviews" => $inviews
         ]);
     }
 
@@ -71,8 +88,7 @@ class IncomeController extends Controller
             "title" => "Income",
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "incomes" => Income::latest()->get(),
-            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
-            "editcategoryjs" => 0,
++            "editcategoryjs" => 0,
             "incats"=> Income::latest()->get(),
 
         ]);
@@ -94,7 +110,6 @@ class IncomeController extends Controller
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "incomes" => Income::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
-            // TO MAKE JS POP UP
             "editcategoryjs" => 0,
             "incats"=> Income::latest()->get(),
         ]);
@@ -129,7 +144,7 @@ class IncomeController extends Controller
 
     public function editcategory(Request $request, $incat_slug)
     {
-        DB::table('income_categories')->where('incat_slug',$request->incat_slug)->update([
+        DB::table('income_categories')->where('incat_slug', $incat_slug)->update([
             'name'=>$request->incat_name
 		]);
         
@@ -137,7 +152,6 @@ class IncomeController extends Controller
             "title" => "Income",
             "sidebars" => "partials.sidebar",
             "incomes" => Income::latest()->get(),
-            // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
             "editcategoryjs" => 0,
@@ -145,39 +159,26 @@ class IncomeController extends Controller
         ]);
     }
 
-    public function update(Request $request)
-	{
-		// update data pegawai
-		DB::table('pegawai')->where('id_pegawai',$request->id)->update([
-			'nama_pegawai' => $request->nama,
-			'jabatan_pegawai' => $request->jabatan,
-			'umur_pegawai' => $request->umur,
-			'alamat_pegawai' => $request->alamat
+    public function editincome(Request $request, $income_slug)
+    {
+        DB::table('incomes')->where('income_slug', $income_slug)->update([
+            'income_description'=>$request->input_decs,
+            'income_category_id' => $request->input_cats,
+            'income_entry_date' => $request-> input_date,
+            'income_slug' => $request-> income_slug,
+            'nominal' => $request-> input_nominal
 		]);
-		// alihkan halaman ke halaman pegawai
-		return redirect('/pegawai');
-	}
-    
-
-    // public function update(Request $request)
-    // {
-
-    //     DB::table('pegawai')->where('id_pegawai',$request->id)->update([
-	// 		'nama_pegawai' => $request->nama,
-	// 		'jabatan_pegawai' => $request->jabatan,
-	// 		'umur_pegawai' => $request->umur,
-	// 		'alamat_pegawai' => $request->alamat
-	// 	]);
-    //     return view('/pages/incomes/incomes', [
-    //         "title" => "Income",
-    //         "sidebars" => "partials.sidebar",
-    //         "incomes" => Income::latest()->get(),
-    //         // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
-    //         "categories" => \App\Models\IncomeCategory::latest()->get(),
-    //         "dataopt" => \App\Models\IncomeCategory::latest()->get(),
-    //         "incats"=> Income::latest()->get(),
-    //     ]);
-    // }
+        
+        return view('/pages/incomes/incomes', [
+            "title" => "Income",
+            "sidebars" => "partials.sidebar",
+            "incomes" => Income::latest()->get(),
+            "categories" => \App\Models\IncomeCategory::latest()->get(),
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 0,
+            "incats"=> Income::latest()->get(),
+        ]);
+    }
 
     /*
     |--------------------------------------------------------------------------

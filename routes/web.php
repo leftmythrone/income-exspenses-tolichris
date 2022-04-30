@@ -44,23 +44,26 @@ Route::get('/mychart', [UtilitiesController::class, 'chart']);
 |
 */
 
+// OPEN
 Route::get('/income', [IncomeController::class, 'start']);
 
-Route::get('/income/viewcategory/{incat_slug}',[IncomeController::class, 'viewcategory']);
+// VIEW 
+Route::get('/income/viewlist/{incat_slug}',[IncomeController::class, 'viewlist']);
+Route::get('/income/viewcategory/{income_slug}',[IncomeController::class, 'viewcategory']);
 
 
+// CREATE
 Route::post('/income/addnew',[IncomeController::class, 'addnew']);
 Route::post('/income/addcategory',[IncomeController::class, 'addcategory']);
 
-Route::get('/income/editvalue/{income_slug}',[IncomeController::class, 'editincome']);
+// UPDATE
 Route::get('/income/editlanding/{incat_slug}',[IncomeController::class, 'editcatlanding']);
-// Route::get('/income/editlanding/{incat_slug}',[\App\Models\IncomeController::class, 'editcatlanding']);
-// Route::get('/income/editlanding/{incat_slug}','IncomeController@editcatlanding');
+Route::get('/income/editstore/{incat_slug}',[IncomeController::class, 'editcatlanding']);
 
-Route::get('/income/editcategory',[IncomeController::class, 'editcategory']);
+Route::get('/income/editcategory/{income_slug}',[IncomeController::class, 'editcategory']);
+Route::get('/income/editvalue/{income_slug}',[IncomeController::class, 'editincome']);
 
-Route::put('/income/update',[IncomeController::class, 'update']);
-
+// DELETE
 Route::get('/income/deleteincome/{income_slug}',[IncomeController::class, 'deleteincome']);
 Route::get('/income/deletecategory/{incat_slug}',[IncomeController::class, 'deletecategory']);
 

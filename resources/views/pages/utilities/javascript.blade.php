@@ -45,15 +45,15 @@
   // VIEW CATEGORY
 
     function onTable() {
-      document.getElementById("overlaytable").style.display = "block";
-      document.getElementById("addtablebox").style.display = "block";
-      document.getElementById("addtablebox").style.transition = '0.3s';
+      document.getElementById("overlayviewtable").style.display = "block";
+      document.getElementById("viewtablebox").style.display = "block";
+      document.getElementById("viewtablebox").style.transition = '0.3s';
     }
     
     function offTable() {
-      document.getElementById("overlaytable").style.display = "none";
-      document.getElementById("addtablebox").style.display = "none";
-      document.getElementById("addtablebox").style.transition = '0.3s';
+      document.getElementById("overlayviewtable").style.display = "none";
+      document.getElementById("viewtablebox").style.display = "none";
+      document.getElementById("viewtablebox").style.transition = '0.3s';
     }
 
     </script>

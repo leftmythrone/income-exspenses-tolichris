@@ -43,6 +43,26 @@ $entries = 0;
     categoryPop.display = "none";
     categoryOverlay.style.display = "block"
 </script>
+
+@elseif ( $editcategoryjs == 3 )
+<script>    
+    const categoryPop = document.getElementById('viewtablebox');
+    const categoryOverlay = document.getElementById('overlayviewtable');
+
+    categoryPop.style.display = "block";
+    categoryPop.display = "none";
+    categoryOverlay.style.display = "block"
+</script>
+
+@elseif ( $editcategoryjs == 4 )
+<script>    
+    const listPop = document.getElementById('viewtablebox');
+    const listOverlay = document.getElementById('overlayviewtable');
+
+    listPop.style.display = "block";
+    listPop.display = "none";
+    listOverlay.style.display = "block"
+</script>
 @endif
 
         
