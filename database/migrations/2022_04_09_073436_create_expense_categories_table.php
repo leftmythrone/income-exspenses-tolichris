@@ -15,11 +15,13 @@ return new class extends Migration
     {
         Schema::create('expense_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('excat_slug')->nullable();
             $table->string('name')->unique();
+            $table->string('excat_entry_date')->nullable();
             $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *

@@ -105,8 +105,6 @@
                                             @php
                                                 $subtotal = $subtotal + $calculate->nominal
                                             @endphp
-
-                                            {{ $calculate->income_category->name }}
                                         @endif
                                     @endforeach
                                     Rp. {{ number_format($subtotal, 0, " ,","."); }},00
@@ -186,7 +184,7 @@
 
                         @foreach ( $incats as $incat)
                             <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" value="{{ $incat->name }}" disabled></label><br>
-                            <label for="">Category Date : <input type="text" name="incat_date" value="{{ date("l, d-M-Y"); }}" disabled></label><br>
+                            <label for="">Category Date : <input type="text" name="incat_date" value="{{ $incat->incat_entry_date }}" disabled></label><br>
                         @endforeach  
                         {{-- <button type="submit">Add new Income + </button> --}}
                         <br>

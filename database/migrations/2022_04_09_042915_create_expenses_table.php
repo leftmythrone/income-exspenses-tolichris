@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->string('expense_token')->nullable();
+            $table->string('expense_slug')->nullable();
             $table->string('expense_description');
             $table->foreignId('expense_category_id');
-            $table->foreignId('expense_type_id');
             $table->string('expense_entry_date')->nullable();
             $table->integer('nominal');
             $table->timestamps();

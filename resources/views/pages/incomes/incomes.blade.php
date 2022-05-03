@@ -46,12 +46,12 @@ $entries = 0;
 
 @elseif ( $editcategoryjs == 3 )
 <script>    
-    const categoryPop = document.getElementById('viewtablebox');
-    const categoryOverlay = document.getElementById('overlayviewtable');
+    const listPop = document.getElementById('edittablebox');
+    const listOverlay = document.getElementById('overlayedittable');
 
-    categoryPop.style.display = "block";
-    categoryPop.display = "none";
-    categoryOverlay.style.display = "block"
+    listPop.style.display = "block";
+    listPop.display = "none";
+    listOverlay.style.display = "block"
 </script>
 
 @elseif ( $editcategoryjs == 4 )

@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
-            $table->string('debt_token')->nullable();
+            $table->string('debt_slug')->nullable();
             $table->string('debt_description');
             $table->foreignId('debt_category_id');
-            $table->foreignId('debt_type_id');
             $table->string('debt_entry_date')->nullable();
             $table->integer('nominal');
             $table->timestamps();

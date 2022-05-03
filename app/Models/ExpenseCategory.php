@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
 
 class ExpenseCategory extends Model
 {
@@ -11,7 +13,7 @@ class ExpenseCategory extends Model
 
     public function expenses()
     {
-        return $this->HasMany(Expense::class, 'income_category_id');
+        return $this->HasMany(Expense::class, 'expense_category_id', 'id');
     }
     
     // GUARDING IMPORTANT

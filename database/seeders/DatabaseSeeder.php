@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         
         Income::factory(10)->create();
 
-        Expense::factory(3)->create();
+        Expense::factory(10)->create();
 
         Debt::factory(2)->create();
 
@@ -71,11 +71,23 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\ExpenseCategory::create([
             'name' => 'Pengeluaran Tetap',
+            'excat_slug' => 'asdaszasdsa',
+            'excat_entry_date' => 'Thursday, 28-Apr-2022'
             
         ]);
 
         \App\Models\ExpenseCategory::create([
             'name' => 'Pengeluaran Tidak Tetap',
+            'excat_slug' => 'sdgsgdsgger',
+            'excat_entry_date' => 'Thursday, 28-Apr-2022'
+            
+        ]);
+
+        \App\Models\ExpenseCategory::create([
+            'name' => 'Pengeluaran Lainnya',
+            'excat_slug' => 'gdfghdttrb',
+            'excat_entry_date' => 'Thursday, 28-Apr-2022'
+            
         ]);
 
         /*
@@ -86,14 +98,20 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\DebtCategory::create([
             'name' => 'Utang Pajak',
+            // 'debcat_slug' => 'gdfghdttrb',
+            // 'debcat_entry_date' => 'Thursday, 28-Apr-2022'
         ]);
 
         \App\Models\DebtCategory::create([
             'name' => 'Utang Biaya',
+            // 'debcat_slug' => 'sfsdgdfhtht',
+            // 'debcat_entry_date' => 'Thursday, 28-Apr-2022'
         ]);
 
         \App\Models\DebtCategory::create([
             'name' => 'Utang Wesel',
+            // 'debcat_slug' => 'budbudrwAWWesaw',
+            // 'debcat_entry_date' => 'Thursday, 28-Apr-2022'
         ]);
 
     }

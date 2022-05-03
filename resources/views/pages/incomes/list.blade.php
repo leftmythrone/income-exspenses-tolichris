@@ -10,8 +10,8 @@
 
     {{-- OVERLAY FOR POP UP --}}
     <div id="overlaytable" onclick="offTable()"></div>
-    <div id="overlayviewtable" onclick="offTable()"></div>
-    <div id="overlayedittable" onclick="offTable()"></div>
+    <div id="overlayviewtable" onclick="offViewTable()"></div>
+    <div id="overlayedittable" onclick="offEditTable()"></div>
 
 
 
@@ -58,7 +58,7 @@
                                 {{-- INPUT DATE --}}
                                 <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
                                 {{-- INPUT TOKEN --}}
-                                <input type="hidden" name="token" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
+                                <input type="hidden" name="income_slug" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
                             </center>
                         </td>
                     </tr>
@@ -147,48 +147,10 @@
                 <td><div class="space"></div></td>
             </tr>
             @endforeach
+            
         
         </table>
-                    {{-- VIEW CATEGORY LIST --}}
-                    <div class="tabaddnew">
-                        <div id="viewcategorybox" class="viewcategorybox">
-                            <form method="post" action="/income/viewcategory">
-                                <h1><center>View {{ $title }} Category </center></h1>
-                                <h2><center>View / lihat category income / pendapatan 
-                                untuk lebih detail pada informasi data</center></h2>
-                                
-                                {{-- CSRF --}}
-                                @csrf
-        
-                                @foreach ( $incats as $incat)
-                                    <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" value="{{ $incat->name }}" disabled></label><br>
-                                    <label for="">Category Date : <input type="text" name="incat_date" value="{{ date("l, d-M-Y"); }}" disabled></label><br>
-                                @endforeach  
-                                {{-- <button type="submit">Add new Income + </button> --}}
-                                <br>
-                            </form>
-                        </div> 
-                    </div>
-
-                                {{-- EDIT CATEGORY LIST --}}
-            <div class="tabaddnew">
-                <div id="editcategorybox" class="editcategorybox">
-                    @foreach ( $incats as $incat)
-                    <form method="get" action="/income/editcategory/{{ $incat->incat_slug }}">
-                        <h1><center>Edit {{ $title }} Category </center></h1>
-                        <h2><center>Tambah/catat category income / pendapatan 
-                        supaya memantau keuangan menjadi lebih mudah</center></h2>
-                        
-                        @csrf
-                        
-                        <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" value="{{ $incat->name }}" required></label><br>
-                          
-                        <button type="submit">Add new Income + </button>
-                        <br>
-                    </form>
-                    @endforeach
-                </div> 
-            </div>
+      
 
     </div> 
     <br>
@@ -228,27 +190,19 @@
                 <td><center> <label for="">View {{ $title }} Description</label> </center></td>
                 <td><center> : </center></td>
                 {{-- INPUT_DECS --}}
-                <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $inview->income_description }}" required> </center></td>
+                <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $inview->income_description }}" disabled required> </center></td>
             </tr>
             <tr>
                 <td><center> <label for="">Income Category</label> </center></td>
                 <td><center> : </center></td>
                 <td>
                     <center>
-                        {{-- DATA LIST INPUT CATEGORY --}}
-                        @foreach ( $dataopt as $opt)
-
-                        @if ( $dataopt)
-
-                        @endif
-
-                        @endforeach
-                            <input type="text" value="{{ $inview->income_category->name[0]  }}">
+                            <input type="text" value="{{ $inview->name  }}" disabled>
                     </center>
                 </td>
             </tr>
             <tr>
-                <td><center> <label for="">nominal</label> </center></td>
+                <td><center> <label for="">Nominal</label> </center></td>
                 <td><center> : </center></td>
                 <td>
                     <center> 
@@ -268,4 +222,75 @@
     </form>
     </div>
     </div>
+</div>
+
+
+
+{{--
+|--------------------------------------------------------------------------
+| INCOME TO EDIT  LIST
+|--------------------------------------------------------------------------
+--}}
+
+
+<div id="edittablebox" class="edittablebox">
+    <h1>Edit {{ $title }}</h1>
+    <h2>Tambah/catat setiap {{ $title }} pada hari ini
+        agar pemasukan menjadi lebih banyak</h2>
+<div class="tableincomebox">
+@foreach ($lists as $list)
+
+<form method="post" action="/income/editlist/{{ $list->income_slug }}">
+
+{{-- CSRF --}}
+@csrf
+
+{{-- TABLE --}}
+<table>
+<tr>
+    <td><center> <label for="">Income Description</label> </center></td>
+    <td><center> : </center></td>
+    {{-- INPUT_DECS --}}
+    <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $list->income_description }}"  required> </center></td>
+</tr>
+<tr>
+    <td><center> <label for="">Income Category</label> </center></td>
+    <td><center> : </center></td>
+    <td>
+        <center>
+            {{-- DATA LIST INPUT CATEGORY --}}
+            <select name="input_cats">
+                @foreach ($dataopt as $opt)
+                    <option value="{{ $opt->id }}">{{ $opt->name }}</option> 
+                @endforeach
+            </select>
+        </center>
+    </td>
+</tr>
+<tr>
+    <td><center> <label for="">nominal</label> </center></td>
+    <td><center> : </center></td>
+    <td>
+        <center> 
+            {{-- INPUT_NOMINAL --}}
+            <input type="text" name="input_nominal" autocomplete="off" value="{{ $list->nominal }}" required>                
+            {{-- INPUT DATE --}}
+            <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
+            {{-- INPUT TOKEN --}}
+            <input type="hidden" name="token" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
+        </center>
+    </td>
+</tr>
+<tr> 
+    <td colspan="2"> </td>
+    <td>
+        <center>
+            <button onclick="offTable()" type="submit" >Add new Income + </button>
+        </center>
+    </td>
+</tr>
+</table>
+@endforeach        
+</form>
+</div>
 </div>
