@@ -12,7 +12,7 @@ use App\Models\Login;
 use App\Http\Controllers\UtilitiesController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ExpenseController;
-use App\Http\Controllers\DebtController;
+use App\Http\ContrHttp\Controllers\DebtController;
 
 Route::get('/laravel', function () {
     return view('welcome');
@@ -30,6 +30,13 @@ Route::get('/laravel', function () {
 */
 
 Route::get('/', [UtilitiesController::class, 'login']);
+Route::post('/authenticate', [UtilitiesController::class, 'authenticate']);
+
+
+Route::get('/register', [UtilitiesController::class, 'register']);
+Route::post('/registerstore', [UtilitiesController::class, 'registerstore']);
+
+
 
 Route::get('/mychart', [UtilitiesController::class, 'chart']);
 
@@ -114,24 +121,24 @@ Route::get('/expense/deletecategory/{excat_slug}',[ExpenseController::class, 'de
 |
 */
 
-Route::get('/debt', [IncomeController::class, 'start']);
+Route::get('/debt', [\App\Http\Controllers\DebtController::class, 'start']);
 
 // VIEW 
-Route::get('/debt/viewlist/{incat_slug}',[IncomeController::class, 'viewlist']);
-Route::get('/debt/viewcategory/{income_slug}',[IncomeController::class, 'viewcategory']);
+Route::get('/debt/viewlist/{debcat_slug}',[\App\Http\Controllers\DebtController::class, 'viewlist']);
+Route::get('/debt/viewcategory/{debt_slug}',[\App\Http\Controllers\DebtController::class, 'viewcategory']);
 
 
 // CREATE
-Route::post('/debt/addnew',[IncomeController::class, 'addlist']);
-Route::post('/debt/addcategory',[IncomeController::class, 'addcategory']);
+Route::post('/debt/addnew',[\App\Http\Controllers\DebtController::class, 'addlist']);
+Route::post('/debt/addcategory',[\App\Http\Controllers\DebtController::class, 'addcategory']);
 
 // UPDATE
-Route::get('/debt/editlanding/{incat_slug}',[IncomeController::class, 'editcatlanding']);
-Route::get('/debt/editstore/{income_slug}',[IncomeController::class, 'editstore']);
+Route::get('/debt/editlanding/{debcat_slug}',[\App\Http\Controllers\DebtController::class, 'editcatlanding']);
+Route::get('/debt/editstore/{debt_slug}',[\App\Http\Controllers\DebtController::class, 'editstore']);
 
-Route::get('/debt/editcategory/{income_slug}',[IncomeController::class, 'editcategory']);
-Route::post('/debt/editlist/{income_slug}',[IncomeController::class, 'editlist']);
+Route::get('/debt/editcategory/{debt_slug}',[\App\Http\Controllers\DebtController::class, 'editcategory']);
+Route::post('/debt/editlist/{debt_slug}',[\App\Http\Controllers\DebtController::class, 'editlist']);
 
 // DELETE
-Route::get('/debt/deleteincome/{income_slug}',[IncomeController::class, 'deletelist']);
-Route::get('/debt/deletecategory/{incat_slug}',[IncomeController::class, 'deletecategory']);
+Route::get('/debt/deletedebt/{debt_slug}',[\App\Http\Controllers\DebtController::class, 'deletelist']);
+Route::get('/debt/deletecategory/{debcat_slug}',[\App\Http\Controllers\DebtController::class, 'deletecategory']);

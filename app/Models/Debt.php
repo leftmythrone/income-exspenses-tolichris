@@ -10,9 +10,9 @@ class Debt extends Model
 {
     use HasFactory;
 
-    public function debt_category()
+    public function debt_cat()
     {
-        return $this->belongsTo(\App\Models\DebtCategory::class, 'debt_category_id');
+        return $this->belongsTo(DebtCategory::class, 'debt_category_id', 'id');
     }
 
     // GUARDING IMPORTANT

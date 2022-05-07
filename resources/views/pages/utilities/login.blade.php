@@ -9,15 +9,26 @@
         <div class="image">
             <img src="/img/With-Name.png" alt="">
         </div>
-        <form action="home" method="post">
-    
+
+          {{-- @if(session()->has('success'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong>{{ session('success'); }}</strong>
+              </button>
+            </div>
+          @endif --}}
+
+        <form action="/authenticate" method="post">
+            
+        @csrf
+
         <!-- USERNAME -->
             <div class="field">
                 <i class='bx bxs-user bx-sm'></i>
-                    <span class="tooltip"></span>
-                <input type="text" placeholder="Email Address   " name="username" require>
+                    <span class="tooltip is-invalid"></span>
+                <input type="text" placeholder="Username" name="username" autofocus require>
             <div class="line"></div>
             </div>
+
         <!-- PASSWORD -->
             <div class="field">
                 <i class='bx bxs-lock-alt bx-sm' ></i>
@@ -36,7 +47,7 @@
                 <a href="">Forgot your password?</a>
             </div>
     
-            <button>Login</button>  
+            <button type="submit">Login</button>  
 
             <div class="register">
                 <p>Don't have an account? <a href="">Sign Up</a></p>

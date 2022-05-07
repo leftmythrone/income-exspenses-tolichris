@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('debt_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('debcat_slug')->nullable();
             $table->string('name')->unique();
+            $table->string('debcat_entry_date')->nullable();
             $table->timestamps();
         });
     }

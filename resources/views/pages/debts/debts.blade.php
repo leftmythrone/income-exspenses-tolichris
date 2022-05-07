@@ -4,241 +4,66 @@
 
 <!-- ISI -->
 
+@php
+
+$number = 1;
+$subtotal = 0;
+$total = 0;
+$entry = 0;
+$entries = 0;
+
+@endphp
+
+
 <br><br>
 
-<div class="tabheader">
+@include('pages.debts.category1')
 
-    {{-- HEADING --}}
-    <h1>My Debt Category</h1>
+<br>
 
-    {{-- SUMMARY --}}
-    <h4>Pada page ini berisi seluruh category pencatatan <br> keuangan pada PT. Tolichris</h4>
-</div>
+@include('pages.debts.list')
 
-    {{--  
-    |--------------------------------------------------------------------------
-    | My Debt Category
-    |--------------------------------------------------------------------------
-    |
-    | Pada page ini berisi seluruh category pencatatan
-    | keuangan pada PT. Tolichris
-    |
-    --}}
-    
-        <div class="tabaddnew">
-            <button>Add new income +</button>
-        </div>
+{{-- SCRIPT --}}
+@if ( $editcategoryjs == 1 )
+<script>    
+    const categoryPop = document.getElementById('editcategorybox');
+    const categoryOverlay = document.getElementById('overlayeditcategory');
 
-        <div class="clear"></div>
-    
+    categoryPop.style.display = "block";
+    categoryPop.display = "none";
+    categoryOverlay.style.display = "block"
+</script>
 
-            <div class="tabcategory">
-                {{-- SEARCH FEATURE --}}
-                <div class="tabsearch">
-                    <p>Search: <input type="text" placeholder="search . ."></p>
-                </div>
+@elseif ( $editcategoryjs == 2 )
+<script>    
+    const categoryPop = document.getElementById('viewcategorybox');
+    const categoryOverlay = document.getElementById('overlayviewcategory');
 
-                {{-- SHOWING ENTRIES --}}
-                <p>Show {{ 1 }} entries </p> 
+    categoryPop.style.display = "block";
+    categoryPop.display = "none";
+    categoryOverlay.style.display = "block"
+</script>
 
-                {{-- TABLE --}}
-                    <div class="tabtable">    
-                        <table width="100%">
-                            <tr>
-                                {{-- TABLE HEADER --}}
-                                <th><center>No</center></th> 
-                                <th><center>ID</center></th>
-                                <th><center>Category Name / Nama Kategori</center></th>
-                                <th><center>Jenis Kas</center></th>
-                                <th><center>Total</center></th>
-                                <th><center>Date</center></th>
-                                <th><center>Action</center></th>
-                            </tr>
+@elseif ( $editcategoryjs == 3 )
+<script>    
+    const listPop = document.getElementById('edittablebox');
+    const listOverlay = document.getElementById('overlayedittable');
 
-                            <tr>
-                                {{-- LINE CUTTER --}}
-                                <td colspan="7"><div class="line"></div></td>
-                            </tr>
-                    
-                                {{-- FOR EACH --}}
-                                @foreach ($categories as $category) 
-                                    <tr>
-                                        {{-- TABLE MAIN SECTION --}}
-                                        <td> <center> {{ $number++ }}. </center></td>
-                                        <td> <center> {{ "24592" }} </center></td>
-                                        <td>{{ $category->name }}</td>
-                                        <td><center>{{ "Kas Kecil" }}</center></td>
-                                        <td><center>{{ $category->created_at }}</center></td>
-                                        <td>
-                                            <center>
+    listPop.style.display = "block";
+    listPop.display = "none";
+    listOverlay.style.display = "block"
+</script>
 
-                                                {{-- PERHITUNGAN  --}}
-                                                    
-                                                @foreach ( $debts as $calculate )
+@elseif ( $editcategoryjs == 4 )
+<script>    
+    const listPop = document.getElementById('viewtablebox');
+    const listOverlay = document.getElementById('overlayviewtable');
 
-                                                    @if ($category->name === $calculate->debt_category->name)
-                                                        
-                                                        @php
-                                                            $subtotal = $subtotal + $calculate->nominal
-                                                        @endphp
-
-                                                    @endif
-
-                                                @endforeach
-
-
-                                                
-                                                Rp. {{ $subtotal }},00
-
-                                                @php
-
-                                                $subtotal = 0;
-
-                                                @endphp
-
-                                            </center>
-                                        </td>
-                                        <td>
-                                            <center>
-                                                <button><img src="/img/eye_white.png" alt=""></button> 
-                                                <button><img src="/img/pencil_white.png" alt=""></button> 
-                                                <button><img src="/img/trash_white.png" alt=""></button>
-                                            </center>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        {{-- SPACER --}}
-                                        <td><div class="space"></div></td>
-                                    </tr>
-                                @endforeach
-
-                                <tr>
-                                    <td colspan="99"><hr></td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4"></td>
-                                    <td><center><b>Total : </b></center></td>
-                                    <td>
-                                        @foreach ( $debts as $debt )
-                                        
-                                        @php 
-                                            $total = $total + $debt->nominal
-                                        @endphp
-
-                                        @endforeach
-                                        <center>
-                                            Rp.{{ $total }},00
-                                        </center>
-                                        
-                                    </td>
-                                </tr>
-
-                        </table>
-                    </div> 
-                <br>
-
-                {{-- ENTRIES --}}
-                <p>Showing 1 to {{ 1 }} of {{ $number - 1 }} entries</p>
-
-                @php
-                                
-                $number = 1;
-
-                @endphp
-
-                
-            </div>
-
-    <br><br>
-
-    {{--  
-    |--------------------------------------------------------------------------
-    | My Debt Overview
-    |--------------------------------------------------------------------------
-    |
-    | Pada page ini berisi seluruh transaksi catatan pendapatan yang telah masuk pada PT Tolichris
-    |
-    --}}
-
-    <div class="tabheader">
-
-        {{-- HEADING --}}
-        <h1>My Debt Overview</h1>
-
-        {{-- SUMMARY --}}
-        <h4>Pada page ini berisi seluruh transaksi catatan pendapatan yang telah masuk pada PT Tolichris</h4>
-    </div>
-
-        <div class="tabaddnew">
-            <button>Add new income +</button>
-        </div>
-
-        <div class="clear"></div>
-
-            <div class="tabcategory">
-                {{-- SEARCH FEATURE --}}
-                <div class="tabsearch">
-                    <p>Search: <input type="text" placeholder="search . ."></p>
-                </div>
-            
-                {{-- SHOWING ENTRIES --}}
-                <p>Show {{ 1 }} entries </p> 
-
-            
-                    {{-- TABLE --}}
-                    <div class="tabtable">    
-                        <table width="100%">
-                            <tr>
-                                {{-- TABLE HEADER --}}
-                                <th><center>No</center></th> 
-                                <th><center>ID</center></th>
-                                <th><center> Detail / Detail Pemasukan</center></th>
-                                <th><center>Category / Kategori</center></th>
-                                <th><center>Kas besar / Kas kecil</center></th>
-                                <th><center>Nominal</center></th>
-                                <th><center>Date</center></th>
-                                <th><center>Action</center></th>
-                            </tr>
-                            <tr>
-                                {{-- LINE CUTTER --}}
-                                <td colspan="99"><div class="line"></div></td>
-                            </tr>
-                        
-                                {{-- EACH FOR --}}
-                                @foreach ($debts as $debt) 
-                            <tr>
-                                {{-- TABLE MAIN SECTION --}}
-                                <td> <center> {{ $number++ }}. </center></td>
-                                    <td> <center> {{ "24592" }} </center></td>
-                                    <td>{{ $debt->debt_description }}</td>
-                                    <td><center>{{ $debt->debt_category->name }}</center></td>
-                                    <td><center>{{ "Kas Kecil" }}</center></td>
-                                    <td><center>Rp. {{ $debt->nominal }},00</center></td>
-                                    <td><center>{{ $debt->created_at }}</center></td>
-                                    <td>
-                                        <center>
-                                            <button><img src="/img/eye_white.png" alt=""></button> 
-                                            <button><img src="/img/pencil_white.png" alt=""></button> 
-                                            <button><img src="/img/trash_white.png" alt=""></button>
-                                        </center>
-                                </td>
-                            </tr>
-                        
-                            <tr>
-                                {{-- SPACER --}}
-                                <td><div class="space"></div></td>
-                            </tr>
-
-                            @endforeach
-                        
-                        </table>
-                    </div> 
-        <br>
-
-        {{-- ENTRIES --}}
-        <p>Showing 1 to {{ 1 }} of {{ $number - 1 }} entries</p>
-    </div>
+    listPop.style.display = "block";
+    listPop.display = "none";
+    listOverlay.style.display = "block"
+</script>
+@endif
 
         
 @endsection

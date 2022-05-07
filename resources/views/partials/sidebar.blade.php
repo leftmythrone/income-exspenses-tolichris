@@ -28,7 +28,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="/income" id="incomeJs">Incomes / Pemasukan</a href="">
+        <a href="/income" id="incomeJs">Incomes / Pemasukan</a>
       </div>
     </li>
 
@@ -39,7 +39,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="/expense">Expense / Pengeluaran</a href="">
+        <a href="/expense">Expense / Pengeluaran</a>
       </div>
     </li>
 
@@ -50,20 +50,20 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="/debt">Debts / Utang</a href="">
+        <a href="/debt">Debts / Utang</a>
       </div>
     </li>
 
-    {{-- <li>
-      ICON
+    <li>
+      {{-- ICON --}}
       <div class="sideicon">
         <img src="/img/pie_chart.png" alt="">
       </div>
-      FONT
+      {{-- FONT --}}
       <div class="sidefont">
-        <a href="">Cash Type / Tipe Kas</a href="">
+        <a href="/register">User Management / Manajemen Pengguna</a>
       </div>
-    </li> --}}
+    </li>
 
     <li>
       {{-- ICON --}}
@@ -72,7 +72,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="/mychart">Chart / Grafik</a href="">
+        <a href="/mychart">Chart / Grafik</a>
       </div>
     </li>
 
@@ -83,7 +83,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="/login">Logout / Keluar</a href="">
+        <a href="/login">Logout / Keluar</a>
       </div>
     </li>
     

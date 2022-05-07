@@ -69,8 +69,10 @@
                           @endif
 
                                     
-                            @endforeach                                    
-                            Rp. {{ $subtotal }},00 
+                            @endforeach
+                            
+                            
+                            Rp. {{ number_format($subtotal, 0, " ,","."); }},00 
                             
                             @php
 
@@ -116,7 +118,7 @@
 
                             @endforeach
                                                                 
-                            Rp. {{ $subtotal }},00
+                            Rp. {{ number_format($subtotal, 0, " ,","."); }},00
 
                             @php
                                     
@@ -154,7 +156,7 @@
                     <td>
                         <center>
                             {{-- PADA BULAN --}}
-                            Rp. {{ $total }},00
+                            Rp. {{ number_format($total, 0, " ,","."); }},00
 
                             @php 
                                 $intotal = $total;
@@ -163,7 +165,7 @@
                             @endphp
                         </center>   
                     </td>
-                    <td><center>Dikurangi Pengeluaran</center></td>
+                    <td><center>Pendapatan perbulan</center></td>
                 </tr>  
                 <tr>
                     <td colspan="99"><hr></td>
@@ -186,7 +188,7 @@
                      <td><center>
                           @foreach ( $expenses as $expense ) 
                           
-                          @if ( $expense->expense_category->name === $excats[0]->name )
+                          @if ( $expense->excat->name === $excats[0]->name )
                             
                             @php
                                                                                                             
@@ -198,7 +200,7 @@
 
                                     
                             @endforeach                                    
-                            Rp. {{ $subtotal }},00 
+                            Rp. {{ number_format($subtotal, 0, " ,","."); }},00 
                             
                             @php
 
@@ -244,7 +246,7 @@
 
                             @endforeach
                                                                 
-                            Rp. {{ $subtotal }},00
+                            Rp. {{ number_format($subtotal, 0, " ,","."); }},00
 
                             @php
                                     
@@ -282,7 +284,7 @@
                     <td>
                         <center>
                             {{-- PADA BULAN --}}
-                            Rp. {{ $total }},00
+                            Rp. {{ number_format($total, 0, " ,","."); }},00
 
                             @php 
                                 $extotal = $total;
@@ -291,7 +293,7 @@
                             @endphp
                         </center>   
                     </td>
-                    <td><center>Dikurangi Pengeluaran</center></td>
+                    <td><center>Pendapatan Perbulan Dikurangi Pengeluaran</center></td>
                 </tr>  
                 <tr>
                     <td colspan="99"><hr></td>
@@ -314,7 +316,7 @@
                      <td><center>
                           @foreach ( $debts as $debt ) 
                           
-                          @if ( $debt->debt_category->name === $debcats[0]->name )
+                          @if ( $debt->debt_cat->name === $debcats[0]->name )
                             
                             @php
                                                                                                             
@@ -326,7 +328,7 @@
 
                                     
                             @endforeach                                    
-                            Rp. {{ $subtotal }},00 
+                            Rp. {{ number_format($subtotal, 0, " ,","."); }},00 
                             
                             @php
 
@@ -360,7 +362,7 @@
                         <td><center>
                             @foreach ( $debts as $debt ) 
                             
-                                @if ( $debt->debt_category->name === $debcat->name )
+                                @if ( $debt->debt_cat->name === $debcat->name )
 
                                     @php
 
@@ -372,7 +374,7 @@
 
                             @endforeach
                                                                 
-                            Rp. {{ $subtotal }},00
+                            Rp. {{ number_format($subtotal, 0, " ,","."); }},00
 
                             @php
                                     
@@ -410,7 +412,7 @@
                     <td>
                         <center>
                             {{-- PADA BULAN --}}
-                            Rp. {{ $total }},00
+                            Rp. {{ number_format($total, 0, " ,","."); }},00
 
                             @php 
                                 $debtotal = $total;
@@ -419,7 +421,7 @@
                             @endphp
                         </center>   
                     </td>
-                    <td><center>Dikurangi Pengeluaran</center></td>
+                    <td><center>Pendapatan Perbulan Dikurangi Hutang</center></td>
                 </tr>  
                 <tr>
                     <td colspan="99"><hr></td>
@@ -436,7 +438,7 @@
                             
                             @endphp
     
-                            Rp.{{ $cashflow }},00
+                            Rp.{{ number_format($cashflow, 0, " ,","."); }},00
 
                         </center>
                     </td>

@@ -11,7 +11,7 @@ class DebtCategory extends Model
 
     public function debts()
     {
-        return $this->HasMany(Debt::class, 'debt_category_id');
+        return $this->HasMany(Debt::class, 'debt_category_id', 'id');
     }
 
     // GUARDING IMPORTANT
