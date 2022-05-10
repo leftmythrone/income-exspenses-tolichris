@@ -36,17 +36,42 @@ class UtilitiesController extends Controller
         ]);
 
         if(Auth::attempt($credentials)) {
+            $request->session()->regenerate();
             
+            return redirect()->intended('/income');
         }
 
-        dd('Berhasil Login');
+        return back()->with('loginError', 'Login failed!');
+
+        // dd('Berhasil Login');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerate();
+
+        return redirect('/');
     }
     
 
     public function register()
     {
+        if (auth()->guest()) 
+        {
+            abort(403);
+        }
+
+        if (auth()->user()->username != 'user')
+        {
+            abort(403);
+        }
+
         return view('/pages/utilities/register', [
-            "title" => "Login"
+            "title" => "User Management"
         ]);
     }
 

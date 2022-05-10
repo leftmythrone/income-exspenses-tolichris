@@ -235,15 +235,12 @@ class IncomeController extends Controller
 
     public function deletelist($income_slug)
     {
-        DB::table('incomes')->where('income_slug',$income_slug)->delete();
-		// alihkan halaman ke halaman pegawai
-        
+        DB::table('incomes')->where('income_slug',$income_slug)->delete();        
 
         return view('/pages/incomes/incomes', [
             "title" => "Income",
             "sidebars" => "partials.sidebar",
             "incomes" => Income::latest()->get(),
-            // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
             "editcategoryjs" => 0,
@@ -258,14 +255,11 @@ class IncomeController extends Controller
     {
         DB::table('income_categories')->where('incat_slug',$incat_slug)->delete();
         
-        
-		// alihkan halaman ke halaman pegawai
 
         return view('/pages/incomes/incomes', [
             "title" => "Income",
             "sidebars" => "partials.sidebar",
             "incomes" => Income::latest()->get(),
-            // "incomes" => Income::where('nominal', 'LIKE', '%1817910%')->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
             "editcategoryjs" => 0,

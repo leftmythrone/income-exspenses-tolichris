@@ -17,7 +17,7 @@
             </div>
           @endif --}}
 
-        <form action="/authenticate" method="post">
+        <form action="/login" method="post">
             
         @csrf
 

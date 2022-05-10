@@ -3,6 +3,105 @@
 @section('gate')
 
 <!-- ISI -->
+<br><br>
+<div class="tabheader">
+    
+  {{-- HEADING --}}
+  <h1>My {{ $title }}</h1>
+
+  {{-- SUMMARY --}}
+  <h4>Pada page ini berisi seluruh data user yang ada <br> pada PT. Tolichris</h4>
+
+</div>
+
+{{-- BUTTON ADD NEW --}}
+<div class="tabaddnew">
+    <div id="overlaycategory" onclick="offCategory()"></div>
+    <div id="overlayviewcategory" onclick="offViewCategory()"></div>
+
+    {{-- BUTTON POP UP FOR CATEGORY--}}
+    <button onclick="onCategory()">Add new category +</button>
+    <div id="addcategorybox" class="addcategorybox">
+        <form method="post" action="/income/addcategory">
+            <h1><center>Add {{ $title }} Category </center></h1>
+            <h2><center>Tambah/catat category income / pendapatan 
+            supaya memantau keuangan menjadi lebih mudah</center></h2>
+            
+            {{-- CRSF --}}
+            @csrf
+            <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" required></label><br>
+            <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y"); }}">
+            <input type="hidden" name="incat_slug" 
+                value=
+                "   
+                    {{-- RANDOM CREATE SLUG --}}
+                    @php
+
+                    $catuid = uniqid('gfg', true);
+                    echo $catuid;
+                    
+                    @endphp
+               ">
+                
+            <button type="submit">Add new Income + </button>
+            <br>
+        </form>
+    </div>
+    {{-- CLOSE OVERLAY --}}
+    <div id="overlayeditcategory" onclick="offEditCategory()"></div>
+</div>
+
+{{-- CLEAR --}}
+<div class="clear"></div>
+
+
+<div class="tabcategory">
+    {{-- SEARCH FEATURE --}}
+    <div class="tabsearch">
+        <p>Search: <input type="text" placeholder="search . ."></p>
+    </div>
+
+    {{-- SHOWING ENTRIES --}}
+
+    <p>Show 1 entries </p> 
+    {{-- TABLE --}}
+
+        <div class="tabtable">    
+            <table width="100%">
+                <tr>
+                    {{-- TABLE HEADER --}}
+                    <th><center>No</center></th> 
+                    <th><center>Nama User</center></th>
+                    <th><center>Username</center></th>
+                    <th><center>Role</center></th>
+                    <th><center>Action</center></th>
+                </tr>
+                <tr>
+                    {{-- LINE CUTTER --}}
+                    <td colspan="99"><div class="line"></div></td>
+                </tr>
+        
+                    {{-- FOR EACH --}}
+                        <tr>
+                            {{-- TABLE MAIN SECTION --}}
+                            <td><center> </center></td>
+                            <td><center> </center></td>
+                            <td><center> </center></td>
+                            <td><center> </center></td>
+                            <td>
+                                <center>
+                                    <a href="/user/userview/"><button><img src="/img/eye_white.png" alt=""></button></a>
+                                    <a href="/user/useredit/"><button><img src="/img/pencil_white.png" alt=""></button></a> 
+                                    <a href="/user/userdelete/"><button><img src="/img/trash_white.png" alt=""></button></a>
+                                </center>
+                            </td>
+                        </tr>
+            </table>
+    <br>
+    {{-- ENTRIES --}}
+    <p>Showing 1 to 1 of 1 entries</p>
+</div>
+
 
 <section class="vh-100" style="background-color: #eee;">
     <div class="container h-100">
@@ -53,7 +152,7 @@
                       <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
                         <input type="email" id="form3Example3c" name="email" class="form-control @error('email')is-invalid @enderror" value="{{ old('email') }}" required/>
-                        <label class="form-label" for="form3Example3c">Your Email</label>
+                        <label class="form-label" for="form3Example3c">Role</label>
 
                         @error('email')
                             <div class="invalid-feedback">
@@ -88,8 +187,7 @@
                 </div>
                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
   
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                    class="img-fluid" alt="Sample image">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp" class="img-fluid" alt="Sample image">
   
                 </div>
               </div>

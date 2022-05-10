@@ -9,6 +9,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Income;
 use App\Models\Expense;
 use App\Models\Debt;
+use App\Models\User;
 
 // MODEL CATEGORY
 use App\Models\IncomeCategory;
@@ -24,6 +25,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
+        User::create([
+            'name' => 'Usman Tony',
+            'username' => 'admin',
+            'email' => 'tolichris@gmail.com',
+            'password' => '11111'
+        ]);
 
         /*
         |--------------------------------------------------------------------------

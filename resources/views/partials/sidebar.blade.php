@@ -57,7 +57,7 @@
     <li>
       {{-- ICON --}}
       <div class="sideicon">
-        <img src="/img/pie_chart.png" alt="">
+        <img src="/img/user_manage.png" alt="">
       </div>
       {{-- FONT --}}
       <div class="sidefont">
@@ -83,7 +83,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="/login">Logout / Keluar</a>
+        <a href="/logout">Logout / Keluar</a>
       </div>
     </li>
     
