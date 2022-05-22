@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('income_categories', function (Blueprint $table) {
+        Schema::create('dumps', function (Blueprint $table) {
             $table->id();
-            $table->string('incat_slug')->nullable();
-            $table->string('name')->unique();
-            $table->date('incat_entry_date')->nullable();
+            $table->string('income_slug');
+            $table->string('expense_slug');
+            $table->string('debt_slug');
+            $table->string('incat_slug');
+            $table->string('excat_slug');
+            $table->string('debcat_slug');
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('income_categories');
+        Schema::dropIfExists('dumps');
     }
 };

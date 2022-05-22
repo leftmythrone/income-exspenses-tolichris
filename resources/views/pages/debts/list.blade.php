@@ -12,6 +12,8 @@
     <div id="overlaytable" onclick="offTable()"></div>
     <div id="overlayviewtable" onclick="offViewTable()"></div>
     <div id="overlayedittable" onclick="offEditTable()"></div>
+    <div id="overlaypaidtable" onclick="offPaidTable()"></div>
+
 
 
 
@@ -77,7 +79,7 @@
     </div>
     <br>
     <br>
-    <button onclick="onTable()" type="submit" >Add new Income + </button>
+    <button onclick="onTable()" type="submit" >Add new Debt + </button>
 </div>
 
 
@@ -87,7 +89,11 @@
     
     {{-- SEARCH FEATURE --}}
     <div class="tabsearch">
-        <p>Search: <input type="text" placeholder="search . ."></p>
+        <form action="/debt/paidlanding">
+            <p>Search: <input type="text" name="searchlist" placeholder="search . ." value="{{ $historylist }}"></p>
+            <button type="submit">Find</button>
+            </p>
+        </form>
     </div>
             
     {{-- SHOWING ENTRIES --}}
@@ -118,6 +124,7 @@
                 <th><center>Nominal</center></th>
                 <th><center>Date</center></th>
                 <th><center>Action</center></th>
+                <th><center>Convert</center></th>
             </tr>
             <tr>
                 {{-- LINE CUTTER --}}
@@ -138,6 +145,11 @@
                         <a href="/debt/viewlist/{{ $debt->debt_slug }}"><button><img src="/img/eye_white.png" alt=""></button></a>
                         <a href="/debt/editstore/{{ $debt->debt_slug }}"><button><img src="/img/pencil_white.png" alt=""></button></a> 
                         <a href="/debt/deletedebt/{{ $debt->debt_slug }}"><button><img src="/img/trash_white.png" alt=""></button></a>
+                    </center>
+                </td>
+                <td>
+                    <center>
+                        <a href="/debt/paidlanding/{{ $debt->debt_slug }}"><button><img src="/img/paid_white.png" alt=""></button></a>
                     </center>
                 </td>
             </tr>
@@ -169,7 +181,7 @@
 
 {{--
 |--------------------------------------------------------------------------
-| INCOME TO CREATE NEW CATEGORY / LIST
+| DEBT TO CREATE NEW CATEGORY / LIST
 |--------------------------------------------------------------------------
 --}}
 
@@ -228,7 +240,7 @@
 
 {{--
 |--------------------------------------------------------------------------
-| INCOME TO EDIT  LIST
+| DEBT TO EDIT  LIST
 |--------------------------------------------------------------------------
 --}}
 
@@ -286,6 +298,77 @@
     <td>
         <center>
             <button onclick="offTable()" type="submit" >Add new Income + </button>
+        </center>
+    </td>
+</tr>
+</table>
+@endforeach        
+</form>
+</div>
+</div>
+
+
+
+{{--
+|--------------------------------------------------------------------------
+| DEBT CONVERT TO INOME
+|--------------------------------------------------------------------------
+--}}
+
+
+<div id="paidtablebox" class="paidtablebox">
+    <h1>Convert Debt to Income</h1>
+    <h2>Tambah/catat setiap {{ $title }} pada hari ini
+        agar pemasukan menjadi lebih banyak</h2>
+<div class="tableincomebox">
+@foreach ($lists as $list)
+
+<form method="post" action="/debt/paiddebt/{{ $list->debt_slug }}">
+
+{{-- CSRF --}}
+@csrf
+
+{{-- TABLE --}}
+<table>
+<tr>
+    <td><center> <label for="">Debt Convert Description</label> </center></td>
+    <td><center> : </center></td>
+    {{-- INPUT_DECS --}}
+    <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $list->debt_description }}"  required> </center></td>
+</tr>
+<tr>
+    <td><center> <label for="">Income Category</label> </center></td>
+    <td><center> : </center></td>
+    <td>
+        <center>
+            {{-- DATA LIST INPUT CATEGORY --}}
+            <select name="input_cats">
+                @foreach ($dataopt as $opt)
+                    <option value="{{ $opt->id }}">{{ $opt->name }}</option> 
+                @endforeach
+            </select>
+        </center>
+    </td>
+</tr>
+<tr>
+    <td><center> <label for="">nominal</label> </center></td>
+    <td><center> : </center></td>
+    <td>
+        <center> 
+            {{-- INPUT_NOMINAL --}}
+            <input type="text" name="input_nominal" autocomplete="off" value="{{ $list->nominal }}" required>                
+            {{-- INPUT DATE --}}
+            <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
+            {{-- INPUT TOKEN --}}
+            <input type="hidden" name="income_slug" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
+        </center>
+    </td>
+</tr>
+<tr> 
+    <td colspan="2"> </td>
+    <td>
+        <center>
+            <button onclick="offTable()" type="submit" >Convert to Income + </button>
         </center>
     </td>
 </tr>

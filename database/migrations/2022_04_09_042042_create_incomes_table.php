@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('income_slug')->nullable();
             $table->string('income_description');
             $table->foreignId('income_category_id');
-            $table->string('income_entry_date')->nullable();
+            $table->foreignId('income_account_id');
+            $table->date('income_entry_date')->nullable();
             $table->integer('nominal');
             $table->timestamps();
         });

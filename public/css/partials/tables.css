@@ -93,3 +93,22 @@
     z-index: 2;
     cursor: pointer;
   } 
+
+  .tabsearch button {
+      display: none;
+  }
+
+  .tableincomebox button {
+    width: 304px;
+    height: 34px;
+    margin-right: 70px;
+    border-radius: 30px;
+    background-color: #5FE449;
+    color: white;
+    border: none;
+  }
+
+  .tableincomebox button:hover {
+    background-color: #34a81f;
+    transition: 0.3s;
+  }

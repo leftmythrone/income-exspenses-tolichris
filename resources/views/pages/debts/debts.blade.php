@@ -63,6 +63,16 @@ $entries = 0;
     listPop.display = "none";
     listOverlay.style.display = "block"
 </script>
+
+@elseif ( $editcategoryjs == 5 )
+<script>    
+    const listPop = document.getElementById('paidtablebox');
+    const listOverlay = document.getElementById('overlaypaidtable');
+
+    listPop.style.display = "block";
+    listPop.display = "none";
+    listOverlay.style.display = "block"
+</script>
 @endif
 
         

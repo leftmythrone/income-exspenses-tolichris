@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
+use PDF;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +23,13 @@ use App\Models\DebtCategory;
 
 class UtilitiesController extends Controller
 {
+
+    /*
+    |--------------------------------------------------------------------------
+    | MYCHART TO LOGIN MANAGEMENT
+    |--------------------------------------------------------------------------
+    */
+
     public function login()
     {
         return view('/pages/utilities/login', [
@@ -56,48 +65,12 @@ class UtilitiesController extends Controller
 
         return redirect('/');
     }
-    
 
-    public function register()
-    {
-        if (auth()->guest()) 
-        {
-            abort(403);
-        }
-
-        if (auth()->user()->username != 'user')
-        {
-            abort(403);
-        }
-
-        return view('/pages/utilities/register', [
-            "title" => "User Management"
-        ]);
-    }
-
-    public function registerstore(Request $request)
-    {
-        // return request()->all();
-        $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'username' => ['required', 'min:3', 'max:255', 'unique:users'],
-            'email' => 'required|email:dns|unique:users',
-            'password' => 'required|min:5|max:255'
-        ]);
-
-        // $validatedData['password'] = bcrypt($validatedData['passsword']);
-
-        $validatedData['password'] = Hash::make($validatedData['password']);
-
-        // $request->session()->flash('Success', 'Regist success');
-
-        User::create($validatedData);
-
-        // dd('Regis berhasil');
-
-        return redirect('/')->with('success', 'Regist success');
-    }
-
+    /*
+    |--------------------------------------------------------------------------
+    | MYCHART TO PRINT
+    |--------------------------------------------------------------------------
+    */
 
     public function chart()
     {
@@ -116,6 +89,233 @@ class UtilitiesController extends Controller
             "extotal" => 0,
             "debtotal" => 0,
             "cashflow" => 0
+        ]);
+    }
+
+    public function printstore()
+    {      
+        return view('/pages/utilities/printchart', [
+            "title" => "Income",
+            "bck" => "income",
+            "number" => 1,
+            "total" => 0,
+            "incomes" => Income::latest()->get(),
+            "expenses" => Expense::latest()->get(),
+            "debts" => Debt::latest()->get(),
+            "incats" => \App\Models\IncomeCategory::latest()->get(),
+            "excats" => \App\Models\ExpenseCategory::latest()->get(),
+            "debcats" => \App\Models\DebtCategory::latest()->get(),
+            "number" => 0,
+            "subtotal" => 0,
+            "total" => 0,
+            "intotal" => 0,
+            "extotal" => 0,
+            "debtotal" => 0,
+            "cashflow" => 0
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | USER TO USERLANDING
+    |--------------------------------------------------------------------------
+    */
+    public function user()
+    {
+        // if (auth()->guest()) 
+        // {
+        //     abort(403);
+        // }
+
+        // if (auth()->user()->username != 'user')
+        // {
+        //     abort(403);
+        // }
+
+        return view('/pages/users/users', [
+            "title" => "User Management",
+            "users" => User::latest()->get(),
+            "number" => 1,
+            "editcategoryjs" => 0,
+            "edits" => User::latest()->get(),
+            "entry" => 1,
+            "entries" => 0
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | USER TO ADD NEW
+    |--------------------------------------------------------------------------
+    */
+
+    public function userstore(Request $request)
+    {
+        // return request()->all();
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'username' => ['required', 'min:3', 'max:255', 'unique:users'],
+            'user_slug' => 'required|max:255',
+            'password' => 'required|min:5|max:255'
+        ]);
+
+        // $validatedData['password'] = bcrypt($validatedData['passsword']);
+
+        $validatedData['password'] = Hash::make($validatedData['password']);
+
+        // $request->session()->flash('Success', 'Regist success');
+
+        User::create($validatedData);
+
+        // dd($validatedData);
+
+        return view('/pages/users/users', [
+            "title" => "User Management",
+            "users" => User::latest()->get(),
+            "number" => 1,
+            "editcategoryjs" => 0,
+                        "edits" => User::latest()->get(),
+
+            "entry" => 1,
+            "entries" => 0
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | USER TO EDIT USERS
+    |--------------------------------------------------------------------------
+    */
+
+    public function edituserlanding($user_slug)
+    {
+        $specific = DB::table('users')->where('user_slug',$user_slug)->get();
+
+        return view('/pages/users/users', [
+            "title" => "User Management",
+            "users" => User::latest()->get(),
+            "edits" => $specific,
+            "number" => 1,
+            "editcategoryjs" => 1,
+                        "edits" => User::latest()->get(),
+
+            "entry" => 0,
+            "entries" => 0
+        ]);
+    }
+
+    public function edituser(Request $request, $user_slug)
+    {
+        $request->password = Hash::make($request->password);
+
+        DB::table('users')->where('user_slug', $user_slug)->update([
+            'name'=>$request->full_name,
+            'username'=>$request->username,
+            'user_slug'=>$request->user_slug,
+            'password'=>$request->password
+		]);
+        
+        return view('/pages/users/users', [
+            "title" => "User Management",
+            "users" => User::latest()->get(),
+            "number" => 1,
+            "editcategoryjs" => 0,
+                        "edits" => User::latest()->get(),
+
+            "entry" => 0,
+            "entries" => 0
+        ]);
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | USER TO DELETE USERS
+    |--------------------------------------------------------------------------
+    */
+
+    public function deleteuser($user_slug)
+    {
+        DB::table('users')->where('user_slug',$user_slug)->delete();        
+
+        return view('/pages/users/users', [
+            "title" => "User Management",
+            "users" => User::latest()->get(),
+            "number" => 1,
+            "editcategoryjs" => 0,
+                        "edits" => User::latest()->get(),
+
+            "entry" => 0,
+            "entries" => 0
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | EMERGENCY
+    |--------------------------------------------------------------------------
+    */
+    public function emergency()
+    {
+        return view('/pages/utilities/emergency', [
+            "title" => "Login",
+        ]);
+    }
+
+    public function emergency404(Request $request)
+    {
+        // return request()->all();
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'username' => ['required', 'min:3', 'max:255', 'unique:users'],
+            'user_slug' => 'required|max:255',
+            'password' => 'required|min:5|max:255'
+        ]);
+
+        // $validatedData['password'] = bcrypt($validatedData['passsword']);
+
+        $validatedData['password'] = Hash::make($validatedData['password']);
+
+        // $request->session()->flash('Success', 'Regist success');
+
+        User::create($validatedData);
+
+        // dd($validatedData);
+
+        return view('/pages/utilities/login', [
+            "title" => "User Management",
+            "users" => User::latest()->get(),
+            "number" => 1,
+            "editcategoryjs" => 0,
         ]);
     }
 }

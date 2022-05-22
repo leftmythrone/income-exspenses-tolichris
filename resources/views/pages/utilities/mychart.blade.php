@@ -4,6 +4,7 @@
 
 {{-- ISI --}}
 
+<br><br>
 <div class="tabheader">
 
     {{-- HEADING --}}
@@ -234,7 +235,7 @@
                         <td><center>
                             @foreach ( $expenses as $expense ) 
                             
-                                @if ( $expense->expense_category->name === $excat->name )
+                                @if ( $expense->excat->name === $excat->name )
 
                                     @php
 
@@ -434,12 +435,17 @@
 
                             @php
     
-                                $cashflow = $intotal - $extotal - $debtotal;                         
+                                $cashflow = $intotal + $extotal - $debtotal;                         
                             
                             @endphp
     
                             Rp.{{ number_format($cashflow, 0, " ,","."); }},00
 
+                        </center>
+                    </td>
+                    <td>
+                        <center>
+                            <a href="/mychart/print"><button><img src="/img/printer_white.png" alt=""></button></a>
                         </center>
                     </td>
                 </tr>

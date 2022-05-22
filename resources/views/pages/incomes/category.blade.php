@@ -24,7 +24,7 @@
             {{-- CRSF --}}
             @csrf
             <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" required></label><br>
-            <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y"); }}">
+            <input type="hidden" name="incat_date" value="{{ date("Y-m-d"); }}">
             <input type="hidden" name="incat_slug" 
                 value=
                 "   
@@ -52,7 +52,10 @@
 <div class="tabcategory">
     {{-- SEARCH FEATURE --}}
     <div class="tabsearch">
-        <p>Search: <input type="text" placeholder="search . ."></p>
+        <form action="/income/searchcat">
+            <p>Search: <input type="text" name="searchcat" placeholder="search . ." value="{{ $historycat }}"></p>
+            <button type="submit">Find</button>
+        </form>
     </div>
 
     {{-- SHOWING ENTRIES --}}
@@ -147,11 +150,16 @@
                                 </center>
                                 
                             </td>
+                            <td>
+                                <center>
+                                    <a href="/income/print/"><button><img src="/img/printer_white.png" alt=""></button></a>
+                                </center>
+                            </td>
                         </tr>
             </table>
             
             {{-- EDIT CATEGORY LIST --}}
-            <div class="tabaddnew">
+            <div class="tabaddnew"> 
                 <div id="editcategorybox" class="editcategorybox">
                     @foreach ( $incats as $incat)
                     <form method="get" action="/income/editcategory/{{ $incat->incat_slug }}">
@@ -162,8 +170,9 @@
                         @csrf
                         
                         <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" value="{{ $incat->name }}" required></label><br>
-                          
-                        <button type="submit">Add new Income + </button>
+                        <label for="">Date Category : <input type="date" name="incat_date" autocomplete="off" value="{{ $incat->incat_entry_date }}" required></label><br>
+
+                        <button type="submit">Add new {{ $title }} + </button>
                         <br>
                     </form>
                     @endforeach

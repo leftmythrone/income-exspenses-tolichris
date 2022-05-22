@@ -86,5 +86,50 @@
       document.getElementById("edittablebox").style.transition = '0.3s';
     }
 
+        // EDIT Debt LIST
+
+
+      function onPaidTable() {
+      document.getElementById("overlaypaidtable").style.display = "block";
+      document.getElementById("paidtablebox").style.display = "block";
+      document.getElementById("paidtablebox").style.transition = '0.3s';
+    }
+    
+    function offPaidTable() {
+      document.getElementById("overlaypaidtable").style.display = "none";
+      document.getElementById("paidtablebox").style.display = "none";
+      document.getElementById("paidtablebox").style.transition = '0.3s';
+    }
+
+          // USER ADD TABLE
+
+
+    function onUseraddTable() {
+      document.getElementById("overlayuser").style.display = "block";
+      document.getElementById("adduserbox").style.display = "block";
+      document.getElementById("adduserbox").style.transition = '0.3s';
+    }
+    
+    function offUseraddTable() {
+      document.getElementById("overlayuser").style.display = "none";
+      document.getElementById("adduserbox").style.display = "none";
+      document.getElementById("adduserbox").style.transition = '0.3s';
+    }
+
+              // USER ADD TABLE
+
+
+    function offUsereditTable() {
+      document.getElementById("overlayedituser").style.display = "block";
+      document.getElementById("edituserbox").style.display = "block";
+      document.getElementById("edituserbox").style.transition = '0.3s';
+    }
+    
+    function offUsereditTable() {
+      document.getElementById("overlayedituser").style.display = "none";
+      document.getElementById("edituserbox").style.display = "none";
+      document.getElementById("edituserbox").style.transition = '0.3s';
+    }
+
 
     </script>

@@ -52,7 +52,10 @@
 <div class="tabcategory">
     {{-- SEARCH FEATURE --}}
     <div class="tabsearch">
-        <p>Search: <input type="text" placeholder="search . ."></p>
+        <form action="/expense/searchcat">
+            <p>Search: <input type="text" name="searchcat" placeholder="search . ." value="{{ $historycat }}"></p>
+            <button type="submit">Find</button>
+        </form>
     </div>
 
     {{-- SHOWING ENTRIES --}}
@@ -146,6 +149,11 @@
                                     {{-- Rp.{{ $total }},00 --}}
                                 </center>
                                 
+                            </td>
+                            <td>
+                                <center>
+                                    <a href="/expense/print/"><button><img src="/img/printer_white.png" alt=""></button></a>
+                                </center>
                             </td>
                         </tr>
             </table>

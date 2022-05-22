@@ -30,11 +30,78 @@ class ExpenseController extends Controller
             "excats"=> Expense::latest()->get(),
             "lists" => Expense::latest(),
             "inviews" => Expense::latest()->get(),
+                        "historycat" => null,
+            "historylist" =>null,
 
         ]);
     }
 
-        /*
+    /*
+    |--------------------------------------------------------------------------
+    | INCOME SEARCH
+    |--------------------------------------------------------------------------
+    */
+
+    public function searchcat()
+    {
+        $search = \App\Models\ExpenseCategory::latest();
+
+        if(request('searchcat')) {
+            $search->where('name', 'like', '%' . request('searchcat') . '%');
+        }
+
+        $historycat = request('searchcat');
+
+        return view('/pages/expenses/expenses', [
+            "title" => "Expense",
+            "sidebars" => "partials.sidebar",
+            "expenses" => Expense::latest()->get(),
+            // "expense" => Expense::where('income_entry_date', date("l, d-M-Y"))->get(),
+            // "categories" => \App\Models\ExpenseCategory::latest()->get(),
+            "categories" => $search->get(),
+            // "categories" => \App\Models\ExpenseCategory::where('incat_entry_date', date("l, d-M-Y"))->get(),
+            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
+            "editcategoryjs" => 0,
+            "excats"=> Expense::latest()->get(),
+            "lists" => Expense::latest(),
+            // "lists" => Expense::where('income_entry_date', date("l, d-M-Y"))->get(),
+            "inviews" => Expense::latest()->get(),
+            "historycat" => $historycat,
+            "historylist" =>null,
+
+        ]);
+    }
+
+    public function searchlist()
+    {
+        $search = \App\Models\Expense::latest();
+
+        if(request('searchlist')) {
+            $search->where('expense_description', 'like', '%' . request('searchlist') . '%');
+        }
+
+        $historylist = request('searchlist');
+
+        return view('/pages/expenses/expenses', [
+            "title" => "Expense",
+            "sidebars" => "partials.sidebar",
+            "expenses" => $search->get(),
+            // "expense" => Expense::where('income_entry_date', date("l, d-M-Y"))->get(),
+            "categories" => \App\Models\ExpenseCategory::latest()->get(),
+            // "categories" => \App\Models\ExpenseCategory::where('incat_entry_date', date("l, d-M-Y"))->get(),
+            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
+            "editcategoryjs" => 0,
+            "excats"=> Expense::latest()->get(),
+            "lists" => Expense::latest(),
+            // "lists" => Expense::where('income_entry_date', date("l, d-M-Y"))->get(),
+            "inviews" => Expense::latest()->get(),
+            "historycat" =>null,
+            "historylist" => $historylist,
+
+        ]);
+    }
+
+    /*
     |--------------------------------------------------------------------------
     | INCOME TO VIEW CATEGORY / LIST
     |--------------------------------------------------------------------------
@@ -54,6 +121,8 @@ class ExpenseController extends Controller
             "excats" => $category,
             "lists" => Expense::latest(),
             "inviews" => Expense::latest()->get(),
+                        "historycat" => null,
+            "historylist" =>null,
             
         ]);
     }
@@ -77,6 +146,8 @@ class ExpenseController extends Controller
             "excats" => \App\Models\ExpenseCategory::latest()->get(),
             "lists" => Expense::latest(),
             "inviews" => $inviews,
+                        "historycat" => null,
+            "historylist" =>null,
         ]);
     }
 
@@ -103,6 +174,8 @@ class ExpenseController extends Controller
             "inviews" => Expense::latest()->get(),
             "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
             "editcategoryjs" => 0,
+                        "historycat" => null,
+            "historylist" =>null,
 
 
         ]);
@@ -128,6 +201,8 @@ class ExpenseController extends Controller
             "excats"=> Expense::latest()->get(),
             "lists" => Expense::latest(),
             "inviews" => Expense::latest()->get(),
+                        "historycat" => null,
+            "historylist" =>null,
         ]);
     }
 
@@ -150,6 +225,8 @@ class ExpenseController extends Controller
             "excats" => $category,
             "inviews" => Expense::latest()->get(),
             "lists" => Expense::latest(),
+                        "historycat" => null,
+            "historylist" =>null,
             "update" => null
         ]);
     }
@@ -174,6 +251,8 @@ class ExpenseController extends Controller
             "excats" => \App\Models\ExpenseCategory::latest()->get(),
             "inviews" => Expense::latest()->get(),
             "update" => null,
+            "historycat" => null,
+            "historylist" =>null,
             "lists" => $list
         ]);
     }
@@ -200,6 +279,8 @@ class ExpenseController extends Controller
             "excats"=> Expense::latest()->get(),
             "inviews" => Expense::latest()->get(),
             "lists" => Expense::latest(),
+                        "historycat" => null,
+            "historylist" =>null,
         ]);
     }
 
@@ -222,6 +303,8 @@ class ExpenseController extends Controller
             "editcategoryjs" => 0,
             "excats"=> Expense::latest()->get(),
             "inviews" => Expense::latest()->get(),
+                        "historycat" => null,
+            "historylist" =>null,
             "lists" => Expense::latest(),
         ]);
     }
@@ -246,6 +329,8 @@ class ExpenseController extends Controller
             "excats"=> Expense::latest()->get(),
             "lists" => Expense::latest(),
             "inviews" => Expense::latest()->get(),
+                        "historycat" => null,
+            "historylist" =>null,
 
         ]);
     }
@@ -265,7 +350,32 @@ class ExpenseController extends Controller
             "excats"=> Expense::latest()->get(),
             "lists" => Expense::latest(),
             "inviews" => Expense::latest()->get(),
+                        "historycat" => null,
+            "historylist" =>null,
 
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | EXPENSE TO PRINT
+    |--------------------------------------------------------------------------
+    */
+
+    public function printstore()
+    {      
+        $alldata = DB::table('expenses')
+        ->select('expense_description', 'expense_categories.name' ,'nominal','expense_entry_date')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        // ->where('expense.income_slug','income_slug')
+        ->get();
+        
+        return view('/pages/expenses/print', [
+            "title" => "Expense",
+            "bck" => "expense",
+            "number" => 1,
+            "total" => 0,
+            "expenses" => $alldata
         ]);
     }
 }

@@ -6,20 +6,31 @@
   <div class="sideheading">
     <h1>PT Tolichris Surabaya</h1>
     <h4>Aplikasi Management Keuangan</h4>
+    <h4>Welcome, {{ auth()->user()->name }}</h4>
   </div>
 
   <br><br>
   <ul>
-    {{-- <li>
-      ICON
+
+
+    @if ( auth()->user()->username === 'admin' )
+    <li>
+      {{-- ICON --}}
       <div class="sideicon">
-        <img src="/img/home_logo.png" alt="">
+        <img src="/img/bank_account.png" alt="">
       </div>
-      FONT
+      {{-- FONT --}}
       <div class="sidefont">
-        <a href="/">Home / Menu</a href="">
+        <a href="/account">List of Account / <br> Daftar Akun</a>
       </div>
-    </li> --}}
+    </li>
+    @endif
+     
+    {{-- 
+    |--------------------------------------------------------------------------
+    | PAGE INCOMES / PEMASUKAN
+    |-------------------------------------------------------------------------- 
+    --}}
 
     <li>
       {{-- ICON --}}
@@ -32,6 +43,12 @@
       </div>
     </li>
 
+    {{-- 
+    |--------------------------------------------------------------------------
+    | PAGE EXPENSES / PENGELUARAN
+    |-------------------------------------------------------------------------- 
+    --}}
+    
     <li>
       {{-- ICON --}}
       <div class="sideicon">
@@ -42,7 +59,14 @@
         <a href="/expense">Expense / Pengeluaran</a>
       </div>
     </li>
+    
+    {{-- 
+    |--------------------------------------------------------------------------
+    | PAGE DEBTS / HUTANG DAN PIUTANG
+    |-------------------------------------------------------------------------- 
+    --}}
 
+    @if ( auth()->user()->username === 'admin' )
     <li>
       {{-- ICON --}}
       <div class="sideicon">
@@ -53,6 +77,16 @@
         <a href="/debt">Debts / Utang</a>
       </div>
     </li>
+    @endif
+
+
+    {{-- 
+    |--------------------------------------------------------------------------
+    | PAGE USERS MANAGEMENT / MANAJEMEN PENGGUNA
+    |-------------------------------------------------------------------------- 
+    --}}
+
+    @if ( auth()->user()->username === 'admin' )
 
     <li>
       {{-- ICON --}}
@@ -61,10 +95,19 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="/register">User Management / Manajemen Pengguna</a>
+        <a href="/user">User Management / Manajemen Pengguna</a>
       </div>
     </li>
 
+    @endif
+
+    {{-- 
+    |--------------------------------------------------------------------------
+    | PAGE CHART / GRAFIK
+    |-------------------------------------------------------------------------- 
+    --}}
+
+    @if ( auth()->user()->username === 'admin' )
     <li>
       {{-- ICON --}}
       <div class="sideicon">
@@ -75,6 +118,13 @@
         <a href="/mychart">Chart / Grafik</a>
       </div>
     </li>
+    @endif
+
+    {{-- 
+    |--------------------------------------------------------------------------
+    | PAGE LOGOUT
+    |-------------------------------------------------------------------------- 
+    --}}
 
     <li>
       {{-- ICON --}}

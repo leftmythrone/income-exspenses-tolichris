@@ -77,7 +77,7 @@
     </div>
     <br>
     <br>
-    <button onclick="onTable()" type="submit" >Add new Income + </button>
+    <button onclick="onTable()" type="submit" >Add new Expense + </button>
 </div>
 
 
@@ -87,7 +87,10 @@
     
     {{-- SEARCH FEATURE --}}
     <div class="tabsearch">
-        <p>Search: <input type="text" placeholder="search . ."></p>
+        <form action="/expense/searchlist">
+            <p>Search: <input type="text" name="searchlist" placeholder="search . ." value="{{ $historylist }}"></p>
+            <button type="submit">Find</button>
+        </form>
     </div>
             
     {{-- SHOWING ENTRIES --}}
@@ -132,12 +135,12 @@
                 <td><center>{{ $expense->expense_description }}</center></td>
                 <td><center>{{ $expense->excat->name }}</center></td>
                 <td><center>Rp. {{ number_format($expense->nominal, 0, " ,","."); }},00</center></td>
-                <td><center>{{ $expense->income_entry_date }}</center></td>
+                <td><center>{{ $expense->expense_entry_date }}</center></td>
                 <td>
                     <center>
                         <a href="/expense/viewlist/{{ $expense->expense_slug }}"><button><img src="/img/eye_white.png" alt=""></button></a>
                         <a href="/expense/editstore/{{ $expense->expense_slug }}"><button><img src="/img/pencil_white.png" alt=""></button></a> 
-                        <a href="/expense/deleteincome/{{ $expense->expense_slug }}"><button><img src="/img/trash_white.png" alt=""></button></a>
+                        <a href="/expense/deleteexpense/{{ $expense->expense_slug }}"><button><img src="/img/trash_white.png" alt=""></button></a>
                     </center>
                 </td>
             </tr>
@@ -169,7 +172,7 @@
 
 {{--
 |--------------------------------------------------------------------------
-| INCOME TO CREATE NEW CATEGORY / LIST
+| EXPENSE TO CREATE NEW CATEGORY / LIST
 |--------------------------------------------------------------------------
 --}}
 
@@ -193,7 +196,7 @@
                 <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $inview->expense_description }}" disabled required> </center></td>
             </tr>
             <tr>
-                <td><center> <label for="">Income Category</label> </center></td>
+                <td><center> <label for="">{{ $title }} Category</label> </center></td>
                 <td><center> : </center></td>
                 <td>
                     <center>
@@ -228,7 +231,7 @@
 
 {{--
 |--------------------------------------------------------------------------
-| INCOME TO EDIT  LIST
+| EXPENSE TO EDIT  LIST
 |--------------------------------------------------------------------------
 --}}
 
@@ -268,7 +271,7 @@
     </td>
 </tr>
 <tr>
-    <td><center> <label for="">nominal</label> </center></td>
+    <td><center> <label for="">Nominal</label> </center></td>
     <td><center> : </center></td>
     <td>
         <center> 
@@ -285,7 +288,7 @@
     <td colspan="2"> </td>
     <td>
         <center>
-            <button onclick="offTable()" type="submit" >Add new Income + </button>
+            <button onclick="offTable()" type="submit" >Add new {{ $title }} + </button>
         </center>
     </td>
 </tr>

@@ -1,0 +1,143 @@
+/* Google Font Link */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins" , sans-serif;
+}
+
+body {
+    padding: 0px 10px 10px 10px;
+    box-sizing: border-box;
+}
+
+.papper {
+    background-color: white;
+    width: 100%;
+    padding: 20px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.papper img{
+    width: 200px;
+    height: 200px;
+    float: left;
+}
+
+.line {
+    margin: 10px 0px 10px 0px;
+    background-color: black;
+    border: 2px solid black;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    bottom: 22px;
+    opacity: 70%;
+}
+.line2 {
+    margin: 10px 0px 10px 0px;
+    background-color: black;
+    border: 1.5px solid black;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    bottom: 41px;
+    opacity: 70%;
+}
+
+.line3 {
+    margin: 10px 0px 10px 0px;
+    background-color: black;
+    border: 2px solid black;
+}
+
+.line4 {
+    margin: 10px 0px 10px 0px;
+    background-color: black;
+    border: 1.5px solid black;
+}
+
+.lineindex {
+    /* z-index: 2; */
+    position: fixed;
+    top: 400px;
+}
+
+.clear {
+    clear: both;
+}
+
+.papper {
+    border-spacing: 100em;
+}
+
+.papper h1 {
+    font-size: 18px;
+    font-weight: 1000;
+}
+
+.papper h2 {
+    font-size: 12px;
+    font-weight: 1000;
+}
+
+.papper h3 {
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.papper h4 {
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.tableprint table{
+    width: 100%;
+}
+
+
+.btnremove input {
+    border: none;
+    background-color: rgb(127, 185, 39);
+    border-radius: 4px;
+    color: white;
+    font-weight: 600;
+    width: 90px;
+}
+
+.btnremove input:hover {
+    border: none;
+    background-color: rgb(68, 102, 17);
+    transition: 0.3s;
+}
+
+.btnback input{
+    border: none;
+    background-color: rgb(29, 94, 192);
+    border-radius: 4px;
+    color: white;
+    font-weight: 600;
+    width: 140px;
+}
+
+.btnback input:hover {
+    border: none;
+    background-color: rgb(26, 33, 99);
+    transition: 0.3s;
+}
+
+ul li {
+    display: inline-block;
+}
+
+@media print {
+    .btnremove {
+        display: none;
+    }
+
+    .btnback {
+        display: none;
+    }
+}

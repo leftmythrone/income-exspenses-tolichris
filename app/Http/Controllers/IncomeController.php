@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 // MODEL
 use App\Models\Income;
 use App\Models\IncomeCategory;
+
+// DUMP
+use App\Models\Dump;
+
 
 class IncomeController extends Controller
 {
@@ -24,17 +29,90 @@ class IncomeController extends Controller
             "title" => "Income",
             "sidebars" => "partials.sidebar",
             "incomes" => Income::latest()->get(),
+            // "incomes" => Income::where('income_entry_date', date("l, d-M-Y"))->get(),
             "categories" => \App\Models\IncomeCategory::latest()->get(),
+            // "categories" => \App\Models\IncomeCategory::where('incat_entry_date', date("l, d-M-Y"))->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
             "editcategoryjs" => 0,
             "incats"=> Income::latest()->get(),
             "lists" => Income::latest(),
+            // "lists" => Income::where('income_entry_date', date("l, d-M-Y"))->get(),
             "inviews" => Income::latest()->get(),
+            "historycat" => null,
+            "historylist" =>null,
+            "slug" => Dump::first()
 
         ]);
     }
 
-        /*
+    /*
+    |--------------------------------------------------------------------------
+    | INCOME SEARCH
+    |--------------------------------------------------------------------------
+    */
+
+    public function searchcat(Request $request)
+    {
+        $search = \App\Models\IncomeCategory::latest();
+
+        if(request('searchcat')) {
+            $search->where('name', 'like', '%' . request('searchcat') . '%');
+        }
+
+        // dd(request('searchcat'));
+
+        $historycat = request('searchcat');
+
+        return view('/pages/incomes/incomes', [
+            "title" => "Income",
+            "sidebars" => "partials.sidebar",
+            "incomes" => Income::latest()->get(),
+            // "incomes" => Income::where('income_entry_date', date("l, d-M-Y"))->get(),
+            // "categories" => \App\Models\IncomeCategory::latest()->get(),
+            "categories" => $search->get(),
+            // "categories" => \App\Models\IncomeCategory::where('incat_entry_date', date("l, d-M-Y"))->get(),
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 0,
+            "incats"=> Income::latest()->get(),
+            "lists" => Income::latest(),
+            // "lists" => Income::where('income_entry_date', date("l, d-M-Y"))->get(),
+            "inviews" => Income::latest()->get(),
+            "historycat" => $historycat,
+            "historylist" =>null,
+
+        ]);
+    }
+
+    public function searchlist()
+    {
+        $search = \App\Models\Income::latest();
+
+        if(request('searchlist')) {
+            $search->where('income_description', 'like', '%' . request('searchlist') . '%');
+        }
+
+        $historylist = request('searchlist');
+
+        return view('/pages/incomes/incomes', [
+            "title" => "Income",
+            "sidebars" => "partials.sidebar",
+            "incomes" => $search->get(),
+            // "incomes" => Income::where('income_entry_date', date("l, d-M-Y"))->get(),
+            "categories" => \App\Models\IncomeCategory::latest()->get(),
+            // "categories" => \App\Models\IncomeCategory::where('incat_entry_date', date("l, d-M-Y"))->get(),
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 0,
+            "incats"=> Income::latest()->get(),
+            "lists" => Income::latest(),
+            // "lists" => Income::where('income_entry_date', date("l, d-M-Y"))->get(),
+            "inviews" => Income::latest()->get(),
+            "historycat" =>null,
+            "historylist" => $historylist,
+
+        ]);
+    }
+
+    /*
     |--------------------------------------------------------------------------
     | INCOME TO VIEW CATEGORY / LIST
     |--------------------------------------------------------------------------
@@ -54,14 +132,16 @@ class IncomeController extends Controller
             "incats" => $category,
             "lists" => Income::latest(),
             "inviews" => Income::latest()->get(),
-            
+            "historycat" => null,
+            "historylist" =>null,
+            "slug" => Dump::first()
         ]);
     }
 
     public function viewlist($income_slug)
     {
-        $inviews = DB::table('incomes')
-        ->select('income_description', 'income_categories.name' ,'nominal')
+        $inview = DB::table('incomes')
+        ->select('income_description', 'income_categories.name' ,'nominal', 'income_entry_date')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->where('incomes.income_slug',$income_slug)
         ->get();
@@ -77,7 +157,9 @@ class IncomeController extends Controller
             "incats" => \App\Models\IncomeCategory::latest()->get(),
             "lists" => Income::latest(),
             "inviews" => $inview,
-            // "tesasa" => $test
+            "historycat" => null,
+            "historylist" =>null,
+            "slug" => Dump::first()
         ]);
     }
 
@@ -104,8 +186,9 @@ class IncomeController extends Controller
             "inviews" => Income::latest()->get(),
             "dataopt" => \App\Models\IncomeCategory::latest()->get(),
             "editcategoryjs" => 0,
-
-
+            "historycat" => null,
+            "historylist" =>null,
+            "slug" => Dump::first()
         ]);
     }
 
@@ -129,6 +212,10 @@ class IncomeController extends Controller
             "incats"=> Income::latest()->get(),
             "lists" => Income::latest(),
             "inviews" => Income::latest()->get(),
+            "historycat" => null,
+            "historylist" =>null,
+            "slug" => Dump::first()
+
         ]);
     }
 
@@ -151,7 +238,11 @@ class IncomeController extends Controller
             "incats" => $category,
             "inviews" => Income::latest()->get(),
             "lists" => Income::latest(),
-            "update" => null
+            "historycat" => null,
+            "historylist" =>null,
+            "update" => null,
+            "slug" => Dump::first()
+
         ]);
     }
 
@@ -175,7 +266,10 @@ class IncomeController extends Controller
             "incats" => \App\Models\IncomeCategory::latest()->get(),
             "inviews" => Income::latest()->get(),
             "update" => null,
-            "lists" => $list
+            "historycat" => null,
+            "historylist" =>null,
+            "lists" => $list,
+            "slug" => $list->first()
         ]);
     }
 
@@ -188,7 +282,8 @@ class IncomeController extends Controller
     public function editcategory(Request $request, $incat_slug)
     {
         DB::table('income_categories')->where('incat_slug', $incat_slug)->update([
-            'name'=>$request->incat_name
+            'name'=>$request->incat_name,
+            'incat_entry_date'=>$request->incat_date
 		]);
         
         return view('/pages/incomes/incomes', [
@@ -201,6 +296,9 @@ class IncomeController extends Controller
             "incats"=> Income::latest()->get(),
             "inviews" => Income::latest()->get(),
             "lists" => Income::latest(),
+            "historycat" => null,
+            "historylist" =>null,
+            "slug" => Dump::first()
         ]);
     }
 
@@ -224,6 +322,9 @@ class IncomeController extends Controller
             "incats"=> Income::latest()->get(),
             "inviews" => Income::latest()->get(),
             "lists" => Income::latest(),
+            "historycat" => null,
+            "historylist" =>null,
+            "slug" => Dump::first()
         ]);
     }
 
@@ -247,6 +348,10 @@ class IncomeController extends Controller
             "incats"=> Income::latest()->get(),
             "lists" => Income::latest(),
             "inviews" => Income::latest()->get(),
+            "historycat" => null,
+            "historylist" =>null,
+            "slug" => Dump::first()
+
 
         ]);
     }
@@ -266,7 +371,34 @@ class IncomeController extends Controller
             "incats"=> Income::latest()->get(),
             "lists" => Income::latest(),
             "inviews" => Income::latest()->get(),
+            "historycat" => null,
+            "historylist" =>null,
+            "slug" => Dump::first()
 
+
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | INCOME TO PRINT
+    |--------------------------------------------------------------------------
+    */
+
+    public function printstore()
+    {      
+        $alldata = DB::table('incomes')
+        ->select('income_description', 'income_categories.name' ,'nominal','income_entry_date')
+        ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
+        // ->where('incomes.income_slug','income_slug')
+        ->get();
+        
+        return view('/pages/incomes/print', [
+            "title" => "Income",
+            "bck" => "income",
+            "number" => 1,
+            "total" => 0,
+            "incomes" => $alldata
         ]);
     }
 }

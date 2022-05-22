@@ -56,7 +56,7 @@
                                 {{-- INPUT_NOMINAL --}}
                                 <input type="text" name="input_nominal" autocomplete="off" required>                
                                 {{-- INPUT DATE --}}
-                                <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
+                                <input type="hidden" name="input_date" value="{{ date("Y-m-d"); }}">
                                 {{-- INPUT TOKEN --}}
                                 <input type="hidden" name="income_slug" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
                             </center>
@@ -87,7 +87,10 @@
     
     {{-- SEARCH FEATURE --}}
     <div class="tabsearch">
-        <p>Search: <input type="text" placeholder="search . ."></p>
+        <form action="/income/searchlist">
+            <p>Search: <input type="text" name="searchlist" placeholder="search . ." value="{{ $historylist }}"></p>
+            <button type="submit">Find</button>
+        </form>
     </div>
             
     {{-- SHOWING ENTRIES --}}
@@ -116,6 +119,7 @@
                 <th><center>Income Detail / Detail Pemasukan</center></th>
                 <th><center>Category / Kategori</center></th>
                 <th><center>Nominal</center></th>
+                <th><center>Account {{ $title }}</center></th>
                 <th><center>Date</center></th>
                 <th><center>Action</center></th>
             </tr>
@@ -132,6 +136,8 @@
                 <td><center>{{ $income->income_description }}</center></td>
                 <td><center>{{ $income->income_category->name }}</center></td>
                 <td><center>Rp. {{ number_format($income->nominal, 0, " ,","."); }},00</center></td>
+                <td><center>{{ $income->inacc->account_name }}</center></td>
+
                 <td><center>{{ $income->income_entry_date }}</center></td>
                 <td>
                     <center>
@@ -169,7 +175,7 @@
 
 {{--
 |--------------------------------------------------------------------------
-| INCOME TO CREATE NEW CATEGORY / LIST
+| INCOME TO VIEW CATEGORY
 |--------------------------------------------------------------------------
 --}}
 
@@ -178,7 +184,7 @@
     <h1>View New {{ $title }}</h1>
     <h2>View / lihat setiap {{ $title }} untuk lebih detail</h2>
     <div class="viewtableincomebox">
-    <form method="post" action="/income/viewlist/{{ $income->income_slug }}">
+    <form method="post" action="/income/viewlist/{{ $slug->income_slug }}">
 
     {{-- CSRF --}}
     @csrf
@@ -208,12 +214,17 @@
                     <center> 
                         {{-- INPUT_NOMINAL --}}
                         <input type="text" name="input_nominal" value="Rp. {{ number_format($inview->nominal, 0, " ,","."); }},00" autocomplete="off" disabled required>                
-                        {{-- INPUT DATE --}}
-                        <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
+
                         {{-- INPUT TOKEN --}}
                         <input type="hidden" name="token" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
                     </center>
                 </td>
+            </tr>
+            <tr>
+                <td><center> <label for="">{{ $title }} Entry Date</label> </center></td>
+                <td><center> : </center></td>
+                {{-- INPUT_DATE --}}
+                <td><center> <input type="text" name="input_date" autocomplete="off" value="{{ $inview->income_entry_date }}" disabled required> </center></td>
             </tr>
         </table>
 
@@ -240,7 +251,7 @@
 <div class="tableincomebox">
 @foreach ($lists as $list)
 
-<form method="post" action="/income/editlist/{{ $list->income_slug }}">
+<form method="post" action="/income/editlist/{{ $slug->income_slug }}">
 
 {{-- CSRF --}}
 @csrf
@@ -268,24 +279,28 @@
     </td>
 </tr>
 <tr>
-    <td><center> <label for="">nominal</label> </center></td>
+    <td><center> <label for="">Nominal</label> </center></td>
     <td><center> : </center></td>
     <td>
         <center> 
             {{-- INPUT_NOMINAL --}}
-            <input type="text" name="input_nominal" autocomplete="off" value="{{ $list->nominal }}" required>                
-            {{-- INPUT DATE --}}
-            <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
+            <input type="text" name="input_nominal" autocomplete="off" value="{{ $list->nominal }}" required>               
             {{-- INPUT TOKEN --}}
             <input type="hidden" name="token" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
         </center>
     </td>
 </tr>
+<tr>
+    <td><center> <label for="">{{ $title }} Entry Date</label> </center></td>
+    <td><center> : </center></td>
+    {{-- INPUT_DATE --}}
+    <td><center> <input type="date" name="input_date"> </center></td>
+</tr>
 <tr> 
     <td colspan="2"> </td>
     <td>
         <center>
-            <button onclick="offTable()" type="submit" >Add new Income + </button>
+            <button onclick="offTable()" type="submit" >Add new {{ $title }} + </button>
         </center>
     </td>
 </tr>
