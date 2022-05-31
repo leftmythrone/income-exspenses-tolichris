@@ -30,7 +30,7 @@ class ExpenseController extends Controller
             "excats"=> Expense::latest()->get(),
             "lists" => Expense::latest(),
             "inviews" => Expense::latest()->get(),
-                        "historycat" => null,
+            "historycat" => null,
             "historylist" =>null,
 
         ]);

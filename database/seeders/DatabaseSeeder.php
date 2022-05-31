@@ -95,10 +95,11 @@ class DatabaseSeeder extends Seeder
         \App\Models\IncomeCategory::create([
             'name' => '[Click Edit Or Delete]',
             'incat_slug' => 'basic.sVasidwadswUsa',
-            'incat_entry_date' => '2022-05-21'
+            'incat_entry_date' => '2022-05-21',
+            'incat_total' => 0
         ]);
 
-        // Income::factory(1)->create();
+        Income::factory(20)->create();
 
 
         \App\Models\Income::create([

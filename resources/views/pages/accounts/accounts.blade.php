@@ -59,8 +59,27 @@
                         <tr>
                             {{-- TABLE MAIN SECTION --}}
                             <td> <center>{{ $number++ }}</center></td>
+                            
                             <td><center>{{ $account->account_name }}</center></td>
-                            <td><center>Rp. {{ number_format($account->account_balance, 0, " ,","."); }},00</center></td>                            <td>
+                            
+                            <td>
+                                <center>
+                                    @foreach ($incomes as $income)
+                                        @php
+                                            if( $account->account_name === $income->inacc->account_name ) {
+                                                $subcat = $subcat + $income->nominal;
+                                            }
+                                        @endphp
+                                    @endforeach
+
+                                    Rp. {{ number_format($subcat, 0, " ,","."); }},00
+                                        @php
+                                            $subcat = 0;
+                                        @endphp
+                                </center>
+                            </td>                            
+                            
+                            <td>
                                 <center>
                                     <a href="/income/viewcategory/"><button><img src="/img/eye_white.png" alt=""></button></a>
                                     <a href="/income/editlanding/"><button><img src="/img/pencil_white.png" alt=""></button></a> 

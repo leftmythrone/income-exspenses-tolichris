@@ -122,10 +122,11 @@ Route::post('/income/editlist/{income_slug}',[IncomeController::class, 'editlist
 
 // DELETE
 Route::get('/income/deletelist/{income_slug}',[IncomeController::class, 'editcatlanding'])->middleware('auth');
-Route::get('/income/deleteincome/{income_slug}',[IncomeController::class, 'deletelist'])->middleware('auth');
-
 Route::get('/income/deletecat/{incat_slug}',[IncomeController::class, 'editcatlanding'])->middleware('auth');
+
+
 Route::get('/income/deletecategory/{incat_slug}',[IncomeController::class, 'deletecategory'])->middleware('auth');
+Route::get('/income/deleteincome/{income_slug}',[IncomeController::class, 'deletelist'])->middleware('auth');
 
 // SEARCH
 Route::get('/income/searchcat',[IncomeController::class, 'searchcat'])->middleware('auth');

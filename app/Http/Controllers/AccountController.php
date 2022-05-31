@@ -37,7 +37,11 @@ class AccountController extends Controller
             "title" => "Income",
             "accounts" => Account::latest()->get(),
             "incats" => IncomeCategory::latest()->get(),
-            "number" => 1
+            "incomes" => Income::latest()->get(),
+            "number" => 1,
+            "subcat" => 0,
+            "subtotal" => 0,
+            "total" => 0
         ]);
     }
 

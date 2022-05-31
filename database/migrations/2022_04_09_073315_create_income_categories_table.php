@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('incat_slug')->nullable();
             $table->string('name')->unique();
             $table->date('incat_entry_date')->nullable();
+            $table->integer('incat_total')->nullable();
             $table->timestamps();
         });
     }

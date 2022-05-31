@@ -24,7 +24,7 @@
             {{-- CRSF --}}
             @csrf
             <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" required></label><br>
-            <input type="hidden" name="incat_date" value="{{ date("Y-m-d"); }}">
+            <input type="hidden" name="incat_date" value="{{ date("l, d-M-Y"); }}">
             <input type="hidden" name="incat_slug" 
                 value=
                 "   

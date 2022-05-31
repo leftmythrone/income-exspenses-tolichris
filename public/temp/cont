@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 // MODEL
-use App\Models\Account;
 use App\Models\Income;
 use App\Models\IncomeCategory;
 
@@ -21,40 +20,17 @@ class IncomeController extends Controller
 
     public function start()
     {
-        $test = DB::table('dumps')->where('id','1')->get();
-        $listcount = DB::table('incomes')->count();
-
-
         return view('/pages/incomes/incomes', [
-            
-            // Title 
             "title" => "Income",
-
-            // Main table View
-            "incomes" => Income::latest('income_entry_date')->get(),
-            "categories" => \App\Models\IncomeCategory::latest('incat_entry_date')->get(),
-            
-            // For showing data
-            "dataopt" => \App\Models\IncomeCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-
-            // Count Entries
-            "listcount" => $listcount,
-
-            // N+1
-            "dummies" => $test->first(),
-
-            // Useless as fuck
+            "incomes" => Income::latest()->get(),
+            "categories" => \App\Models\IncomeCategory::latest()->get(),
+            "dataopt" => \App\Models\IncomeCategory::latest()->get(),
+            "editcategoryjs" => 0,
             "incats"=> Income::latest()->get(),
             "lists" => Income::latest(),
             "inviews" => Income::latest()->get(),
-
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-
-            // FOR JS SHOW 
-            "editcategoryjs" => 0,
+            "historycat" => null,
+            "historylist" =>null,
 
         ]);
     }
@@ -129,9 +105,9 @@ class IncomeController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function viewcategory($incat_slug)
+    public function viewcategory($income_slug)
     {
-        $category = DB::table('income_categories')->where('incat_slug',$incat_slug)->get();
+        $category = DB::table('income_categories')->where('income_slug',$income_slug)->get();
 
         return view('/pages/incomes/incomes', [
             "title" => "Income",
@@ -168,7 +144,6 @@ class IncomeController extends Controller
             "incats" => \App\Models\IncomeCategory::latest()->get(),
             "lists" => Income::latest(),
             "inviews" => $inviews,
-            "accopt" => \App\Models\Account::latest()->get(),
             "historycat" => null,
             "historylist" =>null,
         ]);
@@ -184,9 +159,9 @@ class IncomeController extends Controller
     public function addcategory(Request $request)
     {
         DB::table('income_categories')->insert([
-            'name'=>$request->incat_name,
+            'name'=>$request->excat_name,
             'incat_entry_date'=>$request->incat_date,
-            'incat_slug'=>$request->incat_slug
+            'income_slug'=>$request->income_slug
         ]);
         return view('/pages/incomes/incomes', [
             "title" => "Income",
@@ -210,7 +185,6 @@ class IncomeController extends Controller
         DB::table('incomes')->insert([
             'income_description'=>$request->input_decs,
             'income_category_id' => $request->input_cats,
-            'income_account_id' => $request->input_acc,
             'income_entry_date' => $request-> input_date,
             'income_slug' => $request-> income_slug,
             'nominal' => $request-> input_nominal
@@ -235,9 +209,9 @@ class IncomeController extends Controller
     | INCOME UPDATE LANDING PAGE CATEGORY / LIST
     |--------------------------------------------------------------------------
     */
-    public function editcatlanding($incat_slug)
+    public function editcatlanding($income_slug)
     {
-        $category = DB::table('income_categories')->where('incat_slug',$incat_slug)->get();
+        $category = DB::table('income_categories')->where('income_slug',$income_slug)->get();
 
         return view('/pages/incomes/incomes', [
             "title" => "Income",
@@ -251,7 +225,7 @@ class IncomeController extends Controller
             "lists" => Income::latest(),
                         "historycat" => null,
             "historylist" =>null,
-            "update" => null,
+            "update" => null
         ]);
     }
 
@@ -277,9 +251,7 @@ class IncomeController extends Controller
             "update" => null,
             "historycat" => null,
             "historylist" =>null,
-            "lists" => $list,
-            "accopt" => \App\Models\Account::latest()->get(),
-
+            "lists" => $list
         ]);
     }
 
@@ -289,10 +261,10 @@ class IncomeController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function editcategory(Request $request, $incat_slug)
+    public function editcategory(Request $request, $income_slug)
     {
-        DB::table('income_categories')->where('incat_slug', $incat_slug)->update([
-            'name'=>$request->incat_name
+        DB::table('income_categories')->where('income_slug', $income_slug)->update([
+            'name'=>$request->excat_name
 		]);
         
         return view('/pages/incomes/incomes', [
@@ -361,9 +333,9 @@ class IncomeController extends Controller
         ]);
     }
 
-    public function deletecategory($incat_slug)
+    public function deletecategory($income_slug)
     {
-        DB::table('income_categories')->where('incat_slug',$incat_slug)->delete();
+        DB::table('income_categories')->where('income_slug',$income_slug)->delete();
         
 
         return view('/pages/incomes/incomes', [
