@@ -14,10 +14,19 @@ return new class extends Migration
     public function up()
     {
         Schema::create('expense_categories', function (Blueprint $table) {
+            // Category account ID
             $table->id();
+
+            // Category account slug
             $table->string('excat_slug')->nullable();
+
+            // Category account name 
             $table->string('name')->unique();
-            $table->string('excat_entry_date')->nullable();
+
+            // Category entry date
+            $table->date('excat_entry_date')->nullable();
+
+            // Category timestamps
             $table->timestamps();
         });
     }

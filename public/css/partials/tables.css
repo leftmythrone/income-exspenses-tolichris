@@ -112,3 +112,12 @@
     background-color: #34a81f;
     transition: 0.3s;
   }
+
+  .entriesctrl ul li {
+    display: inline-block;
+  }
+
+  .entriesctrl form {
+    position: relative;
+    right: 15px;
+  }

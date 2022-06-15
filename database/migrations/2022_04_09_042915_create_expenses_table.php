@@ -14,12 +14,28 @@ return new class extends Migration
     public function up()
     {
         Schema::create('expenses', function (Blueprint $table) {
+            // Expense ID
             $table->id();
+
+            // For web search
             $table->string('expense_slug')->nullable();
+
+            // Detail description for expense
             $table->string('expense_description');
+
+            // Foreign key for category
             $table->foreignId('expense_category_id');
-            $table->string('expense_entry_date')->nullable();
+
+            // Foreign key for account
+            $table->foreignId('expense_account_id');
+
+            // Entry date for expense
+            $table->date('expense_entry_date')->nullable();
+
+            // Expense total or nominal
             $table->integer('nominal');
+
+            // Expense timestamp
             $table->timestamps();
         });
     }

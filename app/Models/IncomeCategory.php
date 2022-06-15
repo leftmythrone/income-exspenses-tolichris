@@ -16,4 +16,4 @@ class IncomeCategory extends Model
 
     // GUARDING IMPORTANT
     protected $guarded = ['id'];
-    }
+}

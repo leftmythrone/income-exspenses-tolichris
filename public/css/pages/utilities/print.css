@@ -122,6 +122,23 @@ body {
     width: 140px;
 }
 
+
+
+.btnsearch button{
+    border: none;
+    background-color: rgb(207, 138, 33);
+    border-radius: 4px;
+    color: white;
+    font-weight: 600;
+    width: 140px;
+}
+
+.btnsearch button:hover {
+    border: none;
+    background-color: rgb(117, 79, 21);
+    transition: 0.3s;
+}
+
 .btnback input:hover {
     border: none;
     background-color: rgb(26, 33, 99);
@@ -133,11 +150,9 @@ ul li {
 }
 
 @media print {
-    .btnremove {
-        display: none;
-    }
+    
 
-    .btnback {
+    .remove {
         display: none;
     }
 }

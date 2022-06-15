@@ -14,12 +14,28 @@ return new class extends Migration
     public function up()
     {
         Schema::create('debts', function (Blueprint $table) {
+            // Debt ID
             $table->id();
+
+            // For web search
             $table->string('debt_slug')->nullable();
+
+            // Detail description for debt
             $table->string('debt_description');
+
+            // Foreign key for category
             $table->foreignId('debt_category_id');
-            $table->string('debt_entry_date')->nullable();
+
+            // Foreign key for account
+            $table->foreignId('debt_account_id');
+
+            // Entry date for debt
+            $table->date('debt_entry_date')->nullable();
+
+            // Debt total or nominal
             $table->integer('nominal');
+
+            // Debt timestamp
             $table->timestamps();
         });
     }

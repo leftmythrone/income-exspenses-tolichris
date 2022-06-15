@@ -6,45 +6,155 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 // MODEL
+use App\Models\Account;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
+use App\Models\Dump;
 
 class ExpenseController extends Controller
 {
-
     /*
     |--------------------------------------------------------------------------
-    | INCOME MAIN PAGE
+    | EXPENSE MAIN PAGE
     |--------------------------------------------------------------------------
     */
 
     public function start()
     {
-        return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "sidebars" => "partials.sidebar",
-            "expenses" => Expense::latest()->get(),
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "excats"=> Expense::latest()->get(),
-            "lists" => Expense::latest(),
-            "inviews" => Expense::latest()->get(),
-            "historycat" => null,
-            "historylist" =>null,
+        // N+1 Query
+        $dummies = Dump::first()->get();
 
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+
+
+        return view('/pages/expenses/expenses', [
+            
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $expenses,
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => null, 
+            "historylist" =>null, 
+
+            // For JavaScript show 
+            "editcategoryjs" => 0,
+
+            // For showing entries
+            "entdata" => 0,
+            
+        ]);
+    }
+
+
+    public function entries(Request $request, $entdata)
+    {
+
+        if ($request->type === 'next')
+        {
+            $count = $entdata + 10;
+        }
+        else
+        {
+            $count = $entdata - 10;
+        }
+
+
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+
+        // RUMUS TAEK
+
+
+        return view('/pages/expenses/expenses', [
+            
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $expenses, // Income::latest('expense_entry_date')->get(),
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => null, 
+            "historylist" => null, 
+
+            // For JavaScript show 
+            "editcategoryjs" => 0,
+
+            // For showing entries
+            "entdata" => $count
         ]);
     }
 
     /*
     |--------------------------------------------------------------------------
-    | INCOME SEARCH
+    | EXPENSE SEARCH
     |--------------------------------------------------------------------------
     */
 
     public function searchcat()
     {
-        $search = \App\Models\ExpenseCategory::latest();
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // Search Query
+        $search = \App\Models\ExpenseCategory::latest('excat_entry_date');
 
         if(request('searchcat')) {
             $search->where('name', 'like', '%' . request('searchcat') . '%');
@@ -53,130 +163,284 @@ class ExpenseController extends Controller
         $historycat = request('searchcat');
 
         return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "sidebars" => "partials.sidebar",
-            "expenses" => Expense::latest()->get(),
-            // "expense" => Expense::where('income_entry_date', date("l, d-M-Y"))->get(),
-            // "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "categories" => $search->get(),
-            // "categories" => \App\Models\ExpenseCategory::where('incat_entry_date', date("l, d-M-Y"))->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "excats"=> Expense::latest()->get(),
-            "lists" => Expense::latest(),
-            // "lists" => Expense::where('income_entry_date', date("l, d-M-Y"))->get(),
-            "inviews" => Expense::latest()->get(),
-            "historycat" => $historycat,
-            "historylist" =>null,
 
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => Income::latest('expense_entry_date')->get(),
+            "categories" => $search->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => $historycat, 
+            "historylist" =>null, 
+
+            // For JavaScript show 
+            "editcategoryjs" => 0,
+
+            // For showing entries
+            "entdata" => 0,
         ]);
     }
 
     public function searchlist()
     {
-        $search = \App\Models\Expense::latest();
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+    
+        // List Query Search
+        $search = DB::table('expenses')
+        ->select('income_description', 'expense_categories.name' ,'nominal', 'expense_entry_date', 'income_slug')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->where('expenses.income_description','like', '%' . request('searchlist') . '%')
+        ->orWhere('expenses.expense_entry_date','like', '%' . request('searchlist') . '%')
+        ->orWhere('expense_categories.name','like', '%' . request('searchlist') . '%') 
+        ->get();
 
         if(request('searchlist')) {
-            $search->where('expense_description', 'like', '%' . request('searchlist') . '%');
+            $search->where('income_description', 'like', '%' . request('searchlist') . '%');
         }
 
         $historylist = request('searchlist');
 
         return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "sidebars" => "partials.sidebar",
-            "expenses" => $search->get(),
-            // "expense" => Expense::where('income_entry_date', date("l, d-M-Y"))->get(),
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            // "categories" => \App\Models\ExpenseCategory::where('incat_entry_date', date("l, d-M-Y"))->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
+
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $search,
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => null, 
+            "historylist" => $historylist, 
+
+            // For JavaScript show
             "editcategoryjs" => 0,
-            "excats"=> Expense::latest()->get(),
-            "lists" => Expense::latest(),
-            // "lists" => Expense::where('income_entry_date', date("l, d-M-Y"))->get(),
-            "inviews" => Expense::latest()->get(),
-            "historycat" =>null,
-            "historylist" => $historylist,
+
+            // For showing entries
+            "entdata" => 0,
 
         ]);
     }
 
     /*
     |--------------------------------------------------------------------------
-    | INCOME TO VIEW CATEGORY / LIST
+    | EXPENSE TO VIEW CATEGORY / LIST
     |--------------------------------------------------------------------------
     */
 
-    public function viewcategory($excat_slug)
+    public function viewcategory($incat_slug)
     {
-        $category = DB::table('expense_categories')->where('excat_slug',$excat_slug)->get();
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+
+        // View category
+        $category = DB::table('expense_categories')->where('incat_slug',$incat_slug)->get();
 
         return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "sidebars" => "partials.sidebar",
-            "expenses" => Expense::latest()->get(),
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
-            "editcategoryjs" => 2,
-            "excats" => $category,
-            "lists" => Expense::latest(),
-            "inviews" => Expense::latest()->get(),
-                        "historycat" => null,
-            "historylist" =>null,
+
+           // Title 
+           "title" => "Income",
+
+           // Main table view
+           "expenses" => $expenses,
+           "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+           
+           // For showing data
+           "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+           "accopt" => \App\Models\Account::latest('id')->get(),
+
+           // Count entries
+           "listcount" => $listcount,
+           "catcount" => $catcount,
+
+           // N+1
+           "excats"=> $category,
+           "lists" => $dummies,
+           "inviews" => $dummies,
+
+           // History for search
+           "historycat" => null, 
+           "historylist" =>null, 
+
+           // For JavaScript show 
+           "editcategoryjs" => 2,
             
+            // For showing entries
+            "entdata" => 0,
         ]);
     }
 
-    public function viewlist($expense_slug)
+    public function viewlist($income_slug)
     {
-        $inviews = DB::table('expenses')
-        ->select('expense_description', 'expense_categories.name' ,'nominal')
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // Income Order By Descendant
+        $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
-        ->where('expenses.expense_slug',$expense_slug)
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+
+        // View list query
+        $inviews = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->where('expenses.income_slug',$income_slug)
         ->get();
 
 
         return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "sidebars" => "partials.sidebar",
-            "expenses" => Expense::latest()->get(),
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
-            "editcategoryjs" => 4,
-            "excats" => \App\Models\ExpenseCategory::latest()->get(),
-            "lists" => Expense::latest(),
-            "inviews" => $inviews,
-                        "historycat" => null,
-            "historylist" =>null,
+
+           // Title 
+           "title" => "Income",
+
+           // Main table view
+           "expenses" => $expenses,
+           "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+           
+           // For showing data
+           "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+           "accopt" => \App\Models\Account::latest('id')->get(),
+
+           // Count entries
+           "listcount" => $listcount,
+           "catcount" => $catcount,
+
+           // N+1
+           "excats"=> $dummies,
+           "lists" => $dummies,
+           "inviews" => $inviews, 
+
+           // History for search
+           "historycat" => null, 
+           "historylist" =>null, 
+
+           // For JavaScript show
+           "editcategoryjs" => 4,
+
+            // For showing entries
+            "entdata" => 0
+
         ]);
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | INCOME TO CREATE NEW CATEGORY / LIST
+    | EXPENSE TO CREATE NEW CATEGORY / LIST
     |--------------------------------------------------------------------------
     */
 
     public function addcategory(Request $request)
     {
-        DB::table('expense_categories')->insert([
-            'name'=>$request->excat_name,
-            'excat_entry_date'=>$request->excat_date,
-            'excat_slug'=>$request->excat_slug
-        ]);
-        return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "expenses" => Expense::latest()->get(),
-            "excats"=> Expense::latest()->get(),
-            "lists" => Expense::latest(),
-            "inviews" => Expense::latest()->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
-            "editcategoryjs" => 0,
-                        "historycat" => null,
-            "historylist" =>null,
+        // N+1 Query
+        $dummies = Dump::first()->get();
 
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+
+
+        // Query insert database
+        DB::table('expense_categories')->insert([
+            'name'=>$request->incat_name,
+            'excat_entry_date'=>$request->incat_date,
+            'incat_slug'=>$request->incat_slug
+        ]);
+
+        return view('/pages/expenses/expenses', [
+
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $expenses,
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+                
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+    
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+    
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+    
+            // History for search
+            "historycat" => null, 
+            "historylist" =>null, 
+    
+            // For JavaScript show
+            "editcategoryjs" => 0,
+
+            // For showing entries
+            "entdata" => 0,
 
         ]);
     }
@@ -184,174 +448,532 @@ class ExpenseController extends Controller
 
     public function addlist(Request $request)
     {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+
+        // Query insert Database
         DB::table('expenses')->insert([
-            'expense_description'=>$request->input_decs,
+            'income_description'=>$request->input_decs,
             'expense_category_id' => $request->input_cats,
+            'expense_account_id' => $request->input_acc,
             'expense_entry_date' => $request-> input_date,
-            'expense_slug' => $request-> expense_slug,
+            'income_slug' => $request->income_slug,
             'nominal' => $request-> input_nominal
         ]);
-        
+
         return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "expenses" => Expense::latest()->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
+
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $expenses,
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+                
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+    
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+    
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+    
+            // History for search
+            "historycat" => null, 
+            "historylist" =>null, 
+    
+            // For JavaScript show 
             "editcategoryjs" => 0,
-            "excats"=> Expense::latest()->get(),
-            "lists" => Expense::latest(),
-            "inviews" => Expense::latest()->get(),
-                        "historycat" => null,
-            "historylist" =>null,
+
+            // For showing entries
+            "entdata" => 0,
         ]);
     }
 
     /*
     |--------------------------------------------------------------------------
-    | INCOME UPDATE LANDING PAGE CATEGORY / LIST
+    | EXPENSE UPDATE LANDING PAGE CATEGORY / LIST
     |--------------------------------------------------------------------------
     */
-    public function editcatlanding($excat_slug)
-    {
-        $category = DB::table('expense_categories')->where('excat_slug',$excat_slug)->get();
+    public function editcatlanding($incat_slug)
+    {        
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+        
+        // Query for find landing category
+        $category = DB::table('expense_categories')->where('incat_slug',$incat_slug)->get();
 
         return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "sidebars" => "partials.sidebar",
-            "expenses" => Expense::latest()->get(),
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
+
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $expenses,
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+                
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+    
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+    
+            // N+1
+            "excats"=> $category,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+    
+            // History for search
+            "historycat" => null, 
+            "historylist" =>null,
+    
+            // For JavaScript show 
             "editcategoryjs" => 1,
-            "excats" => $category,
-            "inviews" => Expense::latest()->get(),
-            "lists" => Expense::latest(),
-                        "historycat" => null,
-            "historylist" =>null,
-            "update" => null
+        
+            // For showing entries
+            "entdata" => 0,
         ]);
     }
 
-    public function editstore($expense_slug)
+    public function editstore($income_slug)
     {
-        $list = DB::table('expenses')->where('expense_slug',$expense_slug)->get();
+        // N+1 Query
+        $dummies = Dump::first()->get();
 
-        // $test = DB::table('expenses')
-        // ->select('*', 'income_categories.name')
-        // ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
-        // ->where('expenses.income_slug',$income_slug)
-        // ->get();
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+    
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+        
+        // Query for find landing list
+        $list = DB::table('expenses')->where('income_slug',$income_slug)->get();
 
         return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "sidebars" => "partials.sidebar",
-            "expenses" => Expense::latest()->get(),
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
-            "editcategoryjs" => 3,
-            "excats" => \App\Models\ExpenseCategory::latest()->get(),
-            "inviews" => Expense::latest()->get(),
-            "update" => null,
-            "historycat" => null,
+
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $expenses,
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+                
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+    
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+            // "expense" => Expense::where('expense_entry_date', date("l, d-M-Y"))->get(),
+
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $list,
+            "inviews" => $dummies,
+    
+            // History for search
+            "historycat" => null, 
             "historylist" =>null,
-            "lists" => $list
+    
+            // For JavaScript show 
+            "editcategoryjs" => 3,
+
+            // For showing entries
+            "entdata" => 0,
         ]);
     }
 
     /*
     |--------------------------------------------------------------------------
-    | INCOME TO UPDATE CATEGORY / LIST
+    | EXPENSE TO UPDATE CATEGORY / LIST
     |--------------------------------------------------------------------------
     */
 
-    public function editcategory(Request $request, $excat_slug)
+    public function editcategory(Request $request, $incat_slug)
     {
-        DB::table('expense_categories')->where('excat_slug', $excat_slug)->update([
-            'name'=>$request->excat_name
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+        
+        // Query for edit category
+        DB::table('expense_categories')->where('incat_slug', $incat_slug)->update([
+            'name'=>$request->incat_name
 		]);
         
         return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "sidebars" => "partials.sidebar",
-            "expenses" => Expense::latest()->get(),
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
+
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $expenses,
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => null, 
+            "historylist" =>null, 
+
+            // For JavaScript show
             "editcategoryjs" => 0,
-            "excats"=> Expense::latest()->get(),
-            "inviews" => Expense::latest()->get(),
-            "lists" => Expense::latest(),
-                        "historycat" => null,
-            "historylist" =>null,
+
+            // For showing entries
+            "entdata" => 0,
         ]);
     }
 
-    public function editlist(Request $request, $expense_slug)
+    public function editlist(Request $request, $income_slug)
     {
-        DB::table('expenses')->where('expense_slug', $expense_slug)->update([
-            'expense_description'=>$request->input_decs,
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+        
+        // Query for edit list
+        DB::table('expenses')->where('income_slug', $income_slug)->update([
+            'income_description'=>$request->input_decs,
             'expense_category_id' => $request->input_cats,
+            'expense_account_id' => $request->input_acc,
             'expense_entry_date' => $request-> input_date,
-            'expense_slug' => $request-> expense_slug,
+            'income_slug' => $request-> income_slug,
             'nominal' => $request-> input_nominal
 		]);
         
         return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "sidebars" => "partials.sidebar",
-            "expenses" => Expense::latest()->get(),
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
+
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $expenses,
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => null, 
+            "historylist" =>null, 
+
+            // For JavaScript show
             "editcategoryjs" => 0,
-            "excats"=> Expense::latest()->get(),
-            "inviews" => Expense::latest()->get(),
-                        "historycat" => null,
-            "historylist" =>null,
-            "lists" => Expense::latest(),
+
+            // For showing entries
+            "entdata" => 0,
+
         ]);
     }
 
     /*
     |--------------------------------------------------------------------------
-    | INCOME TO DELETE CATEGORY / LIST
+    | EXPENSE TO DELETE CATEGORY / LIST
     |--------------------------------------------------------------------------
     */
 
-    public function deletelist($expense_slug)
-    {
-        DB::table('expenses')->where('expense_slug',$expense_slug)->delete();        
+    public function deletecatlanding($incat_slug)
+    {        
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+        
+        // Query for find landing category
+        $category = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->select('expenses.*', 'expense_categories.*')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->where('expense_categories.incat_slug',$incat_slug)
+        ->get();
 
         return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "sidebars" => "partials.sidebar",
-            "expenses" => Expense::latest()->get(),
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "excats"=> Expense::latest()->get(),
-            "lists" => Expense::latest(),
-            "inviews" => Expense::latest()->get(),
-                        "historycat" => null,
+
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $expenses,
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+                
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+    
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+    
+            // N+1
+            "excats"=> $category,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+    
+            // History for search
+            "historycat" => null, 
             "historylist" =>null,
+    
+            // For JavaScript show 
+            "editcategoryjs" => 5,
+        
+            // For showing entries
+            "entdata" => 0,
+        ]);
+    }
+
+    public function deletecategory(Request $request, $incat_slug)
+    {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+        
+            // Query for delete category
+            DB::table('expense_categories')->where('incat_slug',$incat_slug)->delete();
+
+            // Query for delete category and tables
+            // DB::table('expenses')->where('expense_category_id', request('destroy'))->delete();    
+
+        return view('/pages/expenses/expenses', [
+            
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $expenses,
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => null, 
+            "historylist" =>null, 
+
+            // For JavaScript show 
+            "editcategoryjs" => 0,
+
+            // For showing entries
+            "entdata" => 0,
 
         ]);
     }
 
-    public function deletecategory($excat_slug)
+    public function deletelistlanding($income_slug)
     {
-        DB::table('expense_categories')->where('excat_slug',$excat_slug)->delete();
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+    
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
         
+        // Query for find landing list
+        $list = DB::table('expenses')->where('income_slug',$income_slug)->get();
 
         return view('/pages/expenses/expenses', [
-            "title" => "Expense",
-            "sidebars" => "partials.sidebar",
-            "expenses" => Expense::latest()->get(),
-            "categories" => \App\Models\ExpenseCategory::latest()->get(),
-            "dataopt" => \App\Models\ExpenseCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "excats"=> Expense::latest()->get(),
-            "lists" => Expense::latest(),
-            "inviews" => Expense::latest()->get(),
-                        "historycat" => null,
+
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => $expenses,
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+                
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+    
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+            // "expense" => Expense::where('expense_entry_date', date("l, d-M-Y"))->get(),
+
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $list,
+            "inviews" => $dummies,
+    
+            // History for search
+            "historycat" => null, 
             "historylist" =>null,
+    
+            // For JavaScript show 
+            "editcategoryjs" => 6,
+
+            // For showing entries
+            "entdata" => 0,
+        ]);
+    }
+
+    public function deletelist($income_slug)
+    {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('expenses')->count();
+        $catcount = DB::table('expense_categories')->count();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->orderBy('expenses.expense_entry_date','DESC')
+        ->get();
+        
+        // Query for delete list
+        DB::table('expenses')->where('income_slug',$income_slug)->delete();        
+
+        return view('/pages/expenses/expenses', [
+            
+            // Title 
+            "title" => "Income",
+
+            // Main table view
+            "expenses" => Income::latest('expense_entry_date')->get(),
+            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count Entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "excats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => null, 
+            "historylist" =>null, 
+
+            // For JavaScript show
+            "editcategoryjs" => 0,
+
+            // For showing entries
+            "entdata" => 0,
 
         ]);
     }
@@ -365,14 +987,14 @@ class ExpenseController extends Controller
     public function printstore()
     {      
         $alldata = DB::table('expenses')
-        ->select('expense_description', 'expense_categories.name' ,'nominal','expense_entry_date')
+        ->select('income_description', 'expense_categories.name' ,'nominal','expense_entry_date')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
-        // ->where('expense.income_slug','income_slug')
+        // ->where('income.income_slug','income_slug')
         ->get();
         
         return view('/pages/expenses/print', [
-            "title" => "Expense",
-            "bck" => "expense",
+            "title" => "Income",
+            "bck" => "income",
             "number" => 1,
             "total" => 0,
             "expenses" => $alldata

@@ -42,6 +42,9 @@
   <body>
     <div id="overlaycategory" onclick="offCategory()"></div>
 
+    <div id="overlaydeletecategory" onclick="offDeleteCategory()"></div>
+
+
     <header>
       @include('partials.sidebar')
     </header>

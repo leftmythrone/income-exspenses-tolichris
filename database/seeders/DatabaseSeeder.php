@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'Usman Tony',
             'username' => 'admin',
-            'user_slug' => Hash::make('basic.useradmin'),
+            'user_slug' => 'basic.useradmin',
             'password' => Hash::make('tlc111')
         ]);
 
@@ -95,11 +95,10 @@ class DatabaseSeeder extends Seeder
         \App\Models\IncomeCategory::create([
             'name' => '[Click Edit Or Delete]',
             'incat_slug' => 'basic.sVasidwadswUsa',
-            'incat_entry_date' => '2022-05-21',
-            'incat_total' => 0
+            'incat_entry_date' => '2022-05-21'
         ]);
 
-        Income::factory(20)->create();
+        Income::factory(10)->create();
 
 
         \App\Models\Income::create([
@@ -119,19 +118,20 @@ class DatabaseSeeder extends Seeder
         */
 
         \App\Models\ExpenseCategory::create([
-            'name' => '[Click Edit & Delete]',
-            'excat_slug' => 'basic.sgsdfAODsadcma',
-            'excat_entry_date' => '0-00-0000'
+            'name' => '[Click Edit Or Delete]',
+            'excat_slug' => 'basic.sVasidwadswUsa',
+            'excat_entry_date' => '2022-05-21'
         ]);
 
-        // Expense::factory(1)->create();
+        Expense::factory(10)->create();
 
         \App\Models\Expense::create([
             'expense_description' => '[Basic Expense List]',
             'expense_category_id' => 1,
+            'expense_account_id' => 1,
             'expense_slug' => 'basic.asd@4$r34dsdfasa',
-            'nominal' => 0,
-            'expense_entry_date' => '0-00-0000'
+            'nominal' => 0, 
+            'expense_entry_date' => '2022-05-21'
         ]);
 
         /*
@@ -141,20 +141,20 @@ class DatabaseSeeder extends Seeder
         */
 
         \App\Models\DebtCategory::create([
-            'name' => '[Click Edit & Delete]',
-            'debcat_slug' => 'basic.DFiaskdmaWoew',
-            'debcat_entry_date' => '0-00-0000'
+            'name' => '[Click Edit Or Delete]',
+            'debcat_slug' => 'basic.sVasidwadswUsa',
+            'debcat_entry_date' => '2022-05-21'
         ]);
 
-        // Debt::factory(1)->create();
+        Debt::factory(10)->create();
 
         \App\Models\Debt::create([
             'debt_description' => '[Basic Debt List]',
             'debt_category_id' => 1,
+            'debt_account_id' => 1,
             'debt_slug' => 'basic.asd@4$r34dsdfasa',
             'nominal' => 0,
-            'debt_entry_date' => '0-00-0000'
-
+            'debt_entry_date' => '2022-05-21'
         ]);
 
 

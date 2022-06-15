@@ -104,6 +104,7 @@ Route::post('/emergency/404', [UtilitiesController::class, 'emergency404']);
 
 // OPEN
 Route::get('/income', [IncomeController::class, 'start'])->middleware('auth');
+Route::get('/income/entries/{entdata}', [IncomeController::class, 'entries'])->middleware('auth');
 
 // VIEW 
 Route::get('/income/viewlist/{incat_slug}',[IncomeController::class, 'viewlist'])->middleware('auth');
@@ -113,20 +114,21 @@ Route::get('/income/viewcategory/{income_slug}',[IncomeController::class, 'viewc
 Route::post('/income/addnew',[IncomeController::class, 'addlist'])->middleware('auth');
 Route::post('/income/addcategory',[IncomeController::class, 'addcategory'])->middleware('auth');
 
-// UPDATE
+// UPDATE STORE
 Route::get('/income/editlanding/{incat_slug}',[IncomeController::class, 'editcatlanding'])->middleware('auth');
 Route::get('/income/editstore/{income_slug}',[IncomeController::class, 'editstore'])->middleware('auth');
 
+// UPDATE
 Route::get('/income/editcategory/{income_slug}',[IncomeController::class, 'editcategory'])->middleware('auth');
 Route::post('/income/editlist/{income_slug}',[IncomeController::class, 'editlist'])->middleware('auth');
 
+// DELETE STORE
+Route::get('/income/deletecatlanding/{incat_slug}',[IncomeController::class, 'deletecatlanding'])->middleware('auth');
+Route::get('/income/deletelistlanding/{income_slug}',[IncomeController::class, 'deletelistlanding'])->middleware('auth');
+
 // DELETE
-Route::get('/income/deletelist/{income_slug}',[IncomeController::class, 'editcatlanding'])->middleware('auth');
-Route::get('/income/deletecat/{incat_slug}',[IncomeController::class, 'editcatlanding'])->middleware('auth');
-
-
 Route::get('/income/deletecategory/{incat_slug}',[IncomeController::class, 'deletecategory'])->middleware('auth');
-Route::get('/income/deleteincome/{income_slug}',[IncomeController::class, 'deletelist'])->middleware('auth');
+Route::get('/income/deletelist/{income_slug}',[IncomeController::class, 'deletelist'])->middleware('auth');
 
 // SEARCH
 Route::get('/income/searchcat',[IncomeController::class, 'searchcat'])->middleware('auth');
@@ -134,6 +136,8 @@ Route::get('/income/searchlist',[IncomeController::class, 'searchlist'])->middle
 
 // PRINT
 Route::get('/income/print', [IncomeController::class, 'printstore'])->middleware('auth');
+Route::get('/income/print/search', [IncomeController::class, 'printsearch'])->middleware('auth');
+
 
 
 /*
@@ -176,6 +180,7 @@ Route::get('/expense/searchlist',[ExpenseController::class, 'searchlist'])->midd
 
 // PRINT
 Route::get('/expense/print', [ExpenseController::class, 'printstore'])->middleware('auth');
+
 /*
 |--------------------------------------------------------------------------
 | SOURCE OF DEBTS
@@ -186,6 +191,7 @@ Route::get('/expense/print', [ExpenseController::class, 'printstore'])->middlewa
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 Route::get('/debt', [\App\Http\Controllers\DebtController::class, 'start'])->middleware('auth');
 

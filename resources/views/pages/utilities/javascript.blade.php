@@ -28,7 +28,7 @@
     }
 
 
-    // VIEW CATEGORY
+  // VIEW CATEGORY
 
     function onViewCategory() {
       document.getElementById("overlayviewcategory").style.display = "block";
@@ -57,7 +57,7 @@
       document.getElementById("addtablebox").style.transition = '0.3s';
     }
 
-    // VIEW INCOME LIST
+  // VIEW INCOME LIST
 
     function onViewTable() {
       document.getElementById("overlayviewtable").style.display = "block";
@@ -71,7 +71,7 @@
       document.getElementById("viewtablebox").style.transition = '0.3s';
     }
 
-    // EDIT INCOME LIST
+  // EDIT INCOME LIST
 
 
     function onEditTable() {
@@ -86,10 +86,9 @@
       document.getElementById("edittablebox").style.transition = '0.3s';
     }
 
-        // EDIT Debt LIST
+  // EDIT DEBT LIST
 
-
-      function onPaidTable() {
+    function onPaidTable() {
       document.getElementById("overlaypaidtable").style.display = "block";
       document.getElementById("paidtablebox").style.display = "block";
       document.getElementById("paidtablebox").style.transition = '0.3s';
@@ -101,8 +100,7 @@
       document.getElementById("paidtablebox").style.transition = '0.3s';
     }
 
-          // USER ADD TABLE
-
+  // USER ADD TABLE
 
     function onUseraddTable() {
       document.getElementById("overlayuser").style.display = "block";
@@ -116,10 +114,10 @@
       document.getElementById("adduserbox").style.transition = '0.3s';
     }
 
-              // USER ADD TABLE
+  // USER ADD TABLE
 
 
-    function offUsereditTable() {
+    function onUsereditTable() {
       document.getElementById("overlayedituser").style.display = "block";
       document.getElementById("edituserbox").style.display = "block";
       document.getElementById("edituserbox").style.transition = '0.3s';
@@ -132,4 +130,32 @@
     }
 
 
-    </script>
+  // DELETE CATEGORY
+
+    function onDeleteCategory() {
+      document.getElementById("overlaydeletecategory").style.display = "block";
+      document.getElementById("deletecategorybox").style.display = "block";
+      document.getElementById("deletecategorybox").style.transition = '0.3s';
+    }
+    
+    function offDeleteCategory() {
+      document.getElementById("overlaydeletecategory").style.display = "none";
+      document.getElementById("deletecategorybox").style.display = "none";
+      document.getElementById("deletecategorybox").style.transition = '0.3s';
+    }
+
+  // DELETE TABLE LIST 
+
+    function ondDeleteTable() {
+      document.getElementById("overlaydeletetable").style.display = "block";
+      document.getElementById("deletetablebox").style.display = "block";
+      document.getElementById("deletetablebox").style.transition = '0.3s';
+    }
+    
+    function offDeleteTable() {
+      document.getElementById("overlaydeletetable").style.display = "none";
+    document.getElementById("deletetablebox").style.display = "none";
+      document.getElementById("deletetablebox").style.transition = '0.3s';
+    }
+
+</script>

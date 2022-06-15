@@ -14,10 +14,19 @@ return new class extends Migration
     public function up()
     {
         Schema::create('debt_categories', function (Blueprint $table) {
+            // Category account ID
             $table->id();
+
+            // Category account slug
             $table->string('debcat_slug')->nullable();
+            
+            // Category account name 
             $table->string('name')->unique();
-            $table->string('debcat_entry_date')->nullable();
+            
+            // Category entry date
+            $table->date('debcat_entry_date')->nullable();
+            
+            // Category timestamps
             $table->timestamps();
         });
     }

@@ -10,12 +10,14 @@ $number = 1;
 $subtotal = 0;
 $total = 0;
 $entry = 0;
-$entries = 0;
 
 @endphp
 
 
 <br><br>
+
+@include('pages.incomes.crud')
+
 
 @include('pages.incomes.category')
 
@@ -25,6 +27,8 @@ $entries = 0;
 
 {{-- SCRIPT --}}
 @if ( $editcategoryjs == 1 )
+
+{{-- SCRIPT EDIT CATEGORY --}}
 <script>    
     const categoryPop = document.getElementById('editcategorybox');
     const categoryOverlay = document.getElementById('overlayeditcategory');
@@ -34,6 +38,7 @@ $entries = 0;
     categoryOverlay.style.display = "block"
 </script>
 
+{{-- SCRIPT VIEW CATEGORY --}}
 @elseif ( $editcategoryjs == 2 )
 <script>    
     const categoryPop = document.getElementById('viewcategorybox');
@@ -44,6 +49,7 @@ $entries = 0;
     categoryOverlay.style.display = "block"
 </script>
 
+{{-- SCRIPT EDIT LIST --}}
 @elseif ( $editcategoryjs == 3 )
 <script>    
     const listPop = document.getElementById('edittablebox');
@@ -54,6 +60,7 @@ $entries = 0;
     listOverlay.style.display = "block"
 </script>
 
+{{-- SCRIPT VIEW LIST --}}
 @elseif ( $editcategoryjs == 4 )
 <script>    
     const listPop = document.getElementById('viewtablebox');
@@ -63,7 +70,31 @@ $entries = 0;
     listPop.display = "none";
     listOverlay.style.display = "block"
 </script>
+
+{{-- SCRIPT DELETE CATEGORY --}}
+@elseif ( $editcategoryjs == 5 )
+<script>    
+    const categoryPop = document.getElementById('deletecategorybox');
+    const categoryOverlay = document.getElementById('overlaydeletecategory');
+
+    categoryPop.style.display = "block";
+    categoryPop.display = "none";
+    categoryOverlay.style.display = "block"
+</script>
+
+{{-- SCRIPT DELETE LIST --}}
+@elseif ( $editcategoryjs == 6 )
+<script>    
+    const categoryPop = document.getElementById('deletetablebox');
+    const categoryOverlay = document.getElementById('overlaydeletetable');
+
+    categoryPop.style.display = "block";
+    categoryPop.display = "none";
+    categoryOverlay.style.display = "block"
+</script>
+
 @endif
+
 
         
 @endsection

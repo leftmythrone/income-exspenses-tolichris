@@ -1,4 +1,7 @@
+<br>
+{{-- MAIN DIV HEADER --}}
 <div class="tabheader">
+
     {{-- HEADING --}}
     <h1>My {{ $title }} Overview</h1>
 
@@ -6,95 +9,21 @@
     <h4>Pada page ini berisi seluruh transaksi catatan {{ $title }} yang telah masuk pada PT Tolichris</h4>
 </div>
 
+{{--  --}}
 <div class="tabaddnew">
 
-    {{-- OVERLAY FOR POP UP --}}
-    <div id="overlaytable" onclick="offTable()"></div>
-    <div id="overlayviewtable" onclick="offViewTable()"></div>
-    <div id="overlayedittable" onclick="offEditTable()"></div>
+        {{-- OVERLAY FOR POP UP --}}
+        <div id="overlaytable" onclick="offTable()"></div>
+        <div id="overlayviewtable" onclick="offViewTable()"></div>
+        <div id="overlayedittable" onclick="offEditTable()"></div>
+        <div id="overlaydeletetable" onclick="offDeleteTable()"></div>
 
 
-
-    {{-- CONTAINER POP UP --}}
-    <div id="addtablebox" class="addtablebox">
-                        <h1>Add New {{ $title }}</h1>
-                        <h2>Tambah/catat setiap pemasukan pada hari ini
-                            agar pemasukan menjadi lebih banyak</h2>
-        <div class="tableincomebox">
-            <form method="post" action="/income/addnew">
-                
-                {{-- CSRF --}}
-                @csrf
-
-                {{-- TABLE --}}
-                <table>
-                    <tr>
-                        <td><center> <label for="">{{ $title }} Description</label> </center></td>
-                        <td><center> : </center></td>
-                        {{-- INPUT_DECS --}}
-                        <td><center> <input type="text" name="input_decs" autocomplete="off" required> </center></td>
-                    </tr>
-                    <tr>
-                        <td><center> <label for="">{{ $title }} Category</label> </center></td>
-                        <td><center> : </center></td>
-                        <td>
-                            <center>
-                                {{-- DATA LIST INPUT CATEGORY --}}
-                                <select name="input_cats">
-                                    @foreach ($dataopt as $opt)
-                                        <option value="{{ $opt->id }}">{{ $opt->name }}</option> 
-                                    @endforeach
-                                </select>
-                            </center>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><center> <label for="">{{ $title }} Account</label> </center></td>
-                        <td><center> : </center></td>
-                        <td>
-                            <center>
-                                {{-- DATA LIST INPUT CATEGORY --}}
-                                <select name="input_acc">
-                                    @foreach ($accopt as $apt)
-                                        <option value="{{ $apt->id }}">{{ $apt->account_name }}</option> 
-                                    @endforeach
-                                </select>
-                            </center>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><center> <label for="">{{ $title }} Nominal</label> </center></td>
-                        <td><center> : </center></td>
-                        <td>
-                            <center> 
-                                {{-- INPUT_NOMINAL --}}
-                                <input type="text" name="input_nominal" autocomplete="off" required>                
-                                {{-- INPUT DATE --}}
-                                <input type="hidden" name="input_date" value="{{ date("Y-m-d"); }}">
-                                {{-- INPUT TOKEN --}}
-                                <input type="hidden" name="income_slug" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
-                            </center>
-                        </td>
-                    </tr>
-                    <tr> 
-                        <td colspan="2"> </td>
-                        <td>
-                            <center>
-                                <button onclick="offTable()" type="submit" >Add new {{ $title }} + </button>
-                            </center>
-                        </td>
-                    </tr>
-                </table>
-                                
-            </form>
-        </div>
-    </div>
-    <br>
-    <br>
+    <br><br>
     <button onclick="onTable()" type="submit" >Add new {{ $title }} + </button>
 </div>
 
-
+{{-- REMOVE CLEAR --}}
 <div class="clear"></div>
 
 <div class="tabcategory">
@@ -107,22 +36,7 @@
         </form>
     </div>
             
-    {{-- SHOWING ENTRIES --}}
-    @foreach ( $incomes as $income )
-    @php
-        if ( $income->id = 1 )
-        {
-            $entry = 1;
-        }
-        else 
-        {
-
-        }
-
-        $entries++;
-    @endphp
-    @endforeach
-    <p>Show {{ $entries }} entries </p> 
+    <p>Show {{ $listcount }} entries </p> 
 
     {{-- TABLE --}}
     <div class="tabtable">    
@@ -131,7 +45,8 @@
                 {{-- TABLE HEADER --}}
                 <th><center>No</center></th> 
                 <th><center>{{ $title }} Detail / Detail Pemasukan</center></th>
-                <th><center>Category / Kategori</center></th>
+                <th><center>Category</center></th>
+                <th><center>Account</center></th>
                 <th><center>Nominal</center></th>
                 <th><center>Date</center></th>
                 <th><center>Action</center></th>
@@ -141,176 +56,82 @@
                 <td colspan="99"><div class="line"></div></td>
             </tr>
         
-            {{-- FOR EACH --}}
-            {{-- @foreach ($incomes as $income) --}}
-            @for( $listloop = 1 ; $listloop <= 10 ; $listloop++ )
+            {{-- LOOPING FOR ARRAY --}}
+            @for( $listloop = 0 + $entdata ; $listloop < 10 + $entdata ; $listloop++ )
+            
+            {{-- UNDEFINED ARRAY KEY 47 - TURN OFF --}}
+            @php error_reporting(0); @endphp
+
+            {{-- CHECK IF THERE'S NULL DATA --}}
+            @if ( $incomes[$listloop]->id === null )
+            
+            {{-- TABLE LIST CONTENT --}}
+            @else
             <tr>
-                {{-- TABLE MAIN SECTION --}}
-                <td><center> {{ $number++ }}. </center></td>
+                <td><center> {{ $listloop + 1 }}. </center></td>
                 <td><center>{{ $incomes[$listloop]->income_description }}</center></td>
-                <td><center>{{ $incomes[$listloop]->income_category->name }}</center></td>
+                <td><center>{{ $incomes[$listloop]->name }}</center></td>
+                <td><center>{{ $incomes[$listloop]->account_name }}</center></td>
                 <td><center>Rp. {{ number_format($incomes[$listloop]->nominal, 0, " ,","."); }},00</center></td>
                 <td><center>{{ $incomes[$listloop]->income_entry_date }}</center></td>
                 <td>
                     <center>
                         <a href="/income/viewlist/{{ $incomes[$listloop]->income_slug }}"><button><img src="/img/eye_white.png" alt=""></button></a>
                         <a href="/income/editstore/{{ $incomes[$listloop]->income_slug }}"><button><img src="/img/pencil_white.png" alt=""></button></a> 
-                        <a href="/income/deleteincome/{{ $incomes[$listloop]->income_slug }}"><button><img src="/img/trash_white.png" alt=""></button></a>
+                        <a href="/income/deletelistlanding/{{ $incomes[$listloop]->income_slug }}"><button><img src="/img/trash_white.png" alt=""></button></a>
                     </center>
                 </td>
-            </tr>
+            </tr>            
         
             <tr>
                 {{-- SPACER --}}
                 <td><div class="space"></div></td>
             </tr>
-            @endfor
-            {{-- @endforeach --}}
+                
+            @endif
+
+
+            {{-- UNDEFINED ARRAY KEY 47 - TURN ON --}}
+            @php error_reporting(E_ALL); @endphp
             
+            @endfor
+            <tr>
+                <td colspan="7"><div class="line"></div></td>
+            </tr>
+            <tr>
+                <td colspan="6"></td>
+                <td>
+                    <center>
+                        <div class="entriesctrl">
+                            <ul>
+                                <li>
+                                    <form action="/income/entries/{{ $entdata }}" method="get">
+                                        <button><img src="/img/left.png" alt=""></button>
+                                        <input type="hidden" value="prev" name="type">
+                                    </form>
+                                </li>
+
+                                <li>
+                                    <form action="/income/entries/{{ $entdata }}" method="get">
+                                        <button><img src="/img/right.png" alt=""></button>
+                                        <input type="hidden" value="next" name="type">
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </center>
+                </td>
+            </tr>
         
         </table>
-      
-
+         
     </div> 
     <br>
 
     {{-- ENTRIES --}}
-    <p>Showing {{ $entry }} to {{ $entry }} of {{ $listcount }} entries</p>
+    <p>Showing {{ 1 }} to {{ $listloop }} of {{ $listcount }} entries</p>
 
 </div>
 
-
-
-
-
-
-
-
-{{--
-|--------------------------------------------------------------------------
-| EXPENSE TO CREATE NEW CATEGORY / LIST
-|--------------------------------------------------------------------------
---}}
-
-
-<div id="viewtablebox" class="viewtablebox">
-    <h1>View New {{ $title }}</h1>
-    <h2>View / lihat setiap {{ $title }} untuk lebih detail</h2>
-    <div class="viewtableincomebox">
-    @foreach ( $inviews as $inview )
-    <form method="post" action="/income/viewlist/{{ $income->income_slug }}">
-
-    {{-- CSRF --}}
-    @csrf
-
-    
-        {{-- TABLE --}}
-        <table>
-            <tr>
-                <td><center> <label for="">View {{ $title }} Description</label> </center></td>
-                <td><center> : </center></td>
-                {{-- INPUT_DECS --}}
-                <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $inview->income_description }}" disabled required> </center></td>
-            </tr>
-            <tr>
-                <td><center> <label for="">{{ $title }} Category</label> </center></td>
-                <td><center> : </center></td>
-                <td>
-                    <center>
-                            <input type="text" value="{{ $inview->name  }}" disabled>
-                    </center>
-                </td>
-            </tr>
-            <tr>
-                <td><center> <label for="">Nominal</label> </center></td>
-                <td><center> : </center></td>
-                <td>
-                    <center> 
-                        {{-- INPUT_NOMINAL --}}
-                        <input type="text" name="input_nominal" value="Rp. {{ number_format($inview->nominal, 0, " ,","."); }},00" autocomplete="off" disabled required>                
-                        {{-- INPUT DATE --}}
-                        <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
-                        {{-- INPUT TOKEN --}}
-                        <input type="hidden" name="token" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
-                    </center>
-                </td>
-            </tr>
-        </table>
-
-    @endforeach
-
-    </form>
-    </div>
-    </div>
-</div>
-
-
-
-{{--
-|--------------------------------------------------------------------------
-| EXPENSE TO EDIT  LIST
-|--------------------------------------------------------------------------
---}}
-
-
-<div id="edittablebox" class="edittablebox">
-    <h1>Edit {{ $title }}</h1>
-    <h2>Tambah/catat setiap {{ $title }} pada hari ini
-        agar pemasukan menjadi lebih banyak</h2>
-<div class="tableincomebox">
-@foreach ($lists as $list)
-
-<form method="post" action="/income/editlist/{{ $list->income_slug }}">
-
-{{-- CSRF --}}
-@csrf
-
-{{-- TABLE --}}
-<table>
-<tr>
-    <td><center> <label for="">Income Description</label> </center></td>
-    <td><center> : </center></td>
-    {{-- INPUT_DECS --}}
-    <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $list->income_description }}"  required> </center></td>
-</tr>
-<tr>
-    <td><center> <label for="">Income Category</label> </center></td>
-    <td><center> : </center></td>
-    <td>
-        <center>
-            {{-- DATA LIST INPUT CATEGORY --}}
-            <select name="input_cats">
-                @foreach ($dataopt as $opt)
-                    <option value="{{ $opt->id }}">{{ $opt->name }}</option> 
-                @endforeach
-            </select>
-        </center>
-    </td>
-</tr>
-<tr>
-    <td><center> <label for="">Nominal</label> </center></td>
-    <td><center> : </center></td>
-    <td>
-        <center> 
-            {{-- INPUT_NOMINAL --}}
-            <input type="text" name="input_nominal" autocomplete="off" value="{{ $list->nominal }}" required>                
-            {{-- INPUT DATE --}}
-            <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
-            {{-- INPUT TOKEN --}}
-            <input type="hidden" name="token" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
-        </center>
-    </td>
-</tr>
-<tr> 
-    <td colspan="2"> </td>
-    <td>
-        <center>
-            <button onclick="offTable()" type="submit" >Add new {{ $title }} + </button>
-        </center>
-    </td>
-</tr>
-</table>
-@endforeach        
-</form>
-</div>
-</div>
+<br>
+<br>

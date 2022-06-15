@@ -29,12 +29,23 @@ class IncomeFactory extends Factory
     public function definition()
     {
         return [
+            // Factory for description
             'income_description' => $this->faker->sentence(mt_rand(1,3)),
+            
+            // Factory for category foreign key
             'income_category_id' => $this->faker->numberBetween($min = 1, $max = 1),
+            
+            // Factory for account ID
             'income_account_id' => $this->faker->numberBetween($min = 1, $max = 4),
+            
+            // Factory for slug
             'income_slug' => $this->faker->numberBetween($min = 50000, $max = 3000000),
+            
+            // Factory for nominal
             'nominal' => $this->faker->numberBetween($min = 50000, $max = 3000000),
-            // 'income_entry_date' => $this->dateTimeThisMonth(),
+            
+            // Factory for entry date
+            'income_entry_date' => $this->faker->dateTimeThisMonth()
         ];
     }
 }

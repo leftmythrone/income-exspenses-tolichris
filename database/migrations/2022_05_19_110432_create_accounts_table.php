@@ -14,10 +14,19 @@ return new class extends Migration
     public function up()
     {
         Schema::create('accounts', function (Blueprint $table) {
+            // Account ID
             $table->id();
+
+            // Account virtual name
             $table->string('account_name');
+
+            // Account balance nominal
             $table->integer('account_balance');
-            $table->string('account_slug')->unique();          
+
+            // Account slug
+            $table->string('account_slug')->unique();
+            
+            // Account timestamps
             $table->timestamps();
         });
     }

@@ -64,18 +64,33 @@
                             
                             <td>
                                 <center>
-                                    @foreach ($incomes as $income)
-                                        @php
-                                            if( $account->account_name === $income->inacc->account_name ) {
-                                                $subcat = $subcat + $income->nominal;
-                                            }
-                                        @endphp
+                                    @foreach ( $incomes as $income )
+                                        @if ( $account->account_name === $income->account_name)
+                                            
+                                            @php
+                                                $subtotal = $subtotal + $income->nominal;
+                                            @endphp
+                                        @endif
+
+                                        {{-- @if ( $account->account_name === $income->account_name)
+                                            
+                                            @php
+                                                $subtotal = $subtotal + $income->nominal;
+                                            @endphp
+                                        @endif
+
+                                        @if ( $account->account_name === $income->account_name)
+                                            
+                                            @php
+                                                $subtotal = $subtotal + $income->nominal;
+                                            @endphp
+                                        @endif --}}
                                     @endforeach
 
-                                    Rp. {{ number_format($subcat, 0, " ,","."); }},00
-                                        @php
-                                            $subcat = 0;
-                                        @endphp
+                                    Rp. {{ number_format($subtotal, 0, " ,","."); }},00
+                                    @php
+                                    $subtotal = 0;
+                                    @endphp
                                 </center>
                             </td>                            
                             
@@ -107,6 +122,7 @@
                             </td>
                             <td>
                                 <center>
+                                    <a href="/income/print/"><button><img src="/img/printer_white.png" alt=""></button></a>
                                     <a href="/income/print/"><button><img src="/img/printer_white.png" alt=""></button></a>
                                 </center>
                             </td>

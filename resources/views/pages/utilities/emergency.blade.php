@@ -30,7 +30,7 @@
 
     {{-- Debts --}}
     <link rel="stylesheet" href="/css/partials/sidebar.css">
-
+    
 
     <link rel="stylesheet" href="boxicons.min.css">
 

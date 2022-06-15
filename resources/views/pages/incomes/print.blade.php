@@ -40,12 +40,22 @@
 <div class="clear"></div>
 
 <ul>
+    <div class="remove">
     <li></li>
     <li><label for="" class="btnremove">Click here for print : <input type="button" id="bt" onclick="print()" value="Print PDF" class="btnremove"/> </label>  <div class="btnback"></li>
     <li><div class="btnback"><a href="/{{ $bck }}"> <input type="button" value="Back / Kembali"/> </a></div></li>
+    <li></li>
+    <li>Search : </li>
+        <li><form method="get" action="/income/print/search">
+        <input type="date" name="start"></li>
+        <li>s/d</li>
+        <li><input type="date" name="end"></li>
+        <li><div class="btnsearch"><button type="submit">Search</button></div></form></li>
+    </div>
 </ul>
 
 </div>
+<br>
 
 <div class="tableprint">
 <table>

@@ -33,11 +33,36 @@ class AccountController extends Controller
      */
     public function start()
     {
+        $incomes = DB::table('incomes')
+        ->select('nominal', 'accounts.account_name')
+        ->join('accounts', 'accounts.id', '=', 'income_account_id')
+        ->get();
+
+        // $expenses = DB::table('expenses')
+        // ->select('nominal', 'accounts.account_name')
+        // ->join('accounts', 'accounts.id', '=', 'income_account_id')
+        // ->get();
+
+        // $debts = DB::table('debts')
+        // ->select('nominal', 'accounts.account_name')
+        // ->join('accounts', 'accounts.id', '=', 'income_account_id')
+        // ->get();
+
+        // $truncome = DB::table('incomes')->truncate();
+
         return view('/pages/accounts/accounts', [
+            
+            // Title
             "title" => "Income",
+            
+            // Account
             "accounts" => Account::latest()->get(),
+
+            // 
             "incats" => IncomeCategory::latest()->get(),
-            "incomes" => Income::latest()->get(),
+            
+            // Counting
+            "incomes" => $incomes, 
             "number" => 1,
             "subcat" => 0,
             "subtotal" => 0,

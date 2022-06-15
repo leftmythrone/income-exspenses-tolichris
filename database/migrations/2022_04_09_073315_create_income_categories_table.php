@@ -14,11 +14,19 @@ return new class extends Migration
     public function up()
     {
         Schema::create('income_categories', function (Blueprint $table) {
+            // Category account ID
             $table->id();
+
+            // Category account slug
             $table->string('incat_slug')->nullable();
+
+            // Category account name 
             $table->string('name')->unique();
+
+            // Category entry date
             $table->date('incat_entry_date')->nullable();
-            $table->integer('incat_total')->nullable();
+
+            // Category timestamps
             $table->timestamps();
         });
     }
