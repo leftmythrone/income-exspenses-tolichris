@@ -17,6 +17,10 @@
 
 {{-- BUTTON ADD NEW --}}
 <div class="tabaddnew">
+
+    {{-- BUTTON POP UP FOR CATEGORY--}}
+    <button onclick="onCategory()">Add new category +</button>
+
     <div id="overlaycategory" onclick="offCategory()"></div>
     <div id="overlayviewcategory" onclick="offViewCategory()"></div>
 
@@ -64,41 +68,60 @@
                             
                             <td>
                                 <center>
-                                    @foreach ( $incomes as $income )
-                                        @if ( $account->account_name === $income->account_name)
-                                            
-                                            @php
-                                                $subtotal = $subtotal + $income->nominal;
-                                            @endphp
-                                        @endif
+                                        @foreach ( $incomes as $income )
+                                            @if ( $account->account_name === $income->account_name)
+                                                
+                                                @php
+                                                    $subtotal = $subtotal + $income->income_nominal;
+                                                @endphp
+                                            @endif
 
-                                        {{-- @if ( $account->account_name === $income->account_name)
-                                            
-                                            @php
-                                                $subtotal = $subtotal + $income->nominal;
-                                            @endphp
-                                        @endif
+                                        @endforeach
 
-                                        @if ( $account->account_name === $income->account_name)
-                                            
-                                            @php
-                                                $subtotal = $subtotal + $income->nominal;
-                                            @endphp
-                                        @endif --}}
-                                    @endforeach
+                                        @foreach ( $expenses as $expense )
+                                            @if ( $account->account_name === $expense->account_name)
+                                                
+                                                @php
+                                                    $subtotal = $subtotal - $expense->expense_nominal;
+                                                @endphp
+                                            @endif
 
-                                    Rp. {{ number_format($subtotal, 0, " ,","."); }},00
+                                        @endforeach
+
+                                        @foreach ( $debts as $debt )
+                                            @if ( $account->account_name === $debt->account_name)
+                                                
+                                                @php
+                                                    $subtotal = $subtotal - $debt->debt_nominal;
+                                                @endphp
+                                            @endif
+
+                                        @endforeach
+
+                                        Rp. {{ number_format( $account->account_balance + $subtotal, 0, " ,","."); }},00
+
+
                                     @php
-                                    $subtotal = 0;
+
+                                        $subtotal = $subtotal + $account->account_balance;
+
+                                        // 
+                                        $total = $total + $subtotal;
+                                    
+                                        // RESET
+                                        $subtotal = 0;
+
                                     @endphp
+
                                 </center>
                             </td>                            
                             
                             <td>
                                 <center>
-                                    <a href="/income/viewcategory/"><button><img src="/img/eye_white.png" alt=""></button></a>
-                                    <a href="/income/editlanding/"><button><img src="/img/pencil_white.png" alt=""></button></a> 
-                                    <a href="/income/deletecategory/"><button><img src="/img/trash_white.png" alt=""></button></a>
+                                    <a href="/income/summation/"><button><img src="/img/plus.png" alt=""></button></a>
+                                    <a href="/income/substraction/"><button><img src="/img/minus.png" alt=""></button></a>
+                                    <a href="/income/substraction/"><button><img src="/img/pencil_white.png" alt=""></button></a>
+                                    <a href="/income/substraction/"><button><img src="/img/trash_white.png" alt=""></button></a>
                                 </center>
                             </td>
                         </tr>
@@ -116,15 +139,12 @@
                             <td><center><b>Total : </b></center></td>
                             <td>
                                 <center>
-
+                                    Rp. {{ number_format( $total, 0, " ,","."); }},00
                                 </center>
-                                
                             </td>
                             <td>
                                 <center>
-                                    <a href="/income/print/"><button><img src="/img/printer_white.png" alt=""></button></a>
-                                    <a href="/income/print/"><button><img src="/img/printer_white.png" alt=""></button></a>
-                                </center>
+                                    <a href="/income/print/"><button class="bg-danger"><img src="/img/warning.png" alt=""></button></a>                                </center>
                             </td>
                         </tr>
             </table>

@@ -40,12 +40,22 @@
 <div class="clear"></div>
 
 <ul>
+    <div class="remove">
     <li></li>
     <li><label for="" class="btnremove">Click here for print : <input type="button" id="bt" onclick="print()" value="Print PDF" class="btnremove"/> </label>  <div class="btnback"></li>
     <li><div class="btnback"><a href="/{{ $bck }}"> <input type="button" value="Back / Kembali"/> </a></div></li>
+    <li></li>
+    <li>Search : </li>
+        <li><form method="get" action="/debt/print/search">
+        <input type="date" name="start"></li>
+        <li>s/d</li>
+        <li><input type="date" name="end"></li>
+        <li><div class="btnsearch"><button type="submit">Search</button></div></form></li>
+    </div>
 </ul>
 
 </div>
+<br>
 
 <div class="tableprint">
 <table>
@@ -67,14 +77,14 @@
         <tr>
             <td><center>{{ $number++  }}.</center></td>
             <td><center>{{ $debt->debt_description }}</center></td>
-            <td><center>{{ $debt->name }}</center></td>
-            <td><center>Rp. {{ number_format($debt->nominal, 0, " ,","."); }},00</center></td>
+            <td><center>{{ $debt->debcat_name }}</center></td>
+            <td><center>Rp. {{ number_format($debt->debt_nominal, 0, " ,","."); }},00</center></td>
             <td><center>{{ $debt->debt_entry_date }}</center></td>
         </tr>
 
         @php
 
-        $total = $total + $debt->nominal;
+        $total = $total + $debt->debt_nominal;
 
         @endphp
 

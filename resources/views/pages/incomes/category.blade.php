@@ -60,7 +60,7 @@
                         <tr>
                             {{-- TABLE MAIN SECTION --}}
                             <td><center> {{ $number++ }}. </center></td>
-                            <td><center>{{ $category->name }}</center></td>
+                            <td><center>{{ $category->incat_name }}</center></td>
                             {{-- <td><center>{{ "Kas Kecil" }}</center></td> --}}
                             <td><center>{{ $category->incat_entry_date }}</center></td>
                             <td>
@@ -68,10 +68,10 @@
                                     {{-- PERHITUNGAN PER CATEGORY  --}}
                                         
                                     @foreach ( $incomes as $income )
-                                        @if ($category->name === $income->name)
+                                        @if ($category->incat_name === $income->incat_name)
                                             
                                             @php
-                                                $subtotal = $subtotal + $income->nominal;
+                                                $subtotal = $subtotal + $income->income_nominal;
                                             @endphp
                                         @endif
                                     @endforeach

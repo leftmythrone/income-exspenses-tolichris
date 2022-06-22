@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 // MODEL
+use App\Models\Account;
 use App\Models\Debt;
 use App\Models\DebtCategory;
+use App\Models\Dump;
 
 class DebtController extends Controller
 {
-
     /*
     |--------------------------------------------------------------------------
     | DEBT MAIN PAGE
@@ -20,18 +21,119 @@ class DebtController extends Controller
 
     public function start()
     {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+
         return view('/pages/debts/debts', [
+            
+            // Title 
             "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
+
+            // Main table view
+            "debts" => $debts,
+            "categories" => \App\Models\DebtCategory::latest('debcat_entry_date')->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\DebtCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "debcats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => null, 
+            "historylist" =>null, 
+
+            // For JavaScript show 
             "editcategoryjs" => 0,
-            "debcats"=> Debt::latest()->get(),
-            "lists" => Debt::latest(),
-            "inviews" => Debt::latest()->get(),
-            "historycat" => null,
-            "historylist" =>null,
+
+            // For showing entries
+            "entdata" => 0,
+            
+        ]);
+    }
+
+
+    public function entries(Request $request, $entdata)
+    {
+
+        if ($request->type === 'next')
+        {
+            $count = $entdata + 10;
+        }
+        else
+        {
+            $count = $entdata - 10;
+        }
+
+
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+
+        // RUMUS TAEK
+
+
+        return view('/pages/debts/debts', [
+            
+            // Title 
+            "title" => "Debt",
+
+            // Main table view
+            "debts" => $debts, // Debt::latest('debt_entry_date')->get(),
+            "categories" => \App\Models\DebtCategory::latest('debcat_entry_date')->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\DebtCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "debcats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => null, 
+            "historylist" => null, 
+
+            // For JavaScript show 
+            "editcategoryjs" => 0,
+
+            // For showing entries
+            "entdata" => $count
         ]);
     }
 
@@ -41,39 +143,76 @@ class DebtController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function searchcat(Request $request)
+    public function searchcat()
     {
-        $search = \App\Models\DebtCategory::latest();
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // Search Query
+        $search = \App\Models\DebtCategory::latest('debcat_entry_date');
 
         if(request('searchcat')) {
-            $search->where('name', 'like', '%' . request('searchcat') . '%');
+            $search->where('debcat_name', 'like', '%' . request('searchcat') . '%');
         }
 
         $historycat = request('searchcat');
 
         return view('/pages/debts/debts', [
-            "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            // "debts" => Debt::where('income_entry_date', date("l, d-M-Y"))->get(),
-            // "categories" => \App\Models\DebtCategory::latest()->get(),
-            "categories" => $search->get(),
-            // "categories" => \App\Models\DebtCategory::where('incat_entry_date', date("l, d-M-Y"))->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "debcats"=> Debt::latest()->get(),
-            "lists" => Debt::latest(),
-            // "lists" => Debt::where('income_entry_date', date("l, d-M-Y"))->get(),
-            "inviews" => Debt::latest()->get(),
-            "historycat" => $historycat,
-            "historylist" =>null,
 
+            // Title 
+            "title" => "Debt",
+
+            // Main table view
+            "debts" => Debt::latest('debt_entry_date')->get(),
+            "categories" => $search->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\DebtCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "debcats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => $historycat, 
+            "historylist" =>null, 
+
+            // For JavaScript show 
+            "editcategoryjs" => 0,
+
+            // For showing entries
+            "entdata" => 0,
         ]);
     }
 
     public function searchlist()
     {
-        $search = \App\Models\Debt::latest();
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+    
+        // List Query Search
+        $search = DB::table('debts')
+        ->select('debt_description', 'debt_categories.debcat_name' ,'debt_nominal', 'debt_entry_date', 'debt_slug')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->where('debts.debt_description','like', '%' . request('searchlist') . '%')
+        ->orWhere('debts.debt_entry_date','like', '%' . request('searchlist') . '%')
+        ->orWhere('debt_categories.debcat_name','like', '%' . request('searchlist') . '%') 
+        ->get();
 
         if(request('searchlist')) {
             $search->where('debt_description', 'like', '%' . request('searchlist') . '%');
@@ -82,20 +221,36 @@ class DebtController extends Controller
         $historylist = request('searchlist');
 
         return view('/pages/debts/debts', [
+
+            // Title 
             "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => $search->get(),
-            // "debts" => Debt::where('income_entry_date', date("l, d-M-Y"))->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            // "categories" => \App\Models\DebtCategory::where('incat_entry_date', date("l, d-M-Y"))->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
+
+            // Main table view
+            "debts" => $search,
+            "categories" => \App\Models\DebtCategory::latest('debcat_entry_date')->get(),
+            
+            // For showing data
+            "dataopt" => \App\Models\DebtCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+
+            // N+1
+            "debcats"=> $dummies,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+
+            // History for search
+            "historycat" => null, 
+            "historylist" => $historylist, 
+
+            // For JavaScript show
             "editcategoryjs" => 0,
-            "debcats"=> Debt::latest()->get(),
-            "lists" => Debt::latest(),
-            // "lists" => Debt::where('income_entry_date', date("l, d-M-Y"))->get(),
-            "inviews" => Debt::latest()->get(),
-            "historycat" =>null,
-            "historylist" => $historylist,
+
+            // For showing entries
+            "entdata" => 0,
 
         ]);
     }
@@ -108,46 +263,117 @@ class DebtController extends Controller
 
     public function viewcategory($debcat_slug)
     {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+
+        // View category
         $category = DB::table('debt_categories')->where('debcat_slug',$debcat_slug)->get();
 
         return view('/pages/debts/debts', [
-            "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 2,
-            "debcats" => $category,
-            "lists" => Debt::latest(),
-            "inviews" => Debt::latest()->get(),
-                                    "historycat" => null,
-            "historylist" =>null,
+
+           // Title 
+           "title" => "Debt",
+
+           // Main table view
+           "debts" => $debts,
+           "categories" => \App\Models\DebtCategory::latest('debcat_entry_date')->get(),
+           
+           // For showing data
+           "dataopt" => \App\Models\DebtCategory::latest('id')->get(),
+           "accopt" => \App\Models\Account::latest('id')->get(),
+
+           // Count entries
+           "listcount" => $listcount,
+           "catcount" => $catcount,
+
+           // N+1
+           "debcats"=> $category,
+           "lists" => $dummies,
+           "inviews" => $dummies,
+
+           // History for search
+           "historycat" => null, 
+           "historylist" =>null, 
+
+           // For JavaScript show 
+           "editcategoryjs" => 2,
             
+            // For showing entries
+            "entdata" => 0,
         ]);
     }
 
     public function viewlist($debt_slug)
     {
-        $inview = DB::table('debts')
-        ->select('debt_description', 'debt_categories.name' ,'nominal')
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // Debt Order By Descendant
+        $debts = DB::table('debts')
         ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+
+        // View list query
+        $inviews = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
         ->where('debts.debt_slug',$debt_slug)
         ->get();
 
 
         return view('/pages/debts/debts', [
-            "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 4,
-            "debcats" => \App\Models\DebtCategory::latest()->get(),
-            "lists" => Debt::latest(),
-            "inviews" => $inview,
-                                    "historycat" => null,
-            "historylist" =>null,
-            // "tesasa" => $test
+
+           // Title 
+           "title" => "Debt",
+
+           // Main table view
+           "debts" => $debts,
+           "categories" => \App\Models\DebtCategory::latest('debcat_entry_date')->get(),
+           
+           // For showing data
+           "dataopt" => \App\Models\DebtCategory::latest('id')->get(),
+           "accopt" => \App\Models\Account::latest('id')->get(),
+
+           // Count entries
+           "listcount" => $listcount,
+           "catcount" => $catcount,
+
+           // N+1
+           "debcats"=> $dummies,
+           "lists" => $dummies,
+           "inviews" => $inviews, 
+
+           // History for search
+           "historycat" => null, 
+           "historylist" =>null, 
+
+           // For JavaScript show
+           "editcategoryjs" => 4,
+
+            // For showing entries
+            "entdata" => 0
+
         ]);
     }
 
@@ -160,50 +386,61 @@ class DebtController extends Controller
 
     public function addcategory(Request $request)
     {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+
+
+        // Query insert database
         DB::table('debt_categories')->insert([
-            'name'=>$request->debcat_name,
+            'debcat_name'=>$request->debcat_name,
             'debcat_entry_date'=>$request->debcat_date,
             'debcat_slug'=>$request->debcat_slug
         ]);
-        return view('/pages/debts/debts', [
-            "title" => "Debt",
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "debts" => Debt::latest()->get(),
-            "debcats"=> Debt::latest()->get(),
-            "lists" => Debt::latest(),
-            "inviews" => Debt::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 0,
-                                    "historycat" => null,
-            "historylist" =>null,
 
-
-        ]);
+        return redirect('/debt');
     }
 
 
     public function addlist(Request $request)
     {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+
+        // Query insert Database
         DB::table('debts')->insert([
             'debt_description'=>$request->input_decs,
             'debt_category_id' => $request->input_cats,
+            'debt_account_id' => $request->input_acc,
             'debt_entry_date' => $request-> input_date,
-            'debt_slug' => $request-> debt_slug,
-            'nominal' => $request-> input_nominal
+            'debt_slug' => $request->debt_slug,
+            'debt_nominal' => $request-> input_nominal
         ]);
-        
-        return view('/pages/debts/debts', [
-            "title" => "Debt",
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "debts" => Debt::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "debcats"=> Debt::latest()->get(),
-            "lists" => Debt::latest(),
-            "inviews" => Debt::latest()->get(),
-                                    "historycat" => null,
-            "historylist" =>null,
-        ]);
+
+        return redirect('/debt');
     }
 
     /*
@@ -212,42 +449,111 @@ class DebtController extends Controller
     |--------------------------------------------------------------------------
     */
     public function editcatlanding($debcat_slug)
-    {
+    {        
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+        
+        // Query for find landing category
         $category = DB::table('debt_categories')->where('debcat_slug',$debcat_slug)->get();
 
         return view('/pages/debts/debts', [
+
+            // Title 
             "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 1,
-            "debcats" => $category,
-            "inviews" => Debt::latest()->get(),
-            "lists" => Debt::latest(),
-                                    "historycat" => null,
+
+            // Main table view
+            "debts" => $debts,
+            "categories" => \App\Models\DebtCategory::latest('debcat_entry_date')->get(),
+                
+            // For showing data
+            "dataopt" => \App\Models\DebtCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+    
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+    
+            // N+1
+            "debcats"=> $category,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+    
+            // History for search
+            "historycat" => null, 
             "historylist" =>null,
-            "update" => null
+    
+            // For JavaScript show 
+            "editcategoryjs" => 1,
+        
+            // For showing entries
+            "entdata" => 0,
         ]);
     }
 
     public function editstore($debt_slug)
     {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+    
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+        
+        // Query for find landing list
         $list = DB::table('debts')->where('debt_slug',$debt_slug)->get();
 
         return view('/pages/debts/debts', [
+
+            // Title 
             "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 3,
-            "debcats" => \App\Models\DebtCategory::latest()->get(),
-            "inviews" => Debt::latest()->get(),
-            "update" => null,
-                                    "historycat" => null,
+
+            // Main table view
+            "debts" => $debts,
+            "categories" => \App\Models\DebtCategory::latest('debcat_entry_date')->get(),
+                
+            // For showing data
+            "dataopt" => \App\Models\DebtCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+    
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+            // "expense" => Expense::where('debt_entry_date', date("l, d-M-Y"))->get(),
+
+            // N+1
+            "debcats"=> $dummies,
+            "lists" => $list,
+            "inviews" => $dummies,
+    
+            // History for search
+            "historycat" => null, 
             "historylist" =>null,
-            "lists" => $list
+    
+            // For JavaScript show 
+            "editcategoryjs" => 3,
+
+            // For showing entries
+            "entdata" => 0,
         ]);
     }
 
@@ -259,48 +565,59 @@ class DebtController extends Controller
 
     public function editcategory(Request $request, $debcat_slug)
     {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+        
+        // Query for edit category
         DB::table('debt_categories')->where('debcat_slug', $debcat_slug)->update([
-            'name'=>$request->debcat_name
+            'debcat_name'=>$request->debcat_name
 		]);
         
-        return view('/pages/debts/debts', [
-            "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "debcats"=> Debt::latest()->get(),
-            "inviews" => Debt::latest()->get(),
-            "lists" => Debt::latest(),
-                                    "historycat" => null,
-            "historylist" =>null,
-        ]);
+        return redirect('/debt');
+
     }
 
     public function editlist(Request $request, $debt_slug)
     {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+        
+        // Query for edit list
         DB::table('debts')->where('debt_slug', $debt_slug)->update([
             'debt_description'=>$request->input_decs,
             'debt_category_id' => $request->input_cats,
+            'debt_account_id' => $request->input_acc,
             'debt_entry_date' => $request-> input_date,
             'debt_slug' => $request-> debt_slug,
-            'nominal' => $request-> input_nominal
+            'debt_nominal' => $request-> input_nominal
 		]);
         
-        return view('/pages/debts/debts', [
-            "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "debcats"=> Debt::latest()->get(),
-            "inviews" => Debt::latest()->get(),
-            "lists" => Debt::latest(),
-                                    "historycat" => null,
-            "historylist" =>null,
-        ]);
+        return redirect('/debt');
+
     }
 
     /*
@@ -309,96 +626,229 @@ class DebtController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function deletelist($debt_slug)
-    {
-        DB::table('debts')->where('debt_slug',$debt_slug)->delete();        
+    public function deletecatlanding($debcat_slug)
+    {        
+        // N+1 Query
+        $dummies = Dump::first()->get();
 
-        return view('/pages/debts/debts', [
-            "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "debcats"=> Debt::latest()->get(),
-            "lists" => Debt::latest(),
-            "inviews" => Debt::latest()->get(),
-                                    "historycat" => null,
-            "historylist" =>null,
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
 
-        ]);
-    }
-
-    public function deletecategory($debcat_slug)
-    {
-        DB::table('debt_categories')->where('debcat_slug',$debcat_slug)->delete();
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
         
+        // Query for find landing category
+        $category = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->select('debts.*', 'debt_categories.*')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->where('debt_categories.debcat_slug',$debcat_slug)
+        ->get();
 
         return view('/pages/debts/debts', [
-            "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "debcats"=> Debt::latest()->get(),
-            "lists" => Debt::latest(),
-            "inviews" => Debt::latest()->get(),
-                                    "historycat" => null,
-            "historylist" =>null,
 
+            // Title 
+            "title" => "Debt",
+
+            // Main table view
+            "debts" => $debts,
+            "categories" => \App\Models\DebtCategory::latest('debcat_entry_date')->get(),
+                
+            // For showing data
+            "dataopt" => \App\Models\DebtCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+    
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+    
+            // N+1
+            "debcats"=> $category,
+            "lists" => $dummies,
+            "inviews" => $dummies,
+    
+            // History for search
+            "historycat" => null, 
+            "historylist" =>null,
+    
+            // For JavaScript show 
+            "editcategoryjs" => 5,
+        
+            // For showing entries
+            "entdata" => 0,
         ]);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | DEBT TO DELETE CATEGORY / LIST
-    |--------------------------------------------------------------------------
-    */
-
-    public function debtlanding($debt_slug)
+    public function deletecategory(Request $request, $debcat_slug)
     {
-        DB::table('debts')->where('debt_slug',$debt_slug)->delete();        
+        // N+1 Query
+        $dummies = Dump::first()->get();
 
-        return view('/pages/debts/debts', [
-            "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "debcats"=> Debt::latest()->get(),
-            "lists" => Debt::latest(),
-            "inviews" => Debt::latest()->get(),
-                                    "historycat" => null,
-            "historylist" =>null,
-        ]);
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+        
+        // Query for delete category
+        DB::table('debt_categories')->where('debcat_slug',$debcat_slug)->delete();
+
+        return redirect('/debt');
+
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | DEBT TO DELETE CATEGORY / LIST
-    |--------------------------------------------------------------------------
-    */
-
-    public function paidlanding($debt_slug)
+    public function deletelistlanding($debt_slug)
     {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+    
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+        
+        // Query for find landing list
         $list = DB::table('debts')->where('debt_slug',$debt_slug)->get();
 
         return view('/pages/debts/debts', [
+
+            // Title 
             "title" => "Debt",
-            "sidebars" => "partials.sidebar",
-            "debts" => Debt::latest()->get(),
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 5,
-            "debcats" => \App\Models\DebtCategory::latest()->get(),
-            "inviews" => Debt::latest()->get(),
-            "update" => null,
-            "historycat" => null,
+
+            // Main table view
+            "debts" => $debts,
+            "categories" => \App\Models\DebtCategory::latest('debcat_entry_date')->get(),
+                
+            // For showing data
+            "dataopt" => \App\Models\DebtCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+    
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+            // "expense" => Expense::where('debt_entry_date', date("l, d-M-Y"))->get(),
+
+            // N+1
+            "debcats"=> $dummies,
+            "lists" => $list,
+            "inviews" => $dummies,
+    
+            // History for search
+            "historycat" => null, 
             "historylist" =>null,
-            "lists" => $list
+    
+            // For JavaScript show 
+            "editcategoryjs" => 6,
+
+            // For showing entries
+            "entdata" => 0,
+        ]);
+    }
+
+    public function deletelist($debt_slug)
+    {
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+        
+        // Query for delete list
+        DB::table('debts')->where('debt_slug',$debt_slug)->delete();        
+
+        return redirect('/debt');
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | DEBT TO CONVERT TO INCOME
+    |--------------------------------------------------------------------------
+    */
+
+
+    public function paidlanding($debt_slug)
+    {
+
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+    
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+        
+        // Query for find landing list
+        $list = DB::table('debts')->where('debt_slug',$debt_slug)->get();
+
+        return view('/pages/debts/debts', [
+
+            // Title 
+            "title" => "Debt",
+
+            // Main table view
+            "debts" => $debts,
+            "categories" => \App\Models\DebtCategory::latest('debcat_entry_date')->get(),
+                
+            // For showing data
+            "dataopt" => \App\Models\DebtCategory::latest('id')->get(),
+            "accopt" => \App\Models\Account::latest('id')->get(),
+    
+            // Count entries
+            "listcount" => $listcount,
+            "catcount" => $catcount,
+            // "expense" => Expense::where('debt_entry_date', date("l, d-M-Y"))->get(),
+
+            // N+1
+            "debcats"=> $dummies,
+            "lists" => $list,
+            "inviews" => $dummies,
+    
+            // History for search
+            "historycat" => null, 
+            "historylist" =>null,
+    
+            // For JavaScript show 
+            "editcategoryjs" => 7,
+
+            // For showing entries
+            "entdata" => 0,
+
         ]);
     }
 
@@ -406,32 +856,34 @@ class DebtController extends Controller
     // HERE TO CONVERT
     public function paiddebt(Request $request, $debt_slug)
     {
-        DB::table('debts')->insert([
+        // N+1 Query
+        $dummies = Dump::first()->get();
+
+        // Counting query
+        $listcount = DB::table('debts')->count();
+        $catcount = DB::table('debt_categories')->count();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->select('debts.*', 'debt_categories.debcat_name', 'accounts.account_name')
+        ->orderBy('debts.debt_entry_date','DESC')
+        ->get();
+
+        DB::table('incomes')->insert([
             'income_description'=>$request->input_decs,
             'income_category_id' => $request->input_cats,
+            'income_account_id' => $request->input_acc,
             'income_entry_date' => $request-> input_date,
-            'income_slug' => $request-> income_slug,
-            'nominal' => $request-> input_nominal
-        ]);
+            'income_slug' => $request-> debt_slug,
+            'income_nominal' => $request-> input_nominal
+		]);
 
         DB::table('debts')->where('debt_slug',$debt_slug)->delete();        
-
         
-        return view('/pages/debts/debts', [
-            "title" => "Debt",
-            "categories" => \App\Models\DebtCategory::latest()->get(),
-            "debts" => Debt::latest()->get(),
-            "dataopt" => \App\Models\DebtCategory::latest()->get(),
-            "editcategoryjs" => 0,
-            "debcats"=> Debt::latest()->get(),
-            "lists" => Debt::latest(),
-            "inviews" => Debt::latest()->get(),
-                                    "historycat" => null,
-            "historylist" =>null,
-        ]);
+        return redirect('/debt');
     }
-
-
 
     /*
     |--------------------------------------------------------------------------
@@ -442,16 +894,51 @@ class DebtController extends Controller
     public function printstore()
     {      
         $alldata = DB::table('debts')
-        ->select('debt_description', 'debt_categories.name' ,'nominal','debt_entry_date')
+        ->select('debt_description', 'debt_categories.debcat_name' ,'debt_nominal','debt_entry_date')
         ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
-        // ->where('debts.income_slug','income_slug')
+        // ->where('debt.debt_slug','debt_slug')
         ->get();
         
         return view('/pages/debts/print', [
+            // Title / Judul
             "title" => "Debt",
+
+            // Redirect
             "bck" => "debt",
+
+            // Listing number
             "number" => 1,
+
+            // Total money
             "total" => 0,
+
+            // All data ubcine
+            "debts" => $alldata
+        ]);
+    }
+
+    public function printsearch(Request $request)
+    {      
+        $alldata = DB::table('debts')
+        ->select('debt_description', 'debt_categories.debcat_name' ,'debt_nominal','debt_entry_date')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->whereBetween('debt_entry_date', [request('start'), request('end')])
+        ->get();
+        
+        return view('/pages/debts/print', [
+            // Title / Judul
+            "title" => "Debt",
+
+            // Redirect
+            "bck" => "debt",
+
+            // Listing number
+            "number" => 1,
+
+            // Total money
+            "total" => 0,
+
+            // All data ubcine
             "debts" => $alldata
         ]);
     }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
 
             // For web search
-            $table->string('income_slug')->nullable();
+            $table->string('income_slug')->unique();
 
             // Detail description for income
             $table->string('income_description');
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->date('income_entry_date')->nullable();
 
             // Income total or nominal
-            $table->integer('nominal');
+            $table->integer('income_nominal');
 
             // Income Timestamp
             $table->timestamps();

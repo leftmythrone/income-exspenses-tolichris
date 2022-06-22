@@ -77,14 +77,14 @@
         <tr>
             <td><center>{{ $number++  }}.</center></td>
             <td><center>{{ $income->income_description }}</center></td>
-            <td><center>{{ $income->name }}</center></td>
-            <td><center>Rp. {{ number_format($income->nominal, 0, " ,","."); }},00</center></td>
+            <td><center>{{ $income->incat_name }}</center></td>
+            <td><center>Rp. {{ number_format($income->income_nominal, 0, " ,","."); }},00</center></td>
             <td><center>{{ $income->income_entry_date }}</center></td>
         </tr>
 
         @php
 
-        $total = $total + $income->nominal;
+        $total = $total + $income->income_nominal;
 
         @endphp
 

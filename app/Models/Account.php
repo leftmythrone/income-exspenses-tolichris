@@ -14,6 +14,11 @@ class Account extends Model
         return $this->HasMany(Income::class, 'income_account_id');
     }
 
+    public function exaccount()
+    {
+        return $this->HasMany(Expense::class, 'expense_account_id');
+    }
+
     protected $guarded = ['id'];
 
 }

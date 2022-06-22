@@ -32,7 +32,7 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
 
@@ -97,7 +97,7 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
 
@@ -157,7 +157,7 @@ class IncomeController extends Controller
         $search = \App\Models\IncomeCategory::latest('incat_entry_date');
 
         if(request('searchcat')) {
-            $search->where('name', 'like', '%' . request('searchcat') . '%');
+            $search->where('incat_name', 'like', '%' . request('searchcat') . '%');
         }
 
         $historycat = request('searchcat');
@@ -207,17 +207,23 @@ class IncomeController extends Controller
     
         // List Query Search
         $search = DB::table('incomes')
-        ->select('income_description', 'income_categories.name' ,'nominal', 'income_entry_date', 'income_slug')
+        ->select('income_description', 'income_categories.incat_name' ,'income_nominal', 'income_entry_date', 'income_slug')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->orderBy('incomes.income_entry_date','DESC')
         ->where('incomes.income_description','like', '%' . request('searchlist') . '%')
         ->orWhere('incomes.income_entry_date','like', '%' . request('searchlist') . '%')
-        ->orWhere('income_categories.name','like', '%' . request('searchlist') . '%') 
+        ->orWhere('income_categories.incat_name','like', '%' . request('searchlist') . '%') 
         ->get();
 
         if(request('searchlist')) {
             $search->where('income_description', 'like', '%' . request('searchlist') . '%');
         }
+
+        $search = DB::table('income_categories')
+        ->select('income_description', 'income_categories.incat_name' ,'income_nominal', 'income_entry_date', 'income_slug')
+        ->join('incomes', 'incomes.id', '=', 'income_categories.income_category_id')
+        ->where('followers.follower_id', '=', 3)
+        ->get();
 
         $historylist = request('searchlist');
 
@@ -275,7 +281,7 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
 
@@ -329,7 +335,7 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
 
@@ -337,7 +343,7 @@ class IncomeController extends Controller
         $inviews = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->where('incomes.income_slug',$income_slug)
         ->get();
@@ -398,51 +404,20 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
 
 
         // Query insert database
         DB::table('income_categories')->insert([
-            'name'=>$request->incat_name,
+            'incat_name'=>$request->incat_name,
             'incat_entry_date'=>$request->incat_date,
             'incat_slug'=>$request->incat_slug
         ]);
 
-        return view('/pages/incomes/incomes', [
+        return redirect('/income');
 
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "incomes" => $incomes,
-            "categories" => \App\Models\IncomeCategory::latest('incat_entry_date')->get(),
-                
-            // For showing data
-            "dataopt" => \App\Models\IncomeCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-    
-            // Count entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-    
-            // N+1
-            "incats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-    
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-    
-            // For JavaScript show
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-
-        ]);
     }
 
 
@@ -459,7 +434,7 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
 
@@ -470,41 +445,10 @@ class IncomeController extends Controller
             'income_account_id' => $request->input_acc,
             'income_entry_date' => $request-> input_date,
             'income_slug' => $request->income_slug,
-            'nominal' => $request-> input_nominal
+            'income_nominal' => $request->input_nominal
         ]);
 
-        return view('/pages/incomes/incomes', [
-
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "incomes" => $incomes,
-            "categories" => \App\Models\IncomeCategory::latest('incat_entry_date')->get(),
-                
-            // For showing data
-            "dataopt" => \App\Models\IncomeCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-    
-            // Count entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-    
-            // N+1
-            "incats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-    
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-    
-            // For JavaScript show 
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-        ]);
+        return redirect('/income');
     }
 
     /*
@@ -525,7 +469,7 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
         
@@ -579,7 +523,7 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
         
@@ -640,47 +584,16 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
         
         // Query for edit category
         DB::table('income_categories')->where('incat_slug', $incat_slug)->update([
-            'name'=>$request->incat_name
+            'incat_name'=>$request->incat_name
 		]);
         
-        return view('/pages/incomes/incomes', [
-
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "incomes" => $incomes,
-            "categories" => \App\Models\IncomeCategory::latest('incat_entry_date')->get(),
-            
-            // For showing data
-            "dataopt" => \App\Models\IncomeCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-
-            // Count entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-
-            // N+1
-            "incats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-
-            // For JavaScript show
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-        ]);
+        return redirect('/income');
     }
 
     public function editlist(Request $request, $income_slug)
@@ -696,7 +609,7 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
         
@@ -707,42 +620,11 @@ class IncomeController extends Controller
             'income_account_id' => $request->input_acc,
             'income_entry_date' => $request-> input_date,
             'income_slug' => $request-> income_slug,
-            'nominal' => $request-> input_nominal
+            'income_nominal' => $request-> input_nominal
 		]);
         
-        return view('/pages/incomes/incomes', [
-
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "incomes" => $incomes,
-            "categories" => \App\Models\IncomeCategory::latest('incat_entry_date')->get(),
-            
-            // For showing data
-            "dataopt" => \App\Models\IncomeCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-
-            // Count entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-
-            // N+1
-            "incats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-
-            // For JavaScript show
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-
-        ]);
+        return redirect('/income');
+        
     }
 
     /*
@@ -764,7 +646,7 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
         
@@ -823,49 +705,14 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
         
-            // Query for delete category
-            DB::table('income_categories')->where('incat_slug',$incat_slug)->delete();
+        // Query for delete category
+        DB::table('income_categories')->where('incat_slug',$incat_slug)->delete();
 
-            // Query for delete category and tables
-            // DB::table('incomes')->where('income_category_id', request('destroy'))->delete();    
-
-        return view('/pages/incomes/incomes', [
-            
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "incomes" => $incomes,
-            "categories" => \App\Models\IncomeCategory::latest('incat_entry_date')->get(),
-            
-            // For showing data
-            "dataopt" => \App\Models\IncomeCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-
-            // Count entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-
-            // N+1
-            "incats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-
-            // For JavaScript show 
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-
-        ]);
+        return redirect('/income');
     }
 
     public function deletelistlanding($income_slug)
@@ -881,7 +728,7 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
         
@@ -936,46 +783,14 @@ class IncomeController extends Controller
         $incomes = DB::table('incomes')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        ->select('incomes.*', 'income_categories.name', 'accounts.account_name')
+        ->select('incomes.*', 'income_categories.incat_name', 'accounts.account_name')
         ->orderBy('incomes.income_entry_date','DESC')
         ->get();
         
         // Query for delete list
         DB::table('incomes')->where('income_slug',$income_slug)->delete();        
 
-        return view('/pages/incomes/incomes', [
-            
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "incomes" => Income::latest('income_entry_date')->get(),
-            "categories" => \App\Models\IncomeCategory::latest('incat_entry_date')->get(),
-            
-            // For showing data
-            "dataopt" => \App\Models\IncomeCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-
-            // Count Entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-
-            // N+1
-            "incats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-
-            // For JavaScript show
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-
-        ]);
+        return redirect('/income');
     }
 
     /*
@@ -987,7 +802,7 @@ class IncomeController extends Controller
     public function printstore()
     {      
         $alldata = DB::table('incomes')
-        ->select('income_description', 'income_categories.name' ,'nominal','income_entry_date')
+        ->select('income_description', 'income_categories.incat_name' ,'income_nominal','income_entry_date')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         // ->where('income.income_slug','income_slug')
         ->get();
@@ -1013,7 +828,7 @@ class IncomeController extends Controller
     public function printsearch(Request $request)
     {      
         $alldata = DB::table('incomes')
-        ->select('income_description', 'income_categories.name' ,'nominal','income_entry_date')
+        ->select('income_description', 'income_categories.incat_name' ,'income_nominal','income_entry_date')
         ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
         ->whereBetween('income_entry_date', [request('start'), request('end')])
         ->get();

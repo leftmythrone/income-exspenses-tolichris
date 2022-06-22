@@ -18,7 +18,8 @@
     {{-- CLOSE OVERLAY --}}
     <div id="overlaycategory" onclick="offCategory()"></div>
     <div id="overlayviewcategory" onclick="offViewCategory()"></div>
-    <div id="overlayeditcategory" onclick="offEditCategory()"></div>
+    <div id="overlayeditcategory" onclick="offEditCategory()"></div>    
+    <div id="overlaypaidtable" onclick="offPaidTable()"></div>
 
 </div>
 
@@ -29,7 +30,7 @@
 <div class="tabcategory">
     {{-- SEARCH FEATURE --}}
     <div class="tabsearch">
-        <form action="/expense/searchcat">
+        <form action="/debt/searchcat">
             <p>Search: <input type="text" name="searchcat" placeholder="search . ." value="{{ $historycat }}"></p>
             <button type="submit">Find</button>
         </form>
@@ -60,18 +61,18 @@
                         <tr>
                             {{-- TABLE MAIN SECTION --}}
                             <td><center> {{ $number++ }}. </center></td>
-                            <td><center>{{ $category->excat_name }}</center></td>
+                            <td><center>{{ $category->debcat_name }}</center></td>
                             {{-- <td><center>{{ "Kas Kecil" }}</center></td> --}}
-                            <td><center>{{ $category->excat_entry_date }}</center></td>
+                            <td><center>{{ $category->debcat_entry_date }}</center></td>
                             <td>
                                 <center>
                                     {{-- PERHITUNGAN PER CATEGORY  --}}
                                         
-                                    @foreach ( $expenses as $expense )
-                                        @if ($category->excat_name === $expense->excat_name)
+                                    @foreach ( $debts as $debt )
+                                        @if ($category->debcat_name === $debt->debcat_name)
                                             
                                             @php
-                                                $subtotal = $subtotal + $expense->expense_nominal;
+                                                $subtotal = $subtotal + $debt->debt_nominal;
                                             @endphp
                                         @endif
                                     @endforeach
@@ -85,9 +86,9 @@
                             </td>
                             <td>
                                 <center>
-                                    <a href="/expense/viewcategory/{{ $category->excat_slug }}"><button><img src="/img/eye_white.png" alt=""></button></a>
-                                    <a href="/expense/editlanding/{{ $category->excat_slug }}"><button><img src="/img/pencil_white.png" alt=""></button></a> 
-                                    <a href="/expense/deletecatlanding/{{ $category->excat_slug }}"><button><img src="/img/trash_white.png" alt=""></button></a>
+                                    <a href="/debt/viewcategory/{{ $category->debcat_slug }}"><button><img src="/img/eye_white.png" alt=""></button></a>
+                                    <a href="/debt/editlanding/{{ $category->debcat_slug }}"><button><img src="/img/pencil_white.png" alt=""></button></a> 
+                                    <a href="/debt/deletecatlanding/{{ $category->debcat_slug }}"><button><img src="/img/trash_white.png" alt=""></button></a>
                                 </center>
                             </td>
                         </tr>
@@ -111,7 +112,7 @@
                             </td>
                             <td>
                                 <center>
-                                    <a href="/expense/print/"><button><img src="/img/printer_white.png" alt=""></button></a>
+                                    <a href="/debt/print/"><button><img src="/img/printer_white.png" alt=""></button></a>
                                 </center>
                             </td>
                         </tr>

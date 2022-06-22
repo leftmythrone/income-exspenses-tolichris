@@ -6,16 +6,16 @@
 
  <div class="tabaddnew">
     <div id="addcategorybox" class="addcategorybox">
-       <form method="post" action="/expense/addcategory">
+       <form method="post" action="/debt/addcategory">
            <h1><center>Add {{ $title }} Category </center></h1>
-           <h2><center>Tambah/catat category expense / pendapatan 
+           <h2><center>Tambah/catat category debt / pendapatan 
            supaya memantau keuangan menjadi lebih mudah</center></h2>
             
            {{-- CRSF --}}
            @csrf
-           <label for="">Category Name : <input type="text" name="excat_name" autocomplete="off" required></label><br>
-           <input type="hidden" name="excat_date" value="{{ date("Y-m-d"); }}">
-           <input type="hidden" name="excat_slug" 
+           <label for="">Category Name : <input type="text" name="debcat_name" autocomplete="off" required></label><br>
+           <input type="hidden" name="debcat_date" value="{{ date("Y-m-d"); }}">
+           <input type="hidden" name="debcat_slug" 
                value=
                "   
                    {{-- RANDOM CREATE SLUG --}}
@@ -41,16 +41,16 @@
 
 <div class="tabaddnew">
     <div id="editcategorybox" class="editcategorybox">
-        @foreach ( $excats as $excat)
-        <form method="post" action="/expense/editcategory/{{ $excat->excat_slug }}">
+        @foreach ( $debcats as $debcat)
+        <form method="post" action="/debt/editcategory/{{ $debcat->debcat_slug }}">
             <h1><center>Edit {{ $title }} Category </center></h1>
-            <h2><center>Tambah/catat category expense / pendapatan 
+            <h2><center>Tambah/catat category debt / pendapatan 
             supaya memantau keuangan menjadi lebih mudah</center></h2>
             
             @csrf
             
-            <label for="">Category Name : <input type="text" name="excat_name" autocomplete="off" value="{{ $excat->excat_name }}" required></label><br>
-            <label for="">Category Date : <input type="date" name="excat_date" value="{{ date("Y-m-d"); }}"></label><br>
+            <label for="">Category Name : <input type="text" name="debcat_name" autocomplete="off" value="{{ $debcat->debcat_name }}" required></label><br>
+            <label for="">Category Date : <input type="date" name="debcat_date" value="{{ date("Y-m-d"); }}"></label><br>
  
             <button type="submit">Edit Category + </button>
             <br>
@@ -67,23 +67,24 @@
             
 <div class="tabaddnew">
     <div id="viewcategorybox" class="viewcategorybox">
-        <form method="post" action="/expense/viewcategory">
+        <form method="post" action="/debt/viewcategory">
             <h1><center>View {{ $title }} Category </center></h1>
-            <h2><center>View / lihat category expense / pendapatan 
+            <h2><center>View / lihat category debt / pendapatan 
             untuk lebih detail pada informasi data</center></h2>
             
             {{-- CSRF --}}
             @csrf
 
-            @foreach ( $excats as $excat)
-                <label for="">Category Name : <input type="text" name="excat_name" autocomplete="off" value="{{ $excat->excat_name }}" disabled></label><br>
-                <label for="">Category Date : <input type="text" name="excat_date" value="{{ $excat->excat_entry_date }}" disabled></label><br>
+            @foreach ( $debcats as $debcat)
+                <label for="">Category Name : <input type="text" name="debcat_name" autocomplete="off" value="{{ $debcat->debcat_name }}" disabled></label><br>
+                <label for="">Category Date : <input type="text" name="debcat_date" value="{{ $debcat->debcat_entry_date }}" disabled></label><br>
             @endforeach  
             {{-- <button type="submit">Add new Income + </button> --}}
             <br>
         </form>
     </div> 
 </div>
+
 
 {{-- 
 |--------------------------------------------------------------------------
@@ -94,11 +95,11 @@
  <div class="tabaddnew">
     <div id="deletecategorybox" class="deletecategorybox">
         @php error_reporting(0); @endphp
-        <form method="get" action="/expense/deletecategory/{{ $excats[0]->excat_slug }}">
+        <form method="get" action="/debt/deletecategory/{{ $debcats[0]->debbcat_slug }}">
             {{-- <input type="hidden" value="" name="destroy"> --}}
             <h1><center>Delete {{ $title }} Category </center></h1>
-            <h2><center>Apabila {{ auth()->user()->name }} menghapus category <b>{{ $excats[0]->excat_name }}</b>
-            maka seluruh data pada category <b>{{ $excats[0]->excat_name }}</b>  akan <b>menghilang!</b></center></h2>
+            <h2><center>Apabila {{ auth()->user()->name }} menghapus category <b>{{ $debcats[0]->debcat_name }}</b>
+                maka seluruh data pada category <b>{{ $debcats[0]->debcat_name }}</b>  akan <b>menghilang!</b></center></h2>
      
             <button class="bg-danger" type="submit"><b>Delete {{ $title }} Category</b> </button>
             <br>
@@ -158,7 +159,7 @@
                         <h2>Tambah/catat setiap pemasukan pada hari ini
                             agar pemasukan menjadi lebih banyak</h2>
         <div class="tableincomebox">
-            <form method="post" action="/expense/addnew">
+            <form method="post" action="/debt/addnew">
                 
                 {{-- CSRF --}}
                 @csrf
@@ -179,7 +180,7 @@
                                 {{-- DATA LIST INPUT CATEGORY --}}
                                 <select name="input_cats">
                                     @foreach ($dataopt as $opt)
-                                        <option value="{{ $opt->id }}">{{ $opt->excat_name }}</option> 
+                                        <option value="{{ $opt->id }}">{{ $opt->debcat_name }}</option> 
                                     @endforeach
                                 </select>
                             </center>
@@ -209,7 +210,7 @@
                                 {{-- INPUT DATE --}}
                                 <input type="hidden" name="input_date" value="{{ date("Y-m-d"); }}">
                                 {{-- INPUT TOKEN --}}
-                                <input type="hidden" name="expense_slug" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
+                                <input type="hidden" name="debt_slug" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
                             </center>
                         </td>
                     </tr>
@@ -241,7 +242,7 @@
     <div class="viewtableincomebox">
         
         @foreach ( $inviews as $inview )
-        <form method="post" action="/expense/viewlist">
+        <form method="post" action="/debt/viewlist">
     
         {{-- CSRF --}}
         @csrf
@@ -252,14 +253,14 @@
                     <td><center> <label for="">View {{ $title }} Description</label> </center></td>
                     <td><center> : </center></td>
                     {{-- INPUT_DECS --}}
-                    <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $inview->expense_description }}" disabled required> </center></td>
+                    <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $inview->debt_description }}" disabled required> </center></td>
                 </tr>
                 <tr>
                     <td><center> <label for="">{{ $title }} Category</label> </center></td>
                     <td><center> : </center></td>
                     <td>
                         <center>
-                                <input type="text" value="{{ $inview->excat_name  }}" disabled>
+                                <input type="text" value="{{ $inview->debcat_name }}" disabled>
                         </center>
                     </td>
                 </tr>
@@ -277,7 +278,7 @@
                     <td><center> : </center></td>
                     <td>
                         <center>
-                                <input type="date" value="{{ $inview->expense_entry_date }}" disabled>
+                                <input type="date" value="{{ $inview->debt_entry_date }}" disabled>
                         </center>
                     </td>
                 </tr>
@@ -287,7 +288,7 @@
                     <td>
                         <center> 
                             {{-- INPUT_NOMINAL --}}
-                            <input type="text" name="input_nominal" value="Rp. {{ number_format($inview->expense_nominal, 0, " ,","."); }},00" autocomplete="off" disabled required>                
+                            <input type="text" name="input_nominal" value="Rp. {{ number_format($inview->debt_nominal, 0, " ,","."); }},00" autocomplete="off" disabled required>                
                             {{-- INPUT DATE --}}
                             <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
                             {{-- INPUT TOKEN --}}
@@ -317,7 +318,7 @@
         
             @foreach ($lists as $list)
         
-                <form method="post" action="/expense/editlist/{{ $list->expense_slug }}">
+                <form method="post" action="/debt/editlist/{{ $list->debt_slug }}">
                 
                     {{-- CSRF --}}
                     @csrf
@@ -328,7 +329,7 @@
                         <td><center> <label for="">Income Description</label> </center></td>
                         <td><center> : </center></td>
                         {{-- INPUT_DECS --}}
-                        <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $list->expense_description }}"  required> </center></td>
+                        <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $list->debt_description }}"  required> </center></td>
                     </tr>
                     <tr>
                         <td><center> <label for="">Income Category</label> </center></td>
@@ -338,7 +339,7 @@
                                 {{-- DATA LIST INPUT CATEGORY --}}
                                 <select name="input_cats">
                                     @foreach ($dataopt as $opt)
-                                        <option value="{{ $opt->id }}">{{ $opt->excat_name }}</option> 
+                                        <option value="{{ $opt->id }}">{{ $opt->debcat_name }}</option> 
                                     @endforeach
                                 </select>
                             </center>
@@ -374,10 +375,10 @@
                         <td>
                             <center> 
                                 {{-- INPUT_NOMINAL --}}
-                                <input type="text" name="input_nominal" autocomplete="off" value="{{ $list->expense_nominal }}" required>                
+                                <input type="text" name="input_nominal" autocomplete="off" value="{{ $list->debt_nominal }}" required>                
 
                                 {{-- INPUT TOKEN --}}
-                                <input type="hidden" name="token" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
+                                <input type="hidden" name="debt_slug" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
                             </center>
                         </td>
                     </tr>
@@ -395,20 +396,112 @@
         </div>
 </div>
 
+{{-- 
+|--------------------------------------------------------------------------
+| PAID CONVERT INTO INCOME LIST
+|--------------------------------------------------------------------------
+ --}}
+
+{{-- CONTAINER POP UP --}}
+<div id="paidtablebox" class="paidtablebox">
+    <h1>Convert Debt into Income</h1>
+    <h2>Tambah/catat setiap pemasukan pada hari ini
+        agar pemasukan menjadi lebih banyak</h2>
+<div class="tableincomebox">
+
+@foreach ( $lists as $list )
+<form method="post" action="/debt/paiddebt/{{ $list->debt_slug }}">
+
+{{-- CSRF --}}
+@csrf
+
+{{-- TABLE --}}
+<table>
+<tr>
+    <td><center> <label for="">{{ $title }} Description</label> </center></td>
+    <td><center> : </center></td>
+    {{-- INPUT_DECS --}}
+    <td><center> <input type="text" name="input_decs" autocomplete="off" value="{{ $list->debt_description }}" required> </center></td>
+</tr>
+<tr>
+    <td><center> <label for="">{{ $title }} Category</label> </center></td>
+    <td><center> : </center></td>
+    <td>
+        <center>
+            {{-- DATA LIST INPUT CATEGORY --}}
+            <select name="input_cats">
+                @foreach ($dataopt as $opt)
+                    <option value="{{ $opt->id }}">{{ $opt->debcat_name }}</option> 
+                @endforeach
+            </select>
+        </center>
+    </td>
+</tr>
+<tr>
+    <td><center> <label for="">{{ $title }} Account</label> </center></td>
+    <td><center> : </center></td>
+    <td>
+        <center>
+            {{-- DATA LIST INPUT CATEGORY --}}
+            <select name="input_acc">
+                @foreach ($accopt as $apt)
+                    <option value="{{ $apt->id }}">{{ $apt->account_name }}</option> 
+                @endforeach
+            </select>
+        </center>
+    </td>
+</tr>
+<tr>
+    <td><center> <label for="">{{ $title }} Date</label> </center></td>
+    <td><center> : </center></td>
+    <td>
+        <center>
+                <input type="date" name="input_date" value="{{ $list->debt_entry_date }}" required>
+        </center>
+    </td>
+</tr>
+<tr>
+    <td><center> <label for="">{{ $title }} Nominal</label> </center></td>
+    <td><center> : </center></td>
+    <td>
+        <center> 
+            {{-- INPUT_NOMINAL --}}
+            <input type="text" name="input_nominal" autocomplete="off" value="{{ $list->debt_nominal }}" required>
+            {{-- INPUT TOKEN --}}
+            <input type="hidden" name="debt_slug" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
+        </center>
+    </td>
+</tr>
+<tr> 
+    <td colspan="2"> </td>
+    <td>
+        <center>
+            <button onclick="offTable()" type="submit" >Edit {{ $title }} list + </button>
+        </center>
+    </td>
+</tr>
+</table>
+
+@endforeach
+            
+</form>
+</div>
+</div>
+
 </div>
 
 {{-- 
 |--------------------------------------------------------------------------
-| DELETE CATEGORY LANDING
+| DELETE LIST LANDING
 |--------------------------------------------------------------------------
  --}}
             
  <div class="tabaddnew">
     <div id="deletetablebox" class="deletetablebox">
         @foreach ( $lists as $list)
-        <form method="get" action="/expense/deletelist/{{ $list->expense_slug }}">
+        <form method="get" action="/debt/deletelist/{{ $list->debt_slug }}">
             <h1><center>Delete {{ $title }} List</center></h1>
-            <h2><center>Apabila {{ auth()->user()->name  }} akan menghapus <b>{{ $list->expense_description }}</b>
+            <h2><center>Apabila {{ auth()->user()->name  }} akan menghapus <b>{{ $list->debt_description }}</b>
                 maka data tersebut akang menghilang selamanya</center></h2>
             
             @csrf

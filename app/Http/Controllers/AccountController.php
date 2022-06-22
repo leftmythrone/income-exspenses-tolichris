@@ -31,108 +31,162 @@ class AccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    /*
+    |--------------------------------------------------------------------------
+    | INCOME UPDATE LANDING PAGE CATEGORY / LIST
+    |--------------------------------------------------------------------------
+    */
+
     public function start()
     {
+        // SOURCE INCOME DATABASE
         $incomes = DB::table('incomes')
-        ->select('nominal', 'accounts.account_name')
+        ->select('income_nominal', 'accounts.account_name')
         ->join('accounts', 'accounts.id', '=', 'income_account_id')
         ->get();
 
-        // $expenses = DB::table('expenses')
-        // ->select('nominal', 'accounts.account_name')
-        // ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        // ->get();
+        // SOURCE EXPENSE DATABASE
+        $expenses = DB::table('expenses')
+        ->select('expense_nominal', 'accounts.account_name')
+        ->join('accounts', 'accounts.id', '=', 'expense_account_id')
+        ->get();
 
-        // $debts = DB::table('debts')
-        // ->select('nominal', 'accounts.account_name')
-        // ->join('accounts', 'accounts.id', '=', 'income_account_id')
-        // ->get();
+        // SOURCE DEBTS DATABASE
+        $debts = DB::table('debts')
+        ->select('debt_nominal', 'accounts.account_name')
+        ->join('accounts', 'accounts.id', '=', 'debt_account_id')
+        ->get();
 
-        // $truncome = DB::table('incomes')->truncate();
 
         return view('/pages/accounts/accounts', [
             
             // Title
-            "title" => "Income",
+            "title" => "Account",
             
             // Account
-            "accounts" => Account::latest()->get(),
-
-            // 
-            "incats" => IncomeCategory::latest()->get(),
+            "accounts" => Account::latest('created_at')->get(),
             
             // Counting
-            "incomes" => $incomes, 
+            "incomes" => $incomes,
+            "expenses" => $expenses,
+            "debts" => $debts, 
+
+            // List
             "number" => 1,
             "subcat" => 0,
             "subtotal" => 0,
             "total" => 0
         ]);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    /*
+    |--------------------------------------------------------------------------
+    | INCOME UPDATE LANDING PAGE CATEGORY / LIST
+    |--------------------------------------------------------------------------
+    */
+
+    public function create($account_slug)
     {
-        //
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store()
     {
-        //
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Account $account)
+    /*
+    |--------------------------------------------------------------------------
+    | INCOME UPDATE LANDING PAGE CATEGORY / LIST
+    |--------------------------------------------------------------------------
+    */
+
+    public function sum($account_slug)
     {
-        //
+        $crud = DB::table('accounts')->where('account_slug',$account_slug)->get();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Account $account)
+    public function summation($account_slug)
     {
-        //
+        DB::table('accounts')->where('account_slug', $account_slug)->update([
+            'account_balance'=>$request->input_nominal + $request->input_balance 
+		]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Account $account)
+    /*
+    |--------------------------------------------------------------------------
+    | INCOME UPDATE LANDING PAGE CATEGORY / LIST
+    |--------------------------------------------------------------------------
+    */
+    
+    public function sub($account_slug)
     {
-        //
+        $crud = DB::table('accounts')->where('account_slug',$account_slug)->get();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Account  $account
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Account $account)
+    public function substraction($account_slug)
     {
-        //
+        DB::table('accounts')->where('account_slug', $account_slug)->update([
+            'account_balance'=>$request->input_nominal - $request->input_balance 
+		]);
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | INCOME UPDATE LANDING PAGE CATEGORY / LIST
+    |--------------------------------------------------------------------------
+    */
+
+    public function edit($account_slug)
+    {
+        $crud = DB::table('accounts')->where('account_slug',$account_slug)->get();
+    }
+
+    public function update($account_slug)
+    {
+        DB::table('accounts')->where('account_slug', $account_slug)->update([
+            'account_name'=>$request->input_name,
+            'account_balance'=>$request->input_balance,
+            'account_slug'=>$request->inpat_slug
+		]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | INCOME UPDATE LANDING PAGE CATEGORY / LIST
+    |--------------------------------------------------------------------------
+    */
+
+    public function find($account_slug)
+    {
+        $crud = DB::table('accounts')->where('account_slug',$account_slug)->get();
+    }
+
+    public function delete($account_slug)
+    {
+        DB::table('accounts')->where('account_slug',$account_slug)->delete();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | INCOME UPDATE LANDING PAGE CATEGORY / LIST
+    |--------------------------------------------------------------------------
+    */
+
+    public function fresh()
+    {
+        // INCOMES CLEAR ALL DATABASE
+        DB::table('incomes')->truncate();
+
+        // EXPENSE CLEAR ALL DATABASE
+        DB::table('expenses')->truncate();
+
+        // DEBTS CLEAR ALL DATABASE
+        DB::table('debts')->truncate();
+
+
     }
 }

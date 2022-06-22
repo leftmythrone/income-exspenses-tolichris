@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
 
             // For web search
-            $table->string('debt_slug')->nullable();
+            $table->string('debt_slug')->unique();
 
             // Detail description for debt
             $table->string('debt_description');
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->date('debt_entry_date')->nullable();
 
             // Debt total or nominal
-            $table->integer('nominal');
+            $table->integer('debt_nominal');
 
             // Debt timestamp
             $table->timestamps();

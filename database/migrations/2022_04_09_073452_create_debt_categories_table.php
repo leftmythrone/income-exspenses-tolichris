@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('debcat_slug')->nullable();
             
             // Category account name 
-            $table->string('name')->unique();
+            $table->string('debcat_name')->unique();
             
             // Category entry date
             $table->date('debcat_entry_date')->nullable();

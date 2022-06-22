@@ -38,7 +38,7 @@ class DebtFactory extends Factory
             'debt_slug' => $this->faker->numberBetween($min = 50000, $max = 3000000),
                         
             // Factory for nominal
-            'nominal' => $this->faker->numberBetween($min = 50000, $max = 3000000),
+            'debt_nominal' => $this->faker->numberBetween($min = 50000, $max = 3000000),
                         
             // Factory for entry date
             'debt_entry_date' => $this->faker->dateTimeThisMonth()

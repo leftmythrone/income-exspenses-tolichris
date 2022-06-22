@@ -70,9 +70,9 @@
             <tr>
                 <td><center> {{ $listloop + 1 }}. </center></td>
                 <td><center>{{ $incomes[$listloop]->income_description }}</center></td>
-                <td><center>{{ $incomes[$listloop]->name }}</center></td>
+                <td><center>{{ $incomes[$listloop]->incat_name }}</center></td>
                 <td><center>{{ $incomes[$listloop]->account_name }}</center></td>
-                <td><center>Rp. {{ number_format($incomes[$listloop]->nominal, 0, " ,","."); }},00</center></td>
+                <td><center>Rp. {{ number_format($incomes[$listloop]->income_nominal, 0, " ,","."); }},00</center></td>
                 <td><center>{{ $incomes[$listloop]->income_entry_date }}</center></td>
                 <td>
                     <center>

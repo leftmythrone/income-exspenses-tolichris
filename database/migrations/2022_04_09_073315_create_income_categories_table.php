@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('incat_slug')->nullable();
 
             // Category account name 
-            $table->string('name')->unique();
+            $table->string('incat_name')->unique();
 
             // Category entry date
             $table->date('incat_entry_date')->nullable();

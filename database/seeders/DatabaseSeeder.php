@@ -93,12 +93,12 @@ class DatabaseSeeder extends Seeder
 
 
         \App\Models\IncomeCategory::create([
-            'name' => '[Click Edit Or Delete]',
+            'incat_name' => '[Click Edit Or Delete]',
             'incat_slug' => 'basic.sVasidwadswUsa',
             'incat_entry_date' => '2022-05-21'
         ]);
 
-        Income::factory(10)->create();
+        // Income::factory(10)->create();
 
 
         \App\Models\Income::create([
@@ -106,7 +106,7 @@ class DatabaseSeeder extends Seeder
             'income_category_id' => 1,
             'income_account_id' => 1,
             'income_slug' => 'basic.asd@4$r34dsdfasa',
-            'nominal' => 0,
+            'income_nominal' => 0,
             'income_entry_date' => '2022-05-21'
         ]);
 
@@ -118,19 +118,19 @@ class DatabaseSeeder extends Seeder
         */
 
         \App\Models\ExpenseCategory::create([
-            'name' => '[Click Edit Or Delete]',
+            'excat_name' => '[Click Edit Or Delete]',
             'excat_slug' => 'basic.sVasidwadswUsa',
             'excat_entry_date' => '2022-05-21'
         ]);
 
-        Expense::factory(10)->create();
+        // Expense::factory(10)->create();
 
         \App\Models\Expense::create([
             'expense_description' => '[Basic Expense List]',
             'expense_category_id' => 1,
             'expense_account_id' => 1,
             'expense_slug' => 'basic.asd@4$r34dsdfasa',
-            'nominal' => 0, 
+            'expense_nominal' => 0, 
             'expense_entry_date' => '2022-05-21'
         ]);
 
@@ -141,19 +141,19 @@ class DatabaseSeeder extends Seeder
         */
 
         \App\Models\DebtCategory::create([
-            'name' => '[Click Edit Or Delete]',
+            'debcat_name' => '[Click Edit Or Delete]',
             'debcat_slug' => 'basic.sVasidwadswUsa',
             'debcat_entry_date' => '2022-05-21'
         ]);
 
-        Debt::factory(10)->create();
+        // Debt::factory(10)->create();
 
         \App\Models\Debt::create([
             'debt_description' => '[Basic Debt List]',
             'debt_category_id' => 1,
             'debt_account_id' => 1,
             'debt_slug' => 'basic.asd@4$r34dsdfasa',
-            'nominal' => 0,
+            'debt_nominal' => 0,
             'debt_entry_date' => '2022-05-21'
         ]);
 

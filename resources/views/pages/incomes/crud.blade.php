@@ -42,14 +42,14 @@
 <div class="tabaddnew">
     <div id="editcategorybox" class="editcategorybox">
         @foreach ( $incats as $incat)
-        <form method="get" action="/income/editcategory/{{ $incat->incat_slug }}">
+        <form method="post" action="/income/editcategory/{{ $incat->incat_slug }}">
             <h1><center>Edit {{ $title }} Category </center></h1>
             <h2><center>Tambah/catat category income / pendapatan 
             supaya memantau keuangan menjadi lebih mudah</center></h2>
             
             @csrf
             
-            <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" value="{{ $incat->name }}" required></label><br>
+            <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" value="{{ $incat->incat_name }}" required></label><br>
             <label for="">Category Date : <input type="date" name="incat_date" value="{{ date("Y-m-d"); }}"></label><br>
  
             <button type="submit">Edit Category + </button>
@@ -76,7 +76,7 @@
             @csrf
 
             @foreach ( $incats as $incat)
-                <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" value="{{ $incat->name }}" disabled></label><br>
+                <label for="">Category Name : <input type="text" name="incat_name" autocomplete="off" value="{{ $incat->incat_name }}" disabled></label><br>
                 <label for="">Category Date : <input type="text" name="incat_date" value="{{ $incat->incat_entry_date }}" disabled></label><br>
             @endforeach  
             {{-- <button type="submit">Add new Income + </button> --}}
@@ -97,8 +97,8 @@
         <form method="get" action="/income/deletecategory/{{ $incats[0]->incat_slug }}">
             {{-- <input type="hidden" value="" name="destroy"> --}}
             <h1><center>Delete {{ $title }} Category </center></h1>
-            <h2><center>Apabila {{ auth()->user()->username }} <b>menghapus</b>
-            maka seluruh data pada category <b>{{ $incats[0]->name }}</b>  akan menghilang!</center></h2>
+            <h2><center>Apabila {{ auth()->user()->name }} menghapus category <b>{{ $incats[0]->incat_name }}</b>
+                maka seluruh data pada category <b>{{ $incats[0]->incat_name }}</b>  akan <b>menghilang!</b></center></h2>
      
             <button class="bg-danger" type="submit"><b>Delete {{ $title }} Category</b> </button>
             <br>
@@ -179,7 +179,7 @@
                                 {{-- DATA LIST INPUT CATEGORY --}}
                                 <select name="input_cats">
                                     @foreach ($dataopt as $opt)
-                                        <option value="{{ $opt->id }}">{{ $opt->name }}</option> 
+                                        <option value="{{ $opt->id }}">{{ $opt->incat_name }}</option> 
                                     @endforeach
                                 </select>
                             </center>
@@ -259,7 +259,7 @@
                     <td><center> : </center></td>
                     <td>
                         <center>
-                                <input type="text" value="{{ $inview->name  }}" disabled>
+                                <input type="text" value="{{ $inview->incat_name  }}" disabled>
                         </center>
                     </td>
                 </tr>
@@ -287,7 +287,7 @@
                     <td>
                         <center> 
                             {{-- INPUT_NOMINAL --}}
-                            <input type="text" name="input_nominal" value="Rp. {{ number_format($inview->nominal, 0, " ,","."); }},00" autocomplete="off" disabled required>                
+                            <input type="text" name="input_nominal" value="Rp. {{ number_format($inview->income_nominal, 0, " ,","."); }},00" autocomplete="off" disabled required>                
                             {{-- INPUT DATE --}}
                             <input type="hidden" name="input_date" value="{{ date("l, d-M-Y"); }}">
                             {{-- INPUT TOKEN --}}
@@ -338,7 +338,7 @@
                                 {{-- DATA LIST INPUT CATEGORY --}}
                                 <select name="input_cats">
                                     @foreach ($dataopt as $opt)
-                                        <option value="{{ $opt->id }}">{{ $opt->name }}</option> 
+                                        <option value="{{ $opt->id }}">{{ $opt->incat_name }}</option> 
                                     @endforeach
                                 </select>
                             </center>
@@ -374,7 +374,7 @@
                         <td>
                             <center> 
                                 {{-- INPUT_NOMINAL --}}
-                                <input type="text" name="input_nominal" autocomplete="off" value="{{ $list->nominal }}" required>                
+                                <input type="text" name="input_nominal" autocomplete="off" value="{{ $list->income_nominal }}" required>                
 
                                 {{-- INPUT TOKEN --}}
                                 <input type="hidden" name="token" value="@php $tabuid = uniqid('gfg', true); echo $tabuid; @endphp">
@@ -408,8 +408,8 @@
         @foreach ( $lists as $list)
         <form method="get" action="/income/deletelist/{{ $list->income_slug }}">
             <h1><center>Delete {{ $title }} List</center></h1>
-            <h2><center>Apabila {{ auth()->user()->username }} <b>menghapus</b>
-            maka </center></h2>
+            <h2><center>Apabila {{ auth()->user()->name  }} akan menghapus <b>{{ $list->income_description }}</b>
+            maka data tersebut akang menghilang selamanya</center></h2>
             
             @csrf
  

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
 
             // For web search
-            $table->string('expense_slug')->nullable();
+            $table->string('expense_slug')->unique();
 
             // Detail description for expense
             $table->string('expense_description');
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->date('expense_entry_date')->nullable();
 
             // Expense total or nominal
-            $table->integer('nominal');
+            $table->integer('expense_nominal');
 
             // Expense timestamp
             $table->timestamps();

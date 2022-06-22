@@ -15,7 +15,7 @@ class ExpenseController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | EXPENSE MAIN PAGE
+    | INCOME MAIN PAGE
     |--------------------------------------------------------------------------
     */
 
@@ -32,7 +32,7 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
 
@@ -40,7 +40,7 @@ class ExpenseController extends Controller
         return view('/pages/expenses/expenses', [
             
             // Title 
-            "title" => "Income",
+            "title" => "Expense",
 
             // Main table view
             "expenses" => $expenses,
@@ -97,7 +97,7 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
 
@@ -107,10 +107,10 @@ class ExpenseController extends Controller
         return view('/pages/expenses/expenses', [
             
             // Title 
-            "title" => "Income",
+            "title" => "Expense",
 
             // Main table view
-            "expenses" => $expenses, // Income::latest('expense_entry_date')->get(),
+            "expenses" => $expenses,
             "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
             
             // For showing data
@@ -140,7 +140,7 @@ class ExpenseController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | EXPENSE SEARCH
+    | INCOME SEARCH
     |--------------------------------------------------------------------------
     */
 
@@ -157,7 +157,7 @@ class ExpenseController extends Controller
         $search = \App\Models\ExpenseCategory::latest('excat_entry_date');
 
         if(request('searchcat')) {
-            $search->where('name', 'like', '%' . request('searchcat') . '%');
+            $search->where('excat_name', 'like', '%' . request('searchcat') . '%');
         }
 
         $historycat = request('searchcat');
@@ -165,10 +165,10 @@ class ExpenseController extends Controller
         return view('/pages/expenses/expenses', [
 
             // Title 
-            "title" => "Income",
+            "title" => "Expense",
 
             // Main table view
-            "expenses" => Income::latest('expense_entry_date')->get(),
+            "expenses" => Expense::latest('expense_entry_date')->get(),
             "categories" => $search->get(),
             
             // For showing data
@@ -207,16 +207,16 @@ class ExpenseController extends Controller
     
         // List Query Search
         $search = DB::table('expenses')
-        ->select('income_description', 'expense_categories.name' ,'nominal', 'expense_entry_date', 'income_slug')
+        ->select('expense_description', 'expense_categories.excat_name' ,'expense_nominal', 'expense_entry_date', 'expense_slug')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->orderBy('expenses.expense_entry_date','DESC')
-        ->where('expenses.income_description','like', '%' . request('searchlist') . '%')
+        ->where('expenses.expense_description','like', '%' . request('searchlist') . '%')
         ->orWhere('expenses.expense_entry_date','like', '%' . request('searchlist') . '%')
-        ->orWhere('expense_categories.name','like', '%' . request('searchlist') . '%') 
+        ->orWhere('expense_categories.excat_name','like', '%' . request('searchlist') . '%') 
         ->get();
 
         if(request('searchlist')) {
-            $search->where('income_description', 'like', '%' . request('searchlist') . '%');
+            $search->where('expense_description', 'like', '%' . request('searchlist') . '%');
         }
 
         $historylist = request('searchlist');
@@ -224,7 +224,7 @@ class ExpenseController extends Controller
         return view('/pages/expenses/expenses', [
 
             // Title 
-            "title" => "Income",
+            "title" => "Expense",
 
             // Main table view
             "expenses" => $search,
@@ -258,11 +258,11 @@ class ExpenseController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | EXPENSE TO VIEW CATEGORY / LIST
+    | INCOME TO VIEW CATEGORY / LIST
     |--------------------------------------------------------------------------
     */
 
-    public function viewcategory($incat_slug)
+    public function viewcategory($excat_slug)
     {
         // N+1 Query
         $dummies = Dump::first()->get();
@@ -275,17 +275,17 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
 
         // View category
-        $category = DB::table('expense_categories')->where('incat_slug',$incat_slug)->get();
+        $category = DB::table('expense_categories')->where('excat_slug',$excat_slug)->get();
 
         return view('/pages/expenses/expenses', [
 
            // Title 
-           "title" => "Income",
+           "title" => "Expense",
 
            // Main table view
            "expenses" => $expenses,
@@ -316,7 +316,7 @@ class ExpenseController extends Controller
         ]);
     }
 
-    public function viewlist($income_slug)
+    public function viewlist($expense_slug)
     {
         // N+1 Query
         $dummies = Dump::first()->get();
@@ -325,11 +325,11 @@ class ExpenseController extends Controller
         $listcount = DB::table('expenses')->count();
         $catcount = DB::table('expense_categories')->count();
 
-        // Income Order By Descendant
+        // Expense Order By Descendant
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
 
@@ -337,16 +337,16 @@ class ExpenseController extends Controller
         $inviews = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
-        ->where('expenses.income_slug',$income_slug)
+        ->where('expenses.expense_slug',$expense_slug)
         ->get();
 
 
         return view('/pages/expenses/expenses', [
 
            // Title 
-           "title" => "Income",
+           "title" => "Expense",
 
            // Main table view
            "expenses" => $expenses,
@@ -381,7 +381,7 @@ class ExpenseController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | EXPENSE TO CREATE NEW CATEGORY / LIST
+    | INCOME TO CREATE NEW CATEGORY / LIST
     |--------------------------------------------------------------------------
     */
 
@@ -398,51 +398,19 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
 
 
         // Query insert database
         DB::table('expense_categories')->insert([
-            'name'=>$request->incat_name,
-            'excat_entry_date'=>$request->incat_date,
-            'incat_slug'=>$request->incat_slug
+            'excat_name'=>$request->excat_name,
+            'excat_entry_date'=>$request->excat_date,
+            'excat_slug'=>$request->excat_slug
         ]);
 
-        return view('/pages/expenses/expenses', [
-
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "expenses" => $expenses,
-            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
-                
-            // For showing data
-            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-    
-            // Count entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-    
-            // N+1
-            "excats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-    
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-    
-            // For JavaScript show
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-
-        ]);
+        return redirect('/expense');
     }
 
 
@@ -459,60 +427,29 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
 
         // Query insert Database
         DB::table('expenses')->insert([
-            'income_description'=>$request->input_decs,
+            'expense_description'=>$request->input_decs,
             'expense_category_id' => $request->input_cats,
             'expense_account_id' => $request->input_acc,
             'expense_entry_date' => $request-> input_date,
-            'income_slug' => $request->income_slug,
-            'nominal' => $request-> input_nominal
+            'expense_slug' => $request->expense_slug,
+            'expense_nominal' => $request-> input_nominal
         ]);
 
-        return view('/pages/expenses/expenses', [
-
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "expenses" => $expenses,
-            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
-                
-            // For showing data
-            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-    
-            // Count entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-    
-            // N+1
-            "excats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-    
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-    
-            // For JavaScript show 
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-        ]);
+        return redirect('/expense');
     }
 
     /*
     |--------------------------------------------------------------------------
-    | EXPENSE UPDATE LANDING PAGE CATEGORY / LIST
+    | INCOME UPDATE LANDING PAGE CATEGORY / LIST
     |--------------------------------------------------------------------------
     */
-    public function editcatlanding($incat_slug)
+    public function editcatlanding($excat_slug)
     {        
         // N+1 Query
         $dummies = Dump::first()->get();
@@ -525,17 +462,17 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
         
         // Query for find landing category
-        $category = DB::table('expense_categories')->where('incat_slug',$incat_slug)->get();
+        $category = DB::table('expense_categories')->where('excat_slug',$excat_slug)->get();
 
         return view('/pages/expenses/expenses', [
 
             // Title 
-            "title" => "Income",
+            "title" => "Expense",
 
             // Main table view
             "expenses" => $expenses,
@@ -566,7 +503,7 @@ class ExpenseController extends Controller
         ]);
     }
 
-    public function editstore($income_slug)
+    public function editstore($expense_slug)
     {
         // N+1 Query
         $dummies = Dump::first()->get();
@@ -579,17 +516,17 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
         
         // Query for find landing list
-        $list = DB::table('expenses')->where('income_slug',$income_slug)->get();
+        $list = DB::table('expenses')->where('expense_slug',$expense_slug)->get();
 
         return view('/pages/expenses/expenses', [
 
             // Title 
-            "title" => "Income",
+            "title" => "Expense",
 
             // Main table view
             "expenses" => $expenses,
@@ -623,11 +560,11 @@ class ExpenseController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | EXPENSE TO UPDATE CATEGORY / LIST
+    | INCOME TO UPDATE CATEGORY / LIST
     |--------------------------------------------------------------------------
     */
 
-    public function editcategory(Request $request, $incat_slug)
+    public function editcategory(Request $request, $excat_slug)
     {
         // N+1 Query
         $dummies = Dump::first()->get();
@@ -640,50 +577,19 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
         
         // Query for edit category
-        DB::table('expense_categories')->where('incat_slug', $incat_slug)->update([
-            'name'=>$request->incat_name
+        DB::table('expense_categories')->where('excat_slug', $excat_slug)->update([
+            'excat_name'=>$request->excat_name
 		]);
         
-        return view('/pages/expenses/expenses', [
-
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "expenses" => $expenses,
-            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
-            
-            // For showing data
-            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-
-            // Count entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-
-            // N+1
-            "excats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-
-            // For JavaScript show
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-        ]);
+        return redirect('/expense');
     }
 
-    public function editlist(Request $request, $income_slug)
+    public function editlist(Request $request, $expense_slug)
     {
         // N+1 Query
         $dummies = Dump::first()->get();
@@ -696,62 +602,30 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
         
         // Query for edit list
-        DB::table('expenses')->where('income_slug', $income_slug)->update([
-            'income_description'=>$request->input_decs,
+        DB::table('expenses')->where('expense_slug', $expense_slug)->update([
+            'expense_description'=>$request->input_decs,
             'expense_category_id' => $request->input_cats,
             'expense_account_id' => $request->input_acc,
             'expense_entry_date' => $request-> input_date,
-            'income_slug' => $request-> income_slug,
-            'nominal' => $request-> input_nominal
+            'expense_slug' => $request-> expense_slug,
+            'expense_nominal' => $request-> input_nominal
 		]);
         
-        return view('/pages/expenses/expenses', [
-
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "expenses" => $expenses,
-            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
-            
-            // For showing data
-            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-
-            // Count entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-
-            // N+1
-            "excats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-
-            // For JavaScript show
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-
-        ]);
+        return redirect('/expense');
     }
 
     /*
     |--------------------------------------------------------------------------
-    | EXPENSE TO DELETE CATEGORY / LIST
+    | INCOME TO DELETE CATEGORY / LIST
     |--------------------------------------------------------------------------
     */
 
-    public function deletecatlanding($incat_slug)
+    public function deletecatlanding($excat_slug)
     {        
         // N+1 Query
         $dummies = Dump::first()->get();
@@ -764,7 +638,7 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
         
@@ -773,13 +647,13 @@ class ExpenseController extends Controller
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->select('expenses.*', 'expense_categories.*')
         ->orderBy('expenses.expense_entry_date','DESC')
-        ->where('expense_categories.incat_slug',$incat_slug)
+        ->where('expense_categories.excat_slug',$excat_slug)
         ->get();
 
         return view('/pages/expenses/expenses', [
 
             // Title 
-            "title" => "Income",
+            "title" => "Expense",
 
             // Main table view
             "expenses" => $expenses,
@@ -810,7 +684,7 @@ class ExpenseController extends Controller
         ]);
     }
 
-    public function deletecategory(Request $request, $incat_slug)
+    public function deletecategory(Request $request, $excat_slug)
     {
         // N+1 Query
         $dummies = Dump::first()->get();
@@ -823,52 +697,17 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
         
-            // Query for delete category
-            DB::table('expense_categories')->where('incat_slug',$incat_slug)->delete();
+        // Query for delete category
+        DB::table('expense_categories')->where('excat_slug',$excat_slug)->delete();
 
-            // Query for delete category and tables
-            // DB::table('expenses')->where('expense_category_id', request('destroy'))->delete();    
-
-        return view('/pages/expenses/expenses', [
-            
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "expenses" => $expenses,
-            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
-            
-            // For showing data
-            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-
-            // Count entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-
-            // N+1
-            "excats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-
-            // For JavaScript show 
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-
-        ]);
+        return redirect('/expense');
     }
 
-    public function deletelistlanding($income_slug)
+    public function deletelistlanding($expense_slug)
     {
         // N+1 Query
         $dummies = Dump::first()->get();
@@ -881,17 +720,17 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
         
         // Query for find landing list
-        $list = DB::table('expenses')->where('income_slug',$income_slug)->get();
+        $list = DB::table('expenses')->where('expense_slug',$expense_slug)->get();
 
         return view('/pages/expenses/expenses', [
 
             // Title 
-            "title" => "Income",
+            "title" => "Expense",
 
             // Main table view
             "expenses" => $expenses,
@@ -923,7 +762,7 @@ class ExpenseController extends Controller
         ]);
     }
 
-    public function deletelist($income_slug)
+    public function deletelist($expense_slug)
     {
         // N+1 Query
         $dummies = Dump::first()->get();
@@ -936,67 +775,70 @@ class ExpenseController extends Controller
         $expenses = DB::table('expenses')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
         ->join('accounts', 'accounts.id', '=', 'expense_account_id')
-        ->select('expenses.*', 'expense_categories.name', 'accounts.account_name')
+        ->select('expenses.*', 'expense_categories.excat_name', 'accounts.account_name')
         ->orderBy('expenses.expense_entry_date','DESC')
         ->get();
         
         // Query for delete list
-        DB::table('expenses')->where('income_slug',$income_slug)->delete();        
+        DB::table('expenses')->where('expense_slug',$expense_slug)->delete();        
 
-        return view('/pages/expenses/expenses', [
-            
-            // Title 
-            "title" => "Income",
-
-            // Main table view
-            "expenses" => Income::latest('expense_entry_date')->get(),
-            "categories" => \App\Models\ExpenseCategory::latest('excat_entry_date')->get(),
-            
-            // For showing data
-            "dataopt" => \App\Models\ExpenseCategory::latest('id')->get(),
-            "accopt" => \App\Models\Account::latest('id')->get(),
-
-            // Count Entries
-            "listcount" => $listcount,
-            "catcount" => $catcount,
-
-            // N+1
-            "excats"=> $dummies,
-            "lists" => $dummies,
-            "inviews" => $dummies,
-
-            // History for search
-            "historycat" => null, 
-            "historylist" =>null, 
-
-            // For JavaScript show
-            "editcategoryjs" => 0,
-
-            // For showing entries
-            "entdata" => 0,
-
-        ]);
+        return redirect('/expense');
     }
 
     /*
     |--------------------------------------------------------------------------
-    | EXPENSE TO PRINT
+    | INCOME TO PRINT
     |--------------------------------------------------------------------------
     */
 
     public function printstore()
     {      
         $alldata = DB::table('expenses')
-        ->select('income_description', 'expense_categories.name' ,'nominal','expense_entry_date')
+        ->select('expense_description', 'expense_categories.excat_name' ,'expense_nominal','expense_entry_date')
         ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
-        // ->where('income.income_slug','income_slug')
+        // ->where('expense.expense_slug','expense_slug')
         ->get();
         
         return view('/pages/expenses/print', [
-            "title" => "Income",
-            "bck" => "income",
+            // Title / Judul
+            "title" => "Expense",
+
+            // Redirect
+            "bck" => "expense",
+
+            // Listing number
             "number" => 1,
+
+            // Total money
             "total" => 0,
+
+            // All data ubcine
+            "expenses" => $alldata
+        ]);
+    }
+
+    public function printsearch(Request $request)
+    {      
+        $alldata = DB::table('expenses')
+        ->select('expense_description', 'expense_categories.excat_name' ,'expense_nominal','expense_entry_date')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->whereBetween('expense_entry_date', [request('start'), request('end')])
+        ->get();
+        
+        return view('/pages/expenses/print', [
+            // Title / Judul
+            "title" => "Expense",
+
+            // Redirect
+            "bck" => "expense",
+
+            // Listing number
+            "number" => 1,
+
+            // Total money
+            "total" => 0,
+
+            // All data ubcine
             "expenses" => $alldata
         ]);
     }

@@ -15,9 +15,9 @@ class Expense extends Model
         return $this->belongsTo(ExpenseCategory::class, 'expense_category_id', 'id');
     }
 
-    public function inacc()
+    public function exacc()
     {
-        return $this->belongsTo(\App\Models\Account::class, 'income_account_id');
+        return $this->belongsTo(\App\Models\Account::class, 'expense_account_id');
     }
 
     // GUARDING IMPORTANT
