@@ -63,26 +63,26 @@ Route::get('/account', [AccountController::class, 'start'])->middleware('auth');
 
 // ADD NEW
 Route::get('/account/create', [AccountController::class, 'create'])->middleware('auth');
-Route::get('/account/store', [AccountController::class, 'store'])->middleware('auth');
+Route::post('/account/store', [AccountController::class, 'store'])->middleware('auth');
 
 // FOR SUMMATION
 Route::get('/account/sum/{account_slug}', [AccountController::class, 'sum'])->middleware('auth');
-Route::get('/account/summation', [AccountController::class, 'summation'])->middleware('auth');
+Route::post('/account/summation/{account_slug}', [AccountController::class, 'summation'])->middleware('auth');
 
 // SUBSTRACTION
 Route::get('/account/sub/{account_slug}', [AccountController::class, 'sub'])->middleware('auth');
-Route::get('/account/subtraction', [AccountController::class, 'subtraction'])->middleware('auth');
+Route::post('/account/subtraction/{account_slug}', [AccountController::class, 'subtraction'])->middleware('auth');
 
 // FOR SEARCH EDIT ID
-Route::get('/account/edit', [AccountController::class, 'edit'])->middleware('auth');
-Route::get('/account/update', [AccountController::class, 'update'])->middleware('auth');
+Route::get('/account/edit/{account_slug}', [AccountController::class, 'edit'])->middleware('auth');
+Route::post('/account/update/{account_slug}', [AccountController::class, 'update'])->middleware('auth');
 
 // FOR DESTROY
-Route::get('/account/target', [AccountController::class, 'target'])->middleware('auth');
-Route::get('/account/delete', [AccountController::class, 'delete'])->middleware('auth');
+Route::get('/account/target/{account_slug}', [AccountController::class, 'find'])->middleware('auth');
+Route::get('/account/delete/{account_slug}', [AccountController::class, 'delete'])->middleware('auth');
 
 // REFRESH & SAVE DATABASE
-Route::get('/account/decision/', [AccountController::class, 'clear'])->middleware('auth');
+Route::get('/account/decision/', [AccountController::class, 'ask'])->middleware('auth');
 Route::get('/account/decision/fresh', [AccountController::class, 'clear'])->middleware('auth');
 
 /*
@@ -228,28 +228,28 @@ Route::get('/debt', [DebtController::class, 'start'])->middleware('auth');
 Route::get('/debt/entries/{entdata}', [DebtController::class, 'entries'])->middleware('auth');
 
 // VIEW 
-Route::get('/debt/viewlist/{excat_slug}',[DebtController::class, 'viewlist'])->middleware('auth');
-Route::get('/debt/viewcategory/{expense_slug}',[DebtController::class, 'viewcategory'])->middleware('auth');
+Route::get('/debt/viewlist/{debcat_slug}',[DebtController::class, 'viewlist'])->middleware('auth');
+Route::get('/debt/viewcategory/{debt_slug}',[DebtController::class, 'viewcategory'])->middleware('auth');
 
 // CREATE
 Route::post('/debt/addnew',[DebtController::class, 'addlist'])->middleware('auth');
 Route::post('/debt/addcategory',[DebtController::class, 'addcategory'])->middleware('auth');
 
 // UPDATE STORE
-Route::get('/debt/editlanding/{excat_slug}',[DebtController::class, 'editcatlanding'])->middleware('auth');
-Route::get('/debt/editstore/{expense_slug}',[DebtController::class, 'editstore'])->middleware('auth');
+Route::get('/debt/editlanding/{debcat_slug}',[DebtController::class, 'editcatlanding'])->middleware('auth');
+Route::get('/debt/editstore/{debt_slug}',[DebtController::class, 'editstore'])->middleware('auth');
 
 // UPDATE
-Route::post('/debt/editcategory/{expense_slug}',[DebtController::class, 'editcategory'])->middleware('auth');
-Route::post('/debt/editlist/{expense_slug}',[DebtController::class, 'editlist'])->middleware('auth');
+Route::post('/debt/editcategory/{debt_slug}',[DebtController::class, 'editcategory'])->middleware('auth');
+Route::post('/debt/editlist/{debt_slug}',[DebtController::class, 'editlist'])->middleware('auth');
 
-// DELETE STORE
-Route::get('/debt/deletecatlanding/{excat_slug}',[DebtController::class, 'deletecatlanding'])->middleware('auth');
-Route::get('/debt/deletelistlanding/{expense_slug}',[DebtController::class, 'deletelistlanding'])->middleware('auth');
+// DELETE   
+Route::get('/debt/deletecatlanding/{debcat_slug}',[DebtController::class, 'deletecatlanding'])->middleware('auth');
+Route::get('/debt/deletelistlanding/{debt_slug}',[DebtController::class, 'deletelistlanding'])->middleware('auth');
 
 // DELETE
-Route::get('/debt/deletecategory/{excat_slug}',[DebtController::class, 'deletecategory'])->middleware('auth');
-Route::get('/debt/deletelist/{expense_slug}',[DebtController::class, 'deletelist'])->middleware('auth');
+Route::get('/debt/deletecategory/{debcat_slug}',[DebtController::class, 'deletecategory'])->middleware('auth');
+Route::get('/debt/deletelist/{debt_slug}',[DebtController::class, 'deletelist'])->middleware('auth');
 
 // SEARCH
 Route::get('/debt/searchcat',[DebtController::class, 'searchcat'])->middleware('auth');

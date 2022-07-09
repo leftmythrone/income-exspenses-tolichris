@@ -821,7 +821,7 @@ class IncomeController extends Controller
             "total" => 0,
 
             // All data ubcine
-            "incomes" => $alldata
+            "incomes" => Dump::latest()->get()
         ]);
     }
 

@@ -158,4 +158,92 @@
       document.getElementById("deletetablebox").style.transition = '0.3s';
     }
 
+  // DO SUM LIST 
+
+  function ondSum() {
+      document.getElementById("overlaysum").style.display = "block";
+      document.getElementById("sumbox").style.display = "block";
+      document.getElementById("sumbox").style.transition = '0.3s';
+    }
+    
+    function offSum() {
+      document.getElementById("overlaysum").style.display = "none";
+    document.getElementById("sumbox").style.display = "none";
+      document.getElementById("sumbox").style.transition = '0.3s';
+    }
+
+    function ondSub() {
+      document.getElementById("overlaysub").style.display = "block";
+      document.getElementById("subbox").style.display = "block";
+      document.getElementById("subbox").style.transition = '0.3s';
+    }
+    
+    function offSub() {
+      document.getElementById("overlaysub").style.display = "none";
+    document.getElementById("subbox").style.display = "none";
+      document.getElementById("subbox").style.transition = '0.3s';
+    }
+
+
+    function ondSub() {
+      document.getElementById("overlaysub").style.display = "block";
+      document.getElementById("subbox").style.display = "block";
+      document.getElementById("subbox").style.transition = '0.3s';
+    }
+    
+    function offSub() {
+      document.getElementById("overlaysub").style.display = "none";
+    document.getElementById("subbox").style.display = "none";
+      document.getElementById("subbox").style.transition = '0.3s';
+    }
+
+    function onnAccountAdd() {
+      document.getElementById("overlayaddaccount").style.display = "block";
+      document.getElementById("addaccount").style.display = "block";
+      document.getElementById("addaccount").style.transition = '0.3s';
+    }
+    
+    function offAccountAdd() {
+      document.getElementById("overlayaddaccount").style.display = "none";
+    document.getElementById("addaccount").style.display = "none";
+      document.getElementById("addaccount").style.transition = '0.3s';
+    }
+
+    function onnAccountEdit() {
+      document.getElementById("overlayediteaccount").style.display = "block";
+      document.getElementById("editaccount").style.display = "block";
+      document.getElementById("editaccount").style.transition = '0.3s';
+    }
+    
+    function offAccountEdit() {
+      document.getElementById("overlayediteaccount").style.display = "none";
+    document.getElementById("editaccount").style.display = "none";
+      document.getElementById("editaccount").style.transition = '0.3s';
+    }
+
+
+    function onnAccountDelete() {
+      document.getElementById("overlaydeleteaccount").style.display = "block";
+      document.getElementById("deleteaccount").style.display = "block";
+      document.getElementById("deleteaccount").style.transition = '0.3s';
+    }
+    
+    function offAccountDelete() {
+      document.getElementById("overlaydeleteaccount").style.display = "none";
+    document.getElementById("deleteaccount").style.display = "none";
+      document.getElementById("deleteaccount").style.transition = '0.3s';
+    }
+
+    function onnClear() {
+      document.getElementById("overlayclear").style.display = "block";
+      document.getElementById("cleartable").style.display = "block";
+      document.getElementById("cleartable").style.transition = '0.3s';
+    }
+    
+    function offClear() {
+      document.getElementById("overlayclear").style.display = "none";
+    document.getElementById("cleartable").style.display = "none";
+      document.getElementById("cleartable").style.transition = '0.3s';
+    }
+
 </script>

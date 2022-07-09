@@ -95,7 +95,7 @@
  <div class="tabaddnew">
     <div id="deletecategorybox" class="deletecategorybox">
         @php error_reporting(0); @endphp
-        <form method="get" action="/debt/deletecategory/{{ $debcats[0]->debbcat_slug }}">
+        <form method="get" action="/debt/deletecategory/{{ $debcats[0]->debcat_slug }}">
             {{-- <input type="hidden" value="" name="destroy"> --}}
             <h1><center>Delete {{ $title }} Category </center></h1>
             <h2><center>Apabila {{ auth()->user()->name }} menghapus category <b>{{ $debcats[0]->debcat_name }}</b>

@@ -40,20 +40,24 @@
 <div class="clear"></div>
 
 <ul>
+    <div class="remove">
     <li></li>
     <li><label for="" class="btnremove">Click here for print : <input type="button" id="bt" onclick="print()" value="Print PDF" class="btnremove"/> </label>  <div class="btnback"></li>
     <li><div class="btnback"><a href="/{{ $bck }}"> <input type="button" value="Back / Kembali"/> </a></div></li>
+    </div>
 </ul>
+
+</div>
 
 <div class="tabtable">    
     <table width="100%">
         <tr>
             {{-- TABLE HEADER --}}
             <th><center>No</center></th> 
-            <th><center>Cash Flow</center></th>
-            <th><center>List Category   </center></th>
+            <th><center>Cash Flow / Arus Kas</center></th>
+            <th><center>Income Category / Kategori Pemasukan</center></th>
             <th><center>Total</center></th>
-            <th><center>Date </center></th>
+
         </tr>
 
         <tr>
@@ -61,7 +65,6 @@
             <td colspan="99"><div class="line3"></div></td>
         </tr>
 
-            {{-- FOR EACH --}} 
         <tr>
             {{-- 
             |--------------------------------------------------------------------------
@@ -72,253 +75,157 @@
             | routes are loaded by the RouteServiceProvider within a group which
             | contains the "web" middleware group. Now create something great!
             |
-             --}}                            
+             --}}              
+             @php error_reporting(0); @endphp
+      
              <td><center> 1. </center></td>
-             <td><center><b>Income</b></center></td>
-             <td><center>{{ $incats[0]->name }}</center></td>
+             
+             {{-- Title --}}
+             <td><center><b>Income / Pemasukan</b></center></td>
+             
+             {{-- All Category --}}
+             <td><center>{{ $incats[0]->incat_name }}</center></td>
+             
              <td><center>
-                  @foreach ( $incomes as $income ) 
-                  
-                  @if ( $income->income_category->name === $incats[0]->name )
-                    
-                    @php
-                                                                                                    
-                        $subtotal = $subtotal + $income->nominal                                    
-                    
-                    @endphp
-
-                  @endif
-
-                            
+                {{-- Calculation for income --}}
+                    @foreach ( $incomes as $income ) 
+                        @if ( $income->incat_name === $incats[0]->incat_name ) @php $subtotal = $subtotal + $income->income_nominal @endphp @endif
                     @endforeach
-                    
-                    
                     Rp. {{ number_format($subtotal, 0, " ,","."); }},00 
-                    
                     @php
-
                         $total = $total + $subtotal
-
                     @endphp
                 </center>                            
             </td>                            
-            <td><center>{{ "Maret" }}</center>
-            </td>                            
         </tr>
 
-        @php
-
-            $subtotal = 0;
-
-        @endphp
+        @php $subtotal = 0; @endphp
+        
+        {{-- DON'T CARE ERROR --}}
+        @php error_reporting(E_ALL); @endphp
 
         {{-- SPACER TABLE ROW --}}
-        <tr>
-            <td><div class="space"></div></td>
-        </tr>
+        <tr> <td><div class="space"></div></td> </tr>
 
         {{-- TABLE ROW EACH CATEGORY --}}
-
         @foreach ($incats->skip(1) as $incat )
-
             <tr>
                 <td colspan="2"></td>
-                <td><center>{{ $incat->name }}</center></td>
+                <td><center>{{ $incat->incat_name }}</center></td>
                 <td><center>
-                    @foreach ( $incomes as $income ) 
-                    
-                        @if ( $income->income_category->name === $incat->name )
-
-                            @php
-
-                                $subtotal = $subtotal + $income->nominal                                    
-
-                            @endphp
-
-                        @endif
-
-                    @endforeach
-                                                        
-                    Rp. {{ number_format($subtotal, 0, " ,","."); }},00
-
-                    @php
-                            
-                        $total = $total + $subtotal
-                                            
-                    @endphp
-                    
-                    @php
-
-                        $subtotal = 0;
-
-                    @endphp
+                        @foreach ( $incomes as $income )      
+                            @if ( $income->incat_name === $incat->incat_name )
+                                @php $subtotal = $subtotal + $income->income_nominal @endphp
+                            @endif
+                        @endforeach                          
+                        Rp. {{ number_format($subtotal, 0, " ,","."); }},00
+                        @php $total = $total + $subtotal; $subtotal = 0;  @endphp
                     </center>                            
                 </td> 
             </tr>
-
             {{-- SPACER TABLE ROW --}}
-            <tr>
-                <td><div class="space"></div></td>
-            </tr>
-
+            <tr> <td><div class="space"></div></td> </tr>
         @endforeach
 
-        {{--  
-        |--------------------------------------------------------------------------
-        | T O T A L
-        |--------------------------------------------------------------------------
-        --}}
-        <tr>
-            <td colspan="99"><hr></td>
-        </tr>
+        {{-- LINE --}}
+        <tr><td colspan="4"><div class="line3"></div></td></tr>
+
+        
+        {{-- CALCULATION GROUP --}}
         <tr>
             <td colspan="2"></td>
-            <td><center><b>Total : </b></center></td>
+            <td><center><b>Total Income :</b></center></td>
             <td>
                 <center>
-                    {{-- PADA BULAN --}}
                     Rp. {{ number_format($total, 0, " ,","."); }},00
-
-                    @php 
-                        $intotal = $total;
-
-                        $total = 0;
-                    @endphp
-                </center>   
+                    @php $total = 0; @endphp
+                </center>
             </td>
-            <td><center>Cash value</center></td>
-        </tr>  
-        <tr>
-            <td colspan="99"><hr></td>
         </tr>
+
+        {{-- LINE --}}
+        <tr><td colspan="4"><div class="line3"></div></td></tr>
 
         <tr>
             {{-- 
             |--------------------------------------------------------------------------
-            | INCOME MY CHART
+            | EXPENSE MY CHART
             |--------------------------------------------------------------------------
             |
             | Here is where you can register web routes source of utilities for your application. These
             | routes are loaded by the RouteServiceProvider within a group which
             | contains the "web" middleware group. Now create something great!
             |
-             --}}                            
+             --}}              
+             @php error_reporting(0); @endphp
+      
              <td><center> 2. </center></td>
-             <td><center><b>Expense</b></center></td>
-             <td><center>{{ $excats[0]->name }}</center></td>
+             
+             {{-- Title --}}
+             <td><center><b>Expense / Pengeluaran</b></center></td>
+             
+             {{-- All Category --}}
+             <td><center>{{ $excats[0]->excat_name }}</center></td>
+             
              <td><center>
-                  @foreach ( $expenses as $expense ) 
-                  
-                  @if ( $expense->excat->name === $excats[0]->name )
-                    
-                    @php
-                                                                                                    
-                        $subtotal = $subtotal + $expense->nominal                                    
-                    
-                    @endphp
-
-                  @endif
-
-                            
-                    @endforeach                                    
+                {{-- Calculation for expense --}}
+                    @foreach ( $expenses as $expense ) 
+                        @if ( $expense->excat_name === $excats[0]->excat_name ) @php $subtotal = $subtotal + $expense->expense_nominal @endphp @endif
+                    @endforeach
                     Rp. {{ number_format($subtotal, 0, " ,","."); }},00 
-                    
                     @php
-
                         $total = $total + $subtotal
-
                     @endphp
                 </center>                            
-            </td>                            
-            <td><center>{{ "Maret" }}</center>
-            </td>                            
+            </td>                                                        
         </tr>
 
-        @php
-
-            $subtotal = 0;
-            
-        @endphp
+        @php $subtotal = 0; @endphp
+        
+        {{-- DON'T CARE ERROR --}}
+        @php error_reporting(E_ALL); @endphp
 
         {{-- SPACER TABLE ROW --}}
-        <tr>
-            <td><div class="space"></div></td>
-        </tr>
+        <tr> <td><div class="space"></div></td> </tr>
 
         {{-- TABLE ROW EACH CATEGORY --}}
-
         @foreach ($excats->skip(1) as $excat )
-
             <tr>
                 <td colspan="2"></td>
-                <td><center>{{ $excat->name }}</center></td>
+                <td><center>{{ $excat->excat_name }}</center></td>
                 <td><center>
-                    @foreach ( $expenses as $expense ) 
-                    
-                        @if ( $expense->excat->name === $excat->name )
-
-                            @php
-
-                                $subtotal = $subtotal + $expense->nominal                                    
-
-                            @endphp
-
-                        @endif
-
-                    @endforeach
-                                                        
-                    Rp. {{ number_format($subtotal, 0, " ,","."); }},00
-
-                    @php
-                            
-                        $total = $total + $subtotal
-                                            
-                    @endphp
-                    
-                    @php
-
-                        $subtotal = 0;
-
-                    @endphp
+                        @foreach ( $expenses as $expense )      
+                            @if ( $expense->excat_name === $excat->excat_name )
+                                @php $subtotal = $subtotal + $expense->expense_nominal @endphp
+                            @endif
+                        @endforeach                          
+                        Rp. {{ number_format($subtotal, 0, " ,","."); }},00
+                        @php $total = $total + $subtotal; $subtotal = 0;  @endphp
                     </center>                            
                 </td> 
             </tr>
-
             {{-- SPACER TABLE ROW --}}
-            <tr>
-                <td><div class="space"></div></td>
-            </tr>
-
+            <tr> <td><div class="space"></div></td> </tr>
         @endforeach
 
-        {{--  
-        |--------------------------------------------------------------------------
-        | T O T A L
-        |--------------------------------------------------------------------------
-        --}}
-        <tr>
-            <td colspan="99"><hr></td>
-        </tr>
+        {{-- LINE --}}
+        <tr><td colspan="4"><div class="line3"></div></td></tr>
+        
+        {{-- CALCULATION GROUP --}}
         <tr>
             <td colspan="2"></td>
-            <td><center><b>Total : </b></center></td>
+            <td><center><b>Total Expense :</b></center></td>
             <td>
                 <center>
-                    {{-- PADA BULAN --}}
                     Rp. {{ number_format($total, 0, " ,","."); }},00
+                    @php $total = 0; @endphp
 
-                    @php 
-                        $extotal = $total;
-
-                        $total = 0;
-                    @endphp
-                </center>   
+                </center>
             </td>
-            <td><center>Cash Dirty</center></td>
-        </tr>  
-        <tr>
-            <td colspan="99"><hr></td>
         </tr>
+
+        {{-- LINE --}}
+        <tr><td colspan="4"><div class="line3"></div></td></tr>
 
         <tr>
             {{-- 
@@ -330,143 +237,75 @@
             | routes are loaded by the RouteServiceProvider within a group which
             | contains the "web" middleware group. Now create something great!
             |
-             --}}                            
+             --}}              
+             @php error_reporting(0); @endphp
+      
              <td><center> 3. </center></td>
-             <td><center><b>Debt</b></center></td>
-             <td><center>{{ $debcats[0]->name }}</center></td>
+             
+             {{-- Title --}}
+             <td><center><b>Debt / Hutang</b></center></td>
+             
+             {{-- All Category --}}
+             <td><center>{{ $debcats[0]->debcat_name }}</center></td>
+             
              <td><center>
-                  @foreach ( $debts as $debt ) 
-                  
-                  @if ( $debt->debt_cat->name === $debcats[0]->name )
-                    
-                    @php
-                                                                                                    
-                        $subtotal = $subtotal + $debt->nominal                                    
-                    
-                    @endphp
-
-                  @endif
-
-                            
-                    @endforeach                                    
+                {{-- Calculation for debt --}}
+                    @foreach ( $debts as $debt ) 
+                        @if ( $debt->debcat_name === $debcats[0]->debcat_name ) @php $subtotal = $subtotal + $debt->debt_nominal @endphp @endif
+                    @endforeach
                     Rp. {{ number_format($subtotal, 0, " ,","."); }},00 
-                    
                     @php
-
                         $total = $total + $subtotal
-
                     @endphp
                 </center>                            
-            </td>                            
-            <td><center>{{ "Maret" }}</center>
-            </td>                            
+            </td>                                                    
         </tr>
 
-        @php
-
-            $subtotal = 0;
-            
-        @endphp
+        @php $subtotal = 0; @endphp
+        
+        {{-- DON'T CARE ERROR --}}
+        @php error_reporting(E_ALL); @endphp
 
         {{-- SPACER TABLE ROW --}}
-        <tr>
-            <td><div class="space"></div></td>
-        </tr>
+        <tr> <td><div class="space"></div></td> </tr>
 
         {{-- TABLE ROW EACH CATEGORY --}}
-
         @foreach ($debcats->skip(1) as $debcat )
-
             <tr>
                 <td colspan="2"></td>
-                <td><center>{{ $debcat->name }}</center></td>
+                <td><center>{{ $debcat->debcat_name }}</center></td>
                 <td><center>
-                    @foreach ( $debts as $debt ) 
-                    
-                        @if ( $debt->debt_cat->name === $debcat->name )
-
-                            @php
-
-                                $subtotal = $subtotal + $debt->nominal                                    
-
-                            @endphp
-
-                        @endif
-
-                    @endforeach
-                                                        
-                    Rp. {{ number_format($subtotal, 0, " ,","."); }},00
-
-                    @php
-                            
-                        $total = $total + $subtotal
-                                            
-                    @endphp
-                    
-                    @php
-
-                        $subtotal = 0;
-
-                    @endphp
+                        @foreach ( $debts as $debt )      
+                            @if ( $debt->debcat_name === $debcat->debcat_name )
+                                @php $subtotal = $subtotal + $debt->debt_nominal @endphp
+                            @endif
+                        @endforeach                          
+                        Rp. {{ number_format($subtotal, 0, " ,","."); }},00
+                        @php $total = $total + $subtotal; $subtotal = 0;  @endphp
                     </center>                            
                 </td> 
             </tr>
-
             {{-- SPACER TABLE ROW --}}
-            <tr>
-                <td><div class="space"></div></td>
-            </tr>
-
+            <tr> <td><div class="space"></div></td> </tr>
         @endforeach
 
-        {{--  
-        |--------------------------------------------------------------------------
-        | T O T A L
-        |--------------------------------------------------------------------------
-        --}}
-        <tr>
-            <td colspan="99"><hr></td>
-        </tr>
+        {{-- LINE --}}
+        <tr><td colspan="4"><div class="line3"></div></td></tr>
+        
+        {{-- CALCULATION GROUP --}}
         <tr>
             <td colspan="2"></td>
-            <td><center><b>Total : </b></center></td>
+            <td><center><b>Total Debt :</b></center></td>
             <td>
                 <center>
-                    {{-- PADA BULAN --}}
                     Rp. {{ number_format($total, 0, " ,","."); }},00
-
-                    @php 
-                        $debtotal = $total;
-
-                        $total = 0;
-                    @endphp
-                </center>   
-            </td>
-            <td><center>Cash Clean</center></td>
-        </tr>  
-        <tr>
-            <td colspan="99"><br></td>
-        </tr>
-        <tr>
-            <td colspan="99"><div class="line4"></div></td>
-        </tr>
-        <tr>
-            <td colspan="2"></td>
-            <td><b><center>Nilai Akhir : </center></b></td>
-            <td>
-                <center>
-
-                    @php
-
-                        $cashflow = $intotal + $extotal - $debtotal;                         
-                    
-                    @endphp
-
-                    Rp.{{ number_format($cashflow, 0, " ,","."); }},00
-
+                    @php $total = 0; @endphp
                 </center>
             </td>
         </tr>
+
+        {{-- LINE --}}
+        <tr><td colspan="4"><div class="line3"></div></td></tr>
     </table>
 </div> 
 </table>

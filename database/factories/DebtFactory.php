@@ -35,7 +35,7 @@ class DebtFactory extends Factory
             'debt_account_id' => $this->faker->numberBetween($min = 1, $max = 4),
                         
             // Factory for slug
-            'debt_slug' => $this->faker->numberBetween($min = 50000, $max = 3000000),
+            'debt_slug' => uniqid('gfg', true),
                         
             // Factory for nominal
             'debt_nominal' => $this->faker->numberBetween($min = 50000, $max = 3000000),

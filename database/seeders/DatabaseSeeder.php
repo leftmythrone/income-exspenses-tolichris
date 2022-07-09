@@ -47,27 +47,27 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Account::create([
-            'account_name' => 'BCA',
+            'account_name' => 'Bank Central Asia',
             'account_balance' => 0,
-            'account_slug' => Hash::make('basic.adminbca'),
+            'account_slug' => uniqid('gfg', true),
         ]);
 
         Account::create([
-            'account_name' => 'Kas Kecil',
+            'account_name' => 'Bank Negara Indonesia',
             'account_balance' => 0,
-            'account_slug' => Hash::make('basic.adminkaskecil'),
+            'account_slug' => uniqid('gfg', true),
         ]);
 
         Account::create([
-            'account_name' => 'Kas Besar',
+            'account_name' => 'Bank Rakyat Indonesia',
             'account_balance' => 0,
-            'account_slug' => Hash::make('basic.adminkasbesar'),
+            'account_slug' => uniqid('gfg', true),
         ]);
 
         Account::create([
-            'account_name' => 'Kredit',
+            'account_name' => 'Permata Bank',
             'account_balance' => 0,
-            'account_slug' => Hash::make('basic.adminkredit'),
+            'account_slug' => uniqid('gfg', true),
         ]);
             
         /*
@@ -93,20 +93,31 @@ class DatabaseSeeder extends Seeder
 
 
         \App\Models\IncomeCategory::create([
-            'incat_name' => '[Click Edit Or Delete]',
-            'incat_slug' => 'basic.sVasidwadswUsa',
+            'incat_name' => 'Pendapatan Aktif',
+            'incat_slug' => uniqid('gfg', true),
             'incat_entry_date' => '2022-05-21'
         ]);
 
-        // Income::factory(10)->create();
+        \App\Models\IncomeCategory::create([
+            'incat_name' => 'Pendapatan Pasif',
+            'incat_slug' => uniqid('gfg', true),
+            'incat_entry_date' => '2022-05-21'
+        ]);
+
+        \App\Models\IncomeCategory::create([
+            'incat_name' => 'Pendapatan Investasi',
+            'incat_slug' => uniqid('gfg', true),
+            'incat_entry_date' => '2022-05-21'
+        ]);
+        Income::factory(20)->create();
 
 
         \App\Models\Income::create([
             'income_description' => '[Basic Income List]',
             'income_category_id' => 1,
             'income_account_id' => 1,
-            'income_slug' => 'basic.asd@4$r34dsdfasa',
-            'income_nominal' => 0,
+            'income_slug' => uniqid('gfg', true),
+            'income_nominal' => 10,
             'income_entry_date' => '2022-05-21'
         ]);
 
@@ -118,18 +129,23 @@ class DatabaseSeeder extends Seeder
         */
 
         \App\Models\ExpenseCategory::create([
-            'excat_name' => '[Click Edit Or Delete]',
-            'excat_slug' => 'basic.sVasidwadswUsa',
+            'excat_name' => 'Pengeluaran Tetap',
+            'excat_slug' => uniqid('gfg', true),
             'excat_entry_date' => '2022-05-21'
         ]);
 
-        // Expense::factory(10)->create();
+        \App\Models\ExpenseCategory::create([
+            'excat_name' => 'Pengeluaran Tidak Tetap',
+            'excat_slug' => uniqid('gfg', true),
+            'excat_entry_date' => '2022-05-21'
+        ]);
+        Expense::factory(2)->create();
 
         \App\Models\Expense::create([
             'expense_description' => '[Basic Expense List]',
             'expense_category_id' => 1,
             'expense_account_id' => 1,
-            'expense_slug' => 'basic.asd@4$r34dsdfasa',
+            'expense_slug' => uniqid('gfg', true),
             'expense_nominal' => 0, 
             'expense_entry_date' => '2022-05-21'
         ]);
@@ -141,18 +157,30 @@ class DatabaseSeeder extends Seeder
         */
 
         \App\Models\DebtCategory::create([
-            'debcat_name' => '[Click Edit Or Delete]',
-            'debcat_slug' => 'basic.sVasidwadswUsa',
+            'debcat_name' => 'Utang Pajak',
+            'debcat_slug' => uniqid('gfg', true),
             'debcat_entry_date' => '2022-05-21'
         ]);
 
-        // Debt::factory(10)->create();
+        \App\Models\DebtCategory::create([
+            'debcat_name' => 'Utang Biaya',
+            'debcat_slug' => uniqid('gfg', true),
+            'debcat_entry_date' => '2022-05-21'
+        ]);
+
+        \App\Models\DebtCategory::create([
+            'debcat_name' => 'Utang Wesel',
+            'debcat_slug' => uniqid('gfg', true),
+            'debcat_entry_date' => '2022-05-21'
+        ]);
+
+        Debt::factory(2)->create();
 
         \App\Models\Debt::create([
             'debt_description' => '[Basic Debt List]',
             'debt_category_id' => 1,
             'debt_account_id' => 1,
-            'debt_slug' => 'basic.asd@4$r34dsdfasa',
+            'debt_slug' => uniqid('gfg', true),
             'debt_nominal' => 0,
             'debt_entry_date' => '2022-05-21'
         ]);

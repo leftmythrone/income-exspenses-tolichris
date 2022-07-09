@@ -74,40 +74,91 @@ class UtilitiesController extends Controller
 
     public function chart()
     {
+
+        // List order by date
+        $incomes = DB::table('incomes')
+        ->select('income_description', 'income_nominal', 'income_categories.incat_name')
+        ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
+        ->get();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->select('expense_description', 'expense_nominal', 'expense_categories.excat_name')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->get();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->select('debt_description', 'debt_nominal', 'debt_categories.debcat_name')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->get();
+
         return view('/pages/utilities/mychart', [
-            "title" => "My Chart",
-            "incomes" => Income::latest()->get(),
-            "expenses" => Expense::latest()->get(),
-            "debts" => Debt::latest()->get(),
+            // Title
+            "title" => "Cash Flow",
+
+            // All List
+            "incomes" => $incomes,
+            "expenses" => $expenses,
+            "debts" => $debts,
+
+            // All Category
             "incats" => \App\Models\IncomeCategory::latest()->get(),
             "excats" => \App\Models\ExpenseCategory::latest()->get(),
             "debcats" => \App\Models\DebtCategory::latest()->get(),
+            
+            // Counting 
             "number" => 0,
             "subtotal" => 0,
             "total" => 0,
+
+            // GROUP
             "intotal" => 0,
-            "extotal" => 0,
-            "debtotal" => 0,
-            "cashflow" => 0
         ]);
     }
 
     public function printstore()
     {      
+        // List order by date
+        $incomes = DB::table('incomes')
+        ->select('income_description', 'income_nominal', 'income_categories.incat_name')
+        ->join('income_categories', 'income_categories.id', '=', 'income_category_id')
+        ->get();
+
+        // List order by date
+        $expenses = DB::table('expenses')
+        ->select('expense_description', 'expense_nominal', 'expense_categories.excat_name')
+        ->join('expense_categories', 'expense_categories.id', '=', 'expense_category_id')
+        ->get();
+
+        // List order by date
+        $debts = DB::table('debts')
+        ->select('debt_description', 'debt_nominal', 'debt_categories.debcat_name')
+        ->join('debt_categories', 'debt_categories.id', '=', 'debt_category_id')
+        ->get();
+
+
         return view('/pages/utilities/printchart', [
-            "title" => "Income",
+            // Title
+            "title" => "Cash Flow",
             "bck" => "income",
-            "number" => 1,
-            "total" => 0,
-            "incomes" => Income::latest()->get(),
-            "expenses" => Expense::latest()->get(),
-            "debts" => Debt::latest()->get(),
+
+            // All List
+            "incomes" => $incomes,
+            "expenses" => $expenses,
+            "debts" => $debts,
+
+            // All Category
             "incats" => \App\Models\IncomeCategory::latest()->get(),
             "excats" => \App\Models\ExpenseCategory::latest()->get(),
             "debcats" => \App\Models\DebtCategory::latest()->get(),
+            
+            // Counting 
             "number" => 0,
             "subtotal" => 0,
             "total" => 0,
+
+            // Calculation
             "intotal" => 0,
             "extotal" => 0,
             "debtotal" => 0,

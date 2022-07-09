@@ -115,7 +115,7 @@
       </div>
       {{-- FONT --}}
       <div class="sidefont">
-        <a href="/mychart">Chart / Grafik</a>
+        <a href="/mychart">Cash Flow / Arus Kas</a>
       </div>
     </li>
     @endif

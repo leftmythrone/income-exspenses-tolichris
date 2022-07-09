@@ -867,3 +867,467 @@ left: -30px;
   border: none;
   margin-left: 20px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#overlaysum {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.sumbox {
+    display: none;
+    position: fixed;
+    box-sizing: border-box;
+    width: 600px; 
+    top: 32%;
+    padding: 40px;
+    background-color: white;
+    left: 35%;
+    border-radius: 20px;
+    z-index: 4;
+}
+
+.sumbox h1 {
+    color: #34364A;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.sumbox h2 {
+    color: #34364A;
+    opacity: 60%;
+    font-size: 15px;
+}
+
+.sumbox button {
+  border: none;
+  width: 70%;
+  border-radius: 20px;
+  position: relative;
+  top: 20px;
+  left: -30px;
+  /* right: 90px; */
+}
+
+.sumbox label {
+    color: #34364A;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    opacity: 80%;
+}
+
+.sumbox input {
+  background-color: #E5E9F2;
+  text-align: center;
+  color: #34364A;
+  opacity: 80%;
+  border-radius: 30px;
+  width: 330px;
+  height: 30px;
+  border: none;
+  margin-left: 20px;
+}
+
+
+
+
+
+
+
+#overlaysub {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.subbox {
+    display: none;
+    position: fixed;
+    box-sizing: border-box;
+    width: 600px; 
+    top: 32%;
+    padding: 40px;
+    background-color: white;
+    left: 35%;
+    border-radius: 20px;
+    z-index: 4;
+}
+
+.subbox h1 {
+    color: #34364A;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.subbox h2 {
+    color: #34364A;
+    opacity: 60%;
+    font-size: 15px;
+}
+
+.subbox button {
+  border: none;
+  width: 70%;
+  border-radius: 20px;
+  position: relative;
+  top: 20px;
+  left: -30px;
+  /* right: 90px; */
+}
+
+.subbox label {
+    color: #34364A;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    opacity: 80%;
+}
+
+.subbox input {
+  background-color: #E5E9F2;
+  text-align: center;
+  color: #34364A;
+  opacity: 80%;
+  border-radius: 30px;
+  width: 330px;
+  height: 30px;
+  border: none;
+  margin-left: 20px;
+}
+
+
+
+#overlayaddaccount {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.addaccount {
+    display: none;
+    position: fixed;
+    box-sizing: border-box;
+    width: 600px; 
+    top: 32%;
+    padding: 40px;
+    background-color: white;
+    left: 35%;
+    border-radius: 20px;
+    z-index: 4;
+}
+
+.addaccount h1 {
+    color: #34364A;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.addaccount h2 {
+    color: #34364A;
+    opacity: 60%;
+    font-size: 15px;
+}
+
+.addaccount button {
+  border: none;
+  width: 70%;
+  border-radius: 20px;
+  position: relative;
+  top: 20px;
+  left: -30px;
+  /* right: 90px; */
+}
+
+.addaccount label {
+    color: #34364A;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    opacity: 80%;
+}
+
+.addaccount input {
+  background-color: #E5E9F2;
+  text-align: center;
+  color: #34364A;
+  opacity: 80%;
+  border-radius: 30px;
+  width: 330px;
+  height: 30px;
+  border: none;
+  margin-left: 20px;
+}
+
+
+#overlayediteaccount {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.editaccount {
+    display: none;
+    position: fixed;
+    box-sizing: border-box;
+    width: 600px; 
+    top: 32%;
+    padding: 40px;
+    background-color: white;
+    left: 35%;
+    border-radius: 20px;
+    z-index: 4;
+}
+
+.editaccount h1 {
+    color: #34364A;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.editaccount h2 {
+    color: #34364A;
+    opacity: 60%;
+    font-size: 15px;
+}
+
+.editaccount button {
+  border: none;
+  width: 70%;
+  border-radius: 20px;
+  position: relative;
+  top: 20px;
+  left: -30px;
+  /* right: 90px; */
+}
+
+.editaccount label {
+    color: #34364A;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    opacity: 80%;
+}
+
+.editaccount input {
+  background-color: #E5E9F2;
+  text-align: center;
+  color: #34364A;
+  opacity: 80%;
+  border-radius: 30px;
+  width: 330px;
+  height: 30px;
+  border: none;
+  margin-left: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* DELETE */
+#overlaydeleteaccount {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.deleteaccount {
+    display: none;
+    position: fixed;
+    box-sizing: border-box;
+    width: 600px; 
+    top: 32%;
+    padding: 40px;
+    background-color: white;
+    left: 35%;
+    border-radius: 20px;
+    z-index: 4;
+}
+
+.deleteaccount h1 {
+    color: #34364A;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.deleteaccount h2 {
+    color: #34364A;
+    opacity: 60%;
+    font-size: 15px;
+}
+
+.deleteaccount button {
+  border: none;
+  width: 70%;
+  border-radius: 20px;
+  position: relative;
+  top: 20px;
+  left: -30px;
+  /* right: 90px; */
+}
+
+.deleteaccount label {
+    color: #34364A;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    opacity: 80%;
+}
+
+.deleteaccount input {
+  background-color: #E5E9F2;
+  text-align: center;
+  color: #34364A;
+  opacity: 80%;
+  border-radius: 30px;
+  width: 330px;
+  height: 30px;
+  border: none;
+  margin-left: 20px;
+}
+
+
+
+
+
+/* DELETE */
+#overlayclear {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.cleartable {
+    display: none;
+    position: fixed;
+    box-sizing: border-box;
+    width: 600px; 
+    top: 32%;
+    padding: 40px;
+    background-color: white;
+    left: 35%;
+    border-radius: 20px;
+    z-index: 4;
+}
+
+.cleartable h1 {
+    color: #34364A;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.cleartable h2 {
+    color: #34364A;
+    opacity: 60%;
+    font-size: 15px;
+}
+
+.cleartable button {
+  border: none;
+  width: 70%;
+  border-radius: 20px;
+  position: relative;
+  top: 20px;
+  left: -30px;
+  /* right: 90px; */
+}
+
+.cleartable label {
+    color: #34364A;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    opacity: 80%;
+}
+
+.cleartable input {
+  background-color: #E5E9F2;
+  text-align: center;
+  color: #34364A;
+  opacity: 80%;
+  border-radius: 30px;
+  width: 330px;
+  height: 30px;
+  border: none;
+  margin-left: 20px;
+}

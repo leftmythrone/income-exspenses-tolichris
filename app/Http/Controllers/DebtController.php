@@ -913,7 +913,7 @@ class DebtController extends Controller
             "total" => 0,
 
             // All data ubcine
-            "debts" => $alldata
+            "debts" => Dump::latest()->get()
         ]);
     }
 

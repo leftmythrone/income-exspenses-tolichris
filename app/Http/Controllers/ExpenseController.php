@@ -813,7 +813,7 @@ class ExpenseController extends Controller
             "total" => 0,
 
             // All data ubcine
-            "expenses" => $alldata
+            "expenses" => Dump::latest()->get()
         ]);
     }
 
